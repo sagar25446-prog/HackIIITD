@@ -1,0 +1,39 @@
+[
+  {
+    "id": "upsc_cse", "name": "UPSC Civil Services Examination", "name_hi": "यूपीएससी सिविल सेवा परीक्षा",
+    "body": "UPSC", "level": "graduate",
+    "summary": "IAS, IPS, IFS and other Group A/B services. Prelims → Mains → Interview.",
+    "age": {"min": 21, "max": 32, "relax": {"obc": 3, "sc": 5, "st": 5}, "pwd_extra": 10, "as_on": "1 August of the exam year"},
+    "education": {"min": 6, "final_year_ok": true, "label": "Bachelor's degree (final-year students may apply)"},
+    "attempts": {"general": 6, "obc": 9, "sc": "unlimited till age limit", "st": "unlimited till age limit"},
+    "current_cycle": {"name": "CSE 2026", "notified": "2026-02-04", "status": "closed", "prelims": "2026-05-24"},
+    "notice_history_months": ["2022-02", "2023-02", "2024-02", "2025-01", "2026-02"],
+    "notice_url": "https://www.upsc.gov.in/whats-new", "apply_url": "https://upsconline.nic.in",
+    "source_url": "https://www.upsc.gov.in/examinations/Civil%20Services%20%28Preliminary%29%20Examination%2C%202026",
+    "source_title": "UPSC — Civil Services (Preliminary) Examination, 2026", "verified_on": "2026-10-19"
+  },
+  {
+    "id": "ssc_cgl", "name": "SSC Combined Graduate Level (CGL)", "name_hi": "एसएससी संयुक्त स्नातक स्तर परीक्षा",
+    "body": "SSC", "level": "graduate",
+    "summary": "Group B and C posts in central ministries (Inspector, Assistant, Auditor and more).",
+    "age": {"min": 18, "max": 32, "relax": {"obc": 3, "sc": 5, "st": 5}, "pwd_extra": 10, "as_on": "1 August of the exam year (upper limit varies by post: 27, 30 or 32)"},
+    "education": {"min": 6, "final_year_ok": false, "label": "Bachelor's degree"},
+    "current_cycle": {"name": "CGL 2026", "notified": "2026-05-21", "status": "closed", "applications": "21 May – 22 Jun 2026"},
+    "notice_history_months": ["2022-09", "2023-04", "2024-06", "2025-06", "2026-05"],
+    "notice_url": "https://ssc.gov.in/home/notice-board", "apply_url": "https://ssc.gov.in",
+    "source_url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_cgl_2025.pdf",
+    "source_title": "SSC — Notice of CGL Examination 2026", "verified_on": "2026-10-19"
+  },
+  {
+    "id": "ssc_chsl", "name": "SSC Combined Higher Secondary Level (CHSL)", "name_hi": "एसएससी संयुक्त उच्चतर माध्यमिक स्तर परीक्षा",
+    "body": "SSC", "level": "class12",
+    "summary": "LDC, Junior Secretariat Assistant and Data Entry Operator posts for Class 12 pass candidates.",
+    "age": {"min": 18, "max": 27, "relax": {"obc": 3, "sc": 5, "st": 5}, "pwd_extra": 10, "as_on": "1 August 2026 (born 02-08-1999 to 01-08-2008)"},
+    "education": {"min": 4, "final_year_ok": false, "label": "Class 12 pass"},
+    "current_cycle": {"name": "CHSL 2026", "notified": "2026-09-07", "status": "closed", "applications": "7 Sep – 7 Oct 2026"},
+    "notice_history_months": ["2022-12", "2023-05", "2024-04", "2025-06", "2026-09"],
+    "notice_url": "https://ssc.gov.in/home/notice-board", "apply_url": "https://ssc.gov.in",
+    "source_url": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_chsl_2026.pdf",
+    "source_title": "SSC — Notice of CHSL Examination 2026", "verified_on": "2026-10-19"
+  }
+]

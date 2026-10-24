@@ -1,0 +1,277 @@
+[
+ {
+  "id": "lic_unclaimed",
+  "kind": "wapsi",
+  "name": "LIC unclaimed policy dues",
+  "asset": "insurance",
+  "url": "https://merchant.licindia.in/LICEPS/portlets/visitor/unclaimedPolicyDues/UnclaimedPolicyDuesController.jpf",
+  "goal": "This is LIC's official 'Unclaimed Policy Dues' search form. It needs any two of: policy number, name, date of birth, PAN. Fill policyholder name '{name}' and date of birth '{dob}' (dd/mm/yyyy); also fill PAN '{pan}' and policy number '{policy_no}' only if they are not 'not provided'. Do not invent any value. Click Submit once. If a CAPTCHA, OTP or login appears, stop immediately and say so in message — never try to solve it. Report whether any unclaimed amount is listed; copy the holder name exactly as shown into holder_name only if a record is listed. Return JSON only.",
+  "output_schema": {
+   "type": "object",
+   "properties": {
+    "found": {
+     "type": "boolean"
+    },
+    "amount_inr": {
+     "type": "number"
+    },
+    "holder_name": {
+     "type": "string"
+    },
+    "message": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "found",
+    "message"
+   ]
+  },
+  "heal_hints": [
+   "The form may be inside the page body below the header; scroll down.",
+   "Date of birth may need dd/mm/yyyy format with slashes."
+  ],
+  "tags": [
+   "all"
+  ],
+  "claim_how": "Visit any LIC branch with the policy bond (or indemnity), ID, bank details and, for a deceased policyholder, the death certificate and legal-heir proof.",
+  "playbook": "lic_unclaimed",
+  "engine_note": "Playbook on TinyFish Browser (Indian exit IP); Agent as self-heal fallback"
+ },
+ {
+  "id": "tata_aia_unclaimed",
+  "kind": "wapsi",
+  "name": "Tata AIA Life — unclaimed policy funds",
+  "asset": "insurance",
+  "url": "https://myinsurance.tataaia.com/portfolio/policy/unclaimed-funds/authenticate",
+  "playbook_fallback": "tata_aia_unclaimed",
+  "goal": "This is Tata AIA Life Insurance's official unclaimed-funds search. Keep 'Individual Policy' selected. Type the policy holder name '{name}' and the date of birth '{dob}' (DD/MM/YYYY) into the two fields, then click Proceed once. Do not invent any value. If a CAPTCHA, OTP or login appears, stop immediately and say so in message — never try to solve it. Report whether any unclaimed fund is listed; copy the holder name exactly as shown into holder_name only if a record is listed. Return JSON only.",
+  "output_schema": {
+   "type": "object",
+   "properties": {
+    "found": {
+     "type": "boolean"
+    },
+    "amount_inr": {
+     "type": "number"
+    },
+    "holder_name": {
+     "type": "string"
+    },
+    "message": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "found",
+    "message"
+   ]
+  },
+  "heal_hints": [
+   "The date field may open a calendar; type the date as DD/MM/YYYY and press Escape to close it."
+  ],
+  "tags": [
+   "all"
+  ],
+  "claim_how": "Raise the claim on the Tata AIA customer portal or at a branch with the policy number, KYC, bank details and (for a deceased policyholder) the death certificate. No fee.",
+  "engine_note": "TinyFish Agent with live browser view; playbook fallback"
+ },
+ {
+  "id": "sbi_life_unclaimed",
+  "kind": "wapsi",
+  "name": "SBI Life — unclaimed amount disclosure",
+  "asset": "insurance",
+  "url": "https://www.sbilife.co.in/customer-services/services/unclaimed-amount-disclosure",
+  "requires_human": true,
+  "human_note": "SBI Life's search has a CAPTCHA. JAAGRUK never solves CAPTCHAs: open the assisted session, JAAGRUK fills the name and date of birth, you type the CAPTCHA.",
+  "tags": [
+   "all"
+  ],
+  "claim_how": "Contact SBI Life customer service or a branch with the policy details; claims are free.",
+  "evidence": "Live test 2026-10-19: a TinyFish agent run (22 steps) reached the form and stopped at a CAPTCHA — so this portal is citizen-assisted."
+ },
+ {
+  "id": "iepf",
+  "kind": "wapsi",
+  "name": "IEPF — unclaimed shares & dividends",
+  "asset": "shares_dividends",
+  "url": "https://www.mca.gov.in/content/mca/global/en/mca/iepf-related-services/search-unclaimed-unpaid-amount-shares.html",
+  "tags": [
+   "all"
+  ],
+  "claim_how": "File form IEPF-5 online on the IEPF portal; there is no fee and no time limit.",
+  "requires_human": true,
+  "human_note": "The IEPF search now sits behind an MCA login. Open the assisted session and sign in with your own MCA account; JAAGRUK then fills the search by name and state.",
+  "evidence": "Live test 2026-10-19: the search page redirects to the MCA login (agent run timed out after 83 steps), so this portal is citizen-assisted."
+ },
+ {
+  "id": "udgam",
+  "kind": "wapsi",
+  "name": "RBI UDGAM — unclaimed bank deposits",
+  "asset": "bank_deposits",
+  "url": "https://udgam.rbi.org.in/unclaimed-deposits/#/login",
+  "requires_human": true,
+  "human_note": "UDGAM needs your own mobile OTP. Open the assisted session: JAAGRUK fills the form, you type the OTP.",
+  "tags": [
+   "all"
+  ],
+  "claim_how": "Claim at the bank shown in the result using the UDRN reference; there is no time limit."
+ },
+ {
+  "id": "mitra",
+  "kind": "wapsi",
+  "name": "SEBI MITRA — inactive mutual fund folios",
+  "asset": "mutual_funds",
+  "url": "https://app.mfcentral.com/investor/signin",
+  "requires_human": true,
+  "human_note": "MF Central login with your own OTP is required. Open the assisted session to search MITRA.",
+  "tags": [
+   "all"
+  ],
+  "claim_how": "Contact the AMC or registrar (CAMS/KFintech) shown in the result."
+ },
+ {
+  "id": "epfo",
+  "kind": "wapsi",
+  "name": "EPFO — provident fund balance",
+  "asset": "provident_fund",
+  "url": "https://unifiedportal-mem.epfindia.gov.in/memberinterface/",
+  "requires_human": true,
+  "human_note": "Needs the member's UAN and OTP. Use the assisted session, or the family claims via the employer.",
+  "tags": [
+   "private_employee",
+   "family"
+  ],
+  "claim_how": "Nominees file Form 20 (PF), 10D (pension) and 5IF (EDLI) via the employer or the EPFO portal."
+ },
+ {
+  "id": "ssc_notice_board",
+  "kind": "notices",
+  "name": "SSC notice board",
+  "url": "https://ssc.gov.in/home/notice-board",
+  "purpose": "A new exam notification is published, an application deadline is extended, or exam dates or vacancies change",
+  "tags": [
+   "student",
+   "job_seeker"
+  ],
+  "exam_ids": [
+   "ssc_cgl",
+   "ssc_chsl"
+  ]
+ },
+ {
+  "id": "upsc_whats_new",
+  "kind": "notices",
+  "name": "UPSC What's New",
+  "url": "https://www.upsc.gov.in/whats-new",
+  "purpose": "A new examination notification (especially Civil Services) or a change to dates or eligibility",
+  "tags": [
+   "student",
+   "job_seeker"
+  ],
+  "exam_ids": [
+   "upsc_cse"
+  ]
+ },
+ {
+  "id": "nsp_home",
+  "kind": "notices",
+  "name": "National Scholarship Portal",
+  "url": "https://scholarships.gov.in",
+  "purpose": "Scholarship application window opens, closes or is extended",
+  "tags": [
+   "student"
+  ],
+  "scheme_ids": [
+   "csss",
+   "post_matric_sc",
+   "post_matric_st",
+   "aicte_pragati"
+  ]
+ },
+ {
+  "id": "dly_portal",
+  "kind": "notices",
+  "name": "Delhi Lakshmi Yojana portal",
+  "url": "https://dly.delhi.gov.in/",
+  "purpose": "Eligibility rules, amount or registration dates for Delhi Lakshmi Yojana change",
+  "tags": [
+   "homemaker",
+   "family"
+  ],
+  "scheme_ids": [
+   "delhi_lakshmi_yojana"
+  ]
+ },
+ {
+  "id": "ssc_calendar",
+  "kind": "agent_read",
+  "name": "SSC exam calendar (JavaScript table)",
+  "url": "https://ssc.gov.in/for-candidates/examination-calendar",
+  "goal": "Read the SSC tentative examination calendar table on this page (open the calendar PDF or table if needed). For CGL and CHSL, list the next advertisement date, closing date and exam month. Return JSON only.",
+  "output_schema": {
+   "type": "object",
+   "properties": {
+    "exams": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "advertisement_date": {
+        "type": "string"
+       },
+       "closing_date": {
+        "type": "string"
+       },
+       "exam_month": {
+        "type": "string"
+       }
+      }
+     }
+    }
+   },
+   "required": [
+    "exams"
+   ]
+  },
+  "tags": [
+   "student",
+   "job_seeker"
+  ]
+ },
+ {
+  "id": "myscheme_checker",
+  "kind": "checker",
+  "name": "myScheme official eligibility checker",
+  "url": "https://rules.myscheme.gov.in/en/check-eligibility/{checker_id}?source=myscheme",
+  "goal": "This is the official myScheme eligibility checker. It shows one Yes/No question at a time; answer each using ONLY these facts about the applicant: {facts}. Read each question carefully — e.g. 'Does your income exceed ₹X?' must be answered by comparing the applicant's income with X. If a question is not covered by the facts, choose the answer a typical applicant would give and list that question under unanswered. Click Submit after each answer. Copy the final verdict text exactly into verdict_text; if the site shows an error such as 'Something went wrong', copy that error. Return JSON only.",
+  "output_schema": {
+   "type": "object",
+   "properties": {
+    "verdict": {
+     "type": "string"
+    },
+    "verdict_text": {
+     "type": "string"
+    },
+    "unanswered": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   },
+   "required": [
+    "verdict",
+    "verdict_text"
+   ]
+  },
+  "tags": [
+   "all"
+  ],
+  "evidence": "Live probe 2026-10-19 (TinyFish Browser, IN): 7 progressive Yes/No questions; the final Submit returned 'We're Sorry! Something went wrong'."
+ }
+]

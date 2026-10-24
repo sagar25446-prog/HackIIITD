@@ -1,0 +1,1379 @@
+[
+ {
+  "id": "pmjjby",
+  "name": "Pradhan Mantri Jeevan Jyoti Bima Yojana (PMJJBY)",
+  "name_hi": "प्रधानमंत्री जीवन ज्योति बीमा योजना",
+  "category": "insurance",
+  "level": "central",
+  "summary": "₹2 lakh life cover for death due to any reason, for ₹436 a year auto-debited from your bank account.",
+  "benefit": {
+   "display": "₹2,00,000 life cover · premium ₹436/year",
+   "cover_value": 200000
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 18,
+    "label": "Age 18 or above"
+   },
+   {
+    "field": "age",
+    "op": "le",
+    "value": 50,
+    "label": "Age 50 or below to join (cover continues to 55)"
+   },
+   {
+    "field": "has_bank_account",
+    "op": "true",
+    "label": "Has a savings bank / post-office account",
+    "doc": "doc_bank_account"
+   }
+  ],
+  "tags": [
+   "all"
+  ],
+  "life_events": [
+   "started_job",
+   "marriage"
+  ],
+  "apply_url": "https://jansuraksha.gov.in",
+  "source_url": "https://financialservices.gov.in/pmjjby",
+  "source_title": "Department of Financial Services — PMJJBY",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "pmsby",
+  "name": "Pradhan Mantri Suraksha Bima Yojana (PMSBY)",
+  "name_hi": "प्रधानमंत्री सुरक्षा बीमा योजना",
+  "category": "insurance",
+  "level": "central",
+  "summary": "Accident cover of ₹2 lakh (death or full disability) and ₹1 lakh (partial disability) for ₹20 a year.",
+  "benefit": {
+   "display": "₹2,00,000 accident cover · premium ₹20/year",
+   "cover_value": 200000
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 18,
+    "label": "Age 18 or above"
+   },
+   {
+    "field": "age",
+    "op": "le",
+    "value": 70,
+    "label": "Age 70 or below"
+   },
+   {
+    "field": "has_bank_account",
+    "op": "true",
+    "label": "Has a savings bank / post-office account",
+    "doc": "doc_bank_account"
+   }
+  ],
+  "tags": [
+   "all"
+  ],
+  "life_events": [
+   "started_job"
+  ],
+  "apply_url": "https://jansuraksha.gov.in",
+  "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1944366",
+  "source_title": "PIB — social security schemes for labourers",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "apy",
+  "name": "Atal Pension Yojana (APY)",
+  "name_hi": "अटल पेंशन योजना",
+  "category": "pension",
+  "level": "central",
+  "summary": "Guaranteed pension of ₹1,000–₹5,000 a month from age 60, depending on your contribution.",
+  "benefit": {
+   "display": "₹1,000–₹5,000 pension per month after 60"
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 18,
+    "label": "Age 18 or above"
+   },
+   {
+    "field": "age",
+    "op": "le",
+    "value": 40,
+    "label": "Age 40 or below"
+   },
+   {
+    "field": "income_tax_payer",
+    "op": "false",
+    "label": "Not an income-tax payer (rule since 1 Oct 2022)"
+   },
+   {
+    "field": "has_bank_account",
+    "op": "true",
+    "label": "Has a savings bank account",
+    "doc": "doc_bank_account"
+   }
+  ],
+  "tags": [
+   "gig_worker",
+   "self_employed",
+   "artisan",
+   "street_vendor",
+   "private_employee",
+   "homemaker",
+   "farmer",
+   "job_seeker"
+  ],
+  "life_events": [
+   "started_job"
+  ],
+  "apply_url": "https://www.npscra.nsdl.co.in/scheme-details.php",
+  "source_url": "https://pfrda.org.in/w/faqs/atal-pension-yojana",
+  "source_title": "PFRDA — APY FAQs",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "pm_kisan",
+  "name": "PM-KISAN Samman Nidhi",
+  "name_hi": "पीएम-किसान सम्मान निधि",
+  "category": "scheme",
+  "level": "central",
+  "summary": "₹6,000 a year in three instalments of ₹2,000 to landholding farmer families.",
+  "benefit": {
+   "display": "₹6,000 per year",
+   "annual_value": 6000
+  },
+  "conditions": [
+   {
+    "field": "owns_cultivable_land",
+    "op": "true",
+    "label": "Family holds cultivable land in its name",
+    "doc": "doc_land_record"
+   },
+   {
+    "field": "income_tax_payer",
+    "op": "false",
+    "label": "No one in the family paid income tax last assessment year"
+   },
+   {
+    "field": "govt_employee_in_family",
+    "op": "false",
+    "label": "No serving/retired government employee in the family (exclusion)"
+   }
+  ],
+  "tags": [
+   "farmer"
+  ],
+  "life_events": [],
+  "apply_url": "https://pmkisan.gov.in",
+  "source_url": "https://pmkisan.gov.in/Documents/RevisedFAQ.pdf",
+  "source_title": "PM-KISAN revised FAQ (exclusion criteria)",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "pmmy",
+  "name": "Pradhan Mantri Mudra Yojana (PMMY)",
+  "name_hi": "प्रधानमंत्री मुद्रा योजना",
+  "category": "loan",
+  "level": "central",
+  "summary": "Collateral-free business loans: Shishu (to ₹50,000), Kishore (to ₹5 lakh), Tarun (to ₹10 lakh), Tarun Plus (to ₹20 lakh).",
+  "benefit": {
+   "display": "Collateral-free loan up to ₹20 lakh",
+   "loan_value": 2000000
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 18,
+    "label": "Age 18 or above"
+   },
+   {
+    "field": "occupation",
+    "op": "in",
+    "value": [
+     "self_employed",
+     "artisan",
+     "street_vendor"
+    ],
+    "label": "Runs (or is starting) a non-farm micro business"
+   }
+  ],
+  "tags": [
+   "self_employed",
+   "artisan",
+   "street_vendor"
+  ],
+  "life_events": [
+   "starting_business"
+  ],
+  "apply_url": "https://www.mudra.org.in",
+  "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2119954",
+  "source_title": "PIB — 10 years of PMMY",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "pmegp",
+  "name": "Prime Minister's Employment Generation Programme (PMEGP)",
+  "name_hi": "प्रधानमंत्री रोजगार सृजन कार्यक्रम",
+  "category": "loan",
+  "level": "central",
+  "summary": "15–35% capital subsidy on a bank loan to set up a new manufacturing or service unit. No income ceiling.",
+  "benefit": {
+   "display": "15–35% subsidy on project cost (new units)"
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 18,
+    "label": "Age 18 or above"
+   },
+   {
+    "field": "new_enterprise",
+    "op": "true",
+    "label": "Setting up a new unit (not an existing business)"
+   },
+   {
+    "field": "education",
+    "op": "ge",
+    "value": 2,
+    "label": "Class 8 pass (needed for projects above ₹10 lakh manufacturing / ₹5 lakh service)",
+    "soft": true
+   }
+  ],
+  "tags": [
+   "self_employed",
+   "artisan",
+   "job_seeker"
+  ],
+  "life_events": [
+   "starting_business",
+   "lost_job"
+  ],
+  "apply_url": "https://www.kviconline.gov.in/pmegpeportal/",
+  "source_url": "https://pmegp.msme.gov.in/Home/FAQ",
+  "source_title": "PMEGP FAQs — Ministry of MSME",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "pm_vishwakarma",
+  "name": "PM Vishwakarma",
+  "name_hi": "पीएम विश्वकर्मा",
+  "category": "scheme",
+  "level": "central",
+  "summary": "Recognition, skill training with stipend, toolkit support and collateral-free loans for artisans in 18 traditional trades.",
+  "benefit": {
+   "display": "₹15,000 toolkit e-voucher · ₹500/day training stipend · loans up to ₹3 lakh at 5%",
+   "one_time_value": 15000,
+   "loan_value": 300000
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 18,
+    "label": "Age 18 or above on registration"
+   },
+   {
+    "field": "trade",
+    "op": "in",
+    "value": [
+     "carpenter",
+     "boat_maker",
+     "armourer",
+     "blacksmith",
+     "tool_kit_maker",
+     "locksmith",
+     "goldsmith",
+     "potter",
+     "sculptor",
+     "cobbler",
+     "mason",
+     "basket_weaver",
+     "toy_maker",
+     "barber",
+     "garland_maker",
+     "washerman",
+     "tailor",
+     "fishing_net_maker"
+    ],
+    "label": "Works with hands and tools in one of the 18 notified trades"
+   },
+   {
+    "field": "govt_employee_in_family",
+    "op": "false",
+    "label": "No one in the family is in government service"
+   }
+  ],
+  "tags": [
+   "artisan",
+   "self_employed"
+  ],
+  "life_events": [],
+  "apply_url": "https://pmvishwakarma.gov.in",
+  "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1959098",
+  "source_title": "PIB — Salient features of PM Vishwakarma",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "pm_svanidhi",
+  "name": "PM SVANidhi",
+  "name_hi": "पीएम स्वनिधि",
+  "category": "loan",
+  "level": "central",
+  "summary": "Collateral-free working-capital loans for street vendors in three tranches, with interest subsidy and digital cashback.",
+  "benefit": {
+   "display": "Working-capital loans in 3 tranches + interest subsidy"
+  },
+  "conditions": [
+   {
+    "field": "occupation",
+    "op": "eq",
+    "value": "street_vendor",
+    "label": "Street vendor in an urban area"
+   }
+  ],
+  "tags": [
+   "street_vendor"
+  ],
+  "life_events": [],
+  "apply_url": "https://pmsvanidhi.mohua.gov.in",
+  "source_url": "https://pmsvanidhi.mohua.gov.in",
+  "source_title": "PM SVANidhi — Ministry of Housing & Urban Affairs",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "stand_up_india",
+  "name": "Stand-Up India",
+  "name_hi": "स्टैंड-अप इंडिया",
+  "category": "loan",
+  "level": "central",
+  "summary": "Bank loans from ₹10 lakh to ₹1 crore for greenfield enterprises set up by SC/ST and/or women entrepreneurs.",
+  "benefit": {
+   "display": "Loan ₹10 lakh – ₹1 crore (greenfield)",
+   "loan_value": 10000000
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 18,
+    "label": "Age 18 or above"
+   },
+   {
+    "field": "new_enterprise",
+    "op": "true",
+    "label": "Greenfield (first-time) enterprise"
+   }
+  ],
+  "any_of": [
+   [
+    {
+     "field": "category",
+     "op": "in",
+     "value": [
+      "sc",
+      "st"
+     ],
+     "label": "Belongs to SC/ST",
+     "doc": "doc_caste_certificate"
+    }
+   ],
+   [
+    {
+     "field": "gender",
+     "op": "eq",
+     "value": "female",
+     "label": "Woman entrepreneur"
+    }
+   ]
+  ],
+  "tags": [
+   "self_employed",
+   "artisan",
+   "job_seeker"
+  ],
+  "life_events": [
+   "starting_business"
+  ],
+  "apply_url": "https://www.standupmitra.in",
+  "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1913705",
+  "source_title": "PIB — Stand-Up India scheme",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "ssy",
+  "name": "Sukanya Samriddhi Yojana",
+  "name_hi": "सुकन्या समृद्धि योजना",
+  "category": "savings",
+  "level": "central",
+  "summary": "High-interest savings account for a girl child below 10 (8.2% per PIB, Jan 2026), ₹250 to ₹1.5 lakh a year.",
+  "benefit": {
+   "display": "8.2% tax-free savings for your daughter"
+  },
+  "conditions": [
+   {
+    "field": "girl_child_under_10",
+    "op": "true",
+    "label": "Family has a girl child below 10 years",
+    "doc": "doc_birth_certificate"
+   }
+  ],
+  "tags": [
+   "homemaker",
+   "private_employee",
+   "govt_employee",
+   "self_employed",
+   "farmer",
+   "gig_worker"
+  ],
+  "life_events": [
+   "baby_born"
+  ],
+  "apply_url": "https://www.indiapost.gov.in",
+  "source_url": "https://www.nsiindia.gov.in/InternalPage.aspx?Id_Pk=89",
+  "source_title": "National Savings Institute — SSA",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "pmmvy",
+  "name": "Pradhan Mantri Matru Vandana Yojana (PMMVY)",
+  "name_hi": "प्रधानमंत्री मातृ वंदना योजना",
+  "category": "scheme",
+  "level": "central",
+  "summary": "₹5,000 for the first child (two instalments) and ₹6,000 for a second child if she is a girl.",
+  "benefit": {
+   "display": "₹5,000 (1st child) · ₹6,000 (2nd child, girl)",
+   "one_time_value": 5000
+  },
+  "conditions": [
+   {
+    "field": "gender",
+    "op": "eq",
+    "value": "female",
+    "label": "Woman"
+   },
+   {
+    "field": "pregnant_or_new_mother",
+    "op": "true",
+    "label": "Pregnant or lactating mother"
+   },
+   {
+    "field": "govt_employee_in_family",
+    "op": "false",
+    "label": "Not in regular government employment (they get paid maternity leave)",
+    "soft": true
+   }
+  ],
+  "tags": [
+   "homemaker",
+   "gig_worker",
+   "self_employed",
+   "private_employee"
+  ],
+  "life_events": [
+   "baby_born"
+  ],
+  "apply_url": "https://pmmvy.wcd.gov.in",
+  "source_url": "https://wcd.gov.in/offerings/pradhan-mantri-matru-vandana-yojana",
+  "source_title": "Ministry of Women & Child Development — PMMVY",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "ignoaps",
+  "name": "Indira Gandhi National Old Age Pension (IGNOAPS)",
+  "name_hi": "इंदिरा गांधी राष्ट्रीय वृद्धावस्था पेंशन",
+  "category": "pension",
+  "level": "central",
+  "summary": "Central pension of ₹200/month (60–79) and ₹500/month (80+) for BPL seniors; states add their own top-up.",
+  "benefit": {
+   "display": "₹200–₹500/month central share (+ state top-up)",
+   "annual_value": 2400
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 60,
+    "label": "Age 60 or above"
+   },
+   {
+    "field": "bpl",
+    "op": "true",
+    "label": "Below-poverty-line household",
+    "doc": "doc_bpl_card"
+   }
+  ],
+  "notes": "In Delhi this is paid together with the Delhi old-age pension, so JAAGRUK counts only the Delhi amount there.",
+  "tags": [
+   "retired",
+   "homemaker"
+  ],
+  "life_events": [
+   "turned_60"
+  ],
+  "apply_url": "https://nsap.nic.in",
+  "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2210378&reg=3&lang=1",
+  "source_title": "PIB — Dept of Rural Development Year Ender 2025",
+  "verified_on": "2026-10-19",
+  "exclusive_with": [
+   "delhi_old_age_pension"
+  ],
+  "source_section": "Old Age Pension"
+ },
+ {
+  "id": "ignwps",
+  "name": "Indira Gandhi National Widow Pension (IGNWPS)",
+  "name_hi": "इंदिरा गांधी राष्ट्रीय विधवा पेंशन",
+  "category": "pension",
+  "level": "central",
+  "summary": "Central pension of ₹300/month for BPL widows aged 40–79; states add a top-up.",
+  "benefit": {
+   "display": "₹300/month central share (+ state top-up)",
+   "annual_value": 3600
+  },
+  "conditions": [
+   {
+    "field": "marital_status",
+    "op": "eq",
+    "value": "widowed",
+    "label": "Widow"
+   },
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 40,
+    "label": "Age 40 or above"
+   },
+   {
+    "field": "age",
+    "op": "le",
+    "value": 79,
+    "label": "Age 79 or below"
+   },
+   {
+    "field": "bpl",
+    "op": "true",
+    "label": "Below-poverty-line household",
+    "doc": "doc_bpl_card"
+   }
+  ],
+  "notes": "In Delhi this is paid together with the Delhi pension to women in distress.",
+  "tags": [
+   "homemaker",
+   "family"
+  ],
+  "life_events": [
+   "death_in_family"
+  ],
+  "apply_url": "https://nsap.nic.in",
+  "source_url": "https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=1887438",
+  "source_title": "PIB — Ministry of Rural Development Year-End Review",
+  "verified_on": "2026-10-19",
+  "exclusive_with": [
+   "delhi_widow_pension"
+  ],
+  "source_section": "Widow Pension"
+ },
+ {
+  "id": "nfbs",
+  "name": "National Family Benefit Scheme (NFBS)",
+  "name_hi": "राष्ट्रीय परिवार लाभ योजना",
+  "category": "scheme",
+  "level": "central",
+  "summary": "One-time ₹20,000 to the family when its primary breadwinner (aged 18–59) dies. Delhi runs it as the Delhi Family Benefit Scheme.",
+  "benefit": {
+   "display": "₹20,000 one-time",
+   "one_time_value": 20000
+  },
+  "conditions": [
+   {
+    "field": "breadwinner_died_18_59",
+    "op": "true",
+    "label": "Primary breadwinner died aged 18–59",
+    "doc": "doc_death_certificate"
+   },
+   {
+    "field": "annual_family_income",
+    "op": "le",
+    "value": 100000,
+    "label": "Family income up to ₹1 lakh/year (BPL / Delhi limit)",
+    "doc": "doc_income_certificate"
+   }
+  ],
+  "tags": [
+   "family",
+   "homemaker"
+  ],
+  "life_events": [
+   "death_in_family"
+  ],
+  "apply_url": "https://edistrict.delhigovt.nic.in",
+  "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2187327",
+  "source_title": "PIB — National Social Assistance Programme",
+  "verified_on": "2026-10-19",
+  "source_section": "Family Benefit"
+ },
+ {
+  "id": "pmuy",
+  "name": "Pradhan Mantri Ujjwala Yojana 2.0",
+  "name_hi": "प्रधानमंत्री उज्ज्वला योजना",
+  "category": "scheme",
+  "level": "central",
+  "summary": "Deposit-free LPG connection for adult women from poor households.",
+  "benefit": {
+   "display": "Deposit-free LPG connection"
+  },
+  "conditions": [
+   {
+    "field": "gender",
+    "op": "eq",
+    "value": "female",
+    "label": "Woman"
+   },
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 18,
+    "label": "Age 18 or above"
+   },
+   {
+    "field": "bpl",
+    "op": "true",
+    "label": "Poor household (deprivation declaration)",
+    "doc": "doc_bpl_card"
+   },
+   {
+    "field": "has_lpg_connection",
+    "op": "false",
+    "label": "No LPG connection in the household"
+   }
+  ],
+  "tags": [
+   "homemaker",
+   "gig_worker",
+   "farmer"
+  ],
+  "life_events": [
+   "marriage"
+  ],
+  "apply_url": "https://www.pmuy.gov.in/ujjwala2.html",
+  "source_url": "https://www.pmuy.gov.in/ujjwala2.html",
+  "source_title": "PMUY — New Ujjwala 2.0 connection",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "eshram",
+  "name": "e-Shram card",
+  "name_hi": "ई-श्रम कार्ड",
+  "category": "scheme",
+  "level": "central",
+  "summary": "National ID (UAN) for unorganised workers that connects you to social-security and welfare schemes.",
+  "benefit": {
+   "display": "One ID for social-security benefits"
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 16,
+    "label": "Age 16 or above"
+   },
+   {
+    "field": "occupation",
+    "op": "in",
+    "value": [
+     "gig_worker",
+     "self_employed",
+     "artisan",
+     "street_vendor",
+     "farmer"
+    ],
+    "label": "Works in the unorganised sector"
+   },
+   {
+    "field": "epfo_esic_member",
+    "op": "false",
+    "label": "Not a member of EPFO / ESIC"
+   },
+   {
+    "field": "income_tax_payer",
+    "op": "false",
+    "label": "Not an income-tax payer"
+   }
+  ],
+  "tags": [
+   "gig_worker",
+   "self_employed",
+   "artisan",
+   "street_vendor",
+   "farmer"
+  ],
+  "life_events": [
+   "lost_job"
+  ],
+  "apply_url": "https://eshram.gov.in",
+  "source_url": "https://eshram.gov.in/faqs",
+  "source_title": "e-Shram FAQs — Ministry of Labour",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "pm_sym",
+  "name": "PM Shram Yogi Maan-dhan (PM-SYM)",
+  "name_hi": "प्रधानमंत्री श्रम योगी मान-धन",
+  "category": "pension",
+  "level": "central",
+  "summary": "₹3,000 monthly pension after 60 for unorganised workers; the government matches your contribution.",
+  "benefit": {
+   "display": "₹3,000/month pension after 60"
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 18,
+    "label": "Age 18 or above"
+   },
+   {
+    "field": "age",
+    "op": "le",
+    "value": 40,
+    "label": "Age 40 or below"
+   },
+   {
+    "field": "monthly_income",
+    "op": "le",
+    "value": 15000,
+    "label": "Monthly income ₹15,000 or less"
+   },
+   {
+    "field": "occupation",
+    "op": "in",
+    "value": [
+     "gig_worker",
+     "self_employed",
+     "artisan",
+     "street_vendor",
+     "farmer"
+    ],
+    "label": "Unorganised worker"
+   },
+   {
+    "field": "epfo_esic_member",
+    "op": "false",
+    "label": "Not in EPFO / ESIC / NPS (government-funded)"
+   },
+   {
+    "field": "income_tax_payer",
+    "op": "false",
+    "label": "Not an income-tax payer"
+   }
+  ],
+  "tags": [
+   "gig_worker",
+   "self_employed",
+   "artisan",
+   "street_vendor"
+  ],
+  "life_events": [],
+  "apply_url": "https://maandhan.in",
+  "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2108082",
+  "source_title": "PIB — PM Shram Yogi Maandhan",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "ab_vay_vandana",
+  "name": "Ayushman Vay Vandana (AB PM-JAY 70+)",
+  "name_hi": "आयुष्मान वय वंदना",
+  "category": "health",
+  "level": "central",
+  "summary": "Free health cover up to ₹5 lakh a year for every citizen aged 70+, irrespective of income.",
+  "benefit": {
+   "display": "₹5 lakh/year health cover",
+   "cover_value": 500000
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 70,
+    "label": "Age 70 or above"
+   }
+  ],
+  "tags": [
+   "retired",
+   "family",
+   "all"
+  ],
+  "life_events": [
+   "turned_70"
+  ],
+  "apply_url": "https://beneficiary.nha.gov.in",
+  "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2082288",
+  "source_title": "PIB — Ayushman Vay Vandana cards",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "scss",
+  "name": "Senior Citizens Savings Scheme (SCSS)",
+  "name_hi": "वरिष्ठ नागरिक बचत योजना",
+  "category": "savings",
+  "level": "central",
+  "summary": "Government-backed savings for people aged 60+, deposits up to ₹30 lakh, interest paid quarterly.",
+  "benefit": {
+   "display": "Safe quarterly income, deposit up to ₹30 lakh"
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 60,
+    "label": "Age 60 or above"
+   }
+  ],
+  "tags": [
+   "retired"
+  ],
+  "life_events": [
+   "turned_60",
+   "retired"
+  ],
+  "apply_url": "https://www.indiapost.gov.in",
+  "source_url": "https://www.nsiindia.gov.in/InternalPage.aspx?Id_Pk=62",
+  "source_title": "National Savings Institute — SCSS",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "csss",
+  "name": "Central Sector Scholarship for College & University Students (PM-USP CSSS)",
+  "name_hi": "केंद्रीय क्षेत्र छात्रवृत्ति योजना",
+  "category": "scholarship",
+  "level": "central",
+  "summary": "Merit scholarship for students above the 80th percentile in Class 12 with family income up to ₹4.5 lakh.",
+  "benefit": {
+   "display": "₹12,000/year (graduation) · ₹20,000/year (PG)",
+   "annual_value": 12000
+  },
+  "conditions": [
+   {
+    "field": "class12_percentile",
+    "op": "ge",
+    "value": 80,
+    "label": "Above the 80th percentile in your Class 12 board"
+   },
+   {
+    "field": "annual_family_income",
+    "op": "le",
+    "value": 450000,
+    "label": "Family income up to ₹4.5 lakh",
+    "doc": "doc_income_certificate"
+   },
+   {
+    "field": "in_full_time_education",
+    "op": "true",
+    "label": "Regular degree course (not diploma/distance)"
+   }
+  ],
+  "tags": [
+   "student"
+  ],
+  "life_events": [
+   "passed_class_12"
+  ],
+  "apply_url": "https://scholarships.gov.in",
+  "source_url": "https://scholarships.gov.in/public/schemeGuidelines/FAQ_DOHE_CSSS.pdf",
+  "source_title": "NSP — CSSS FAQ (Ministry of Education)",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "post_matric_sc",
+  "name": "Post-Matric Scholarship for SC Students",
+  "name_hi": "अनुसूचित जाति के छात्रों के लिए पोस्ट-मैट्रिक छात्रवृत्ति",
+  "category": "scholarship",
+  "level": "central",
+  "summary": "Course fees plus maintenance allowance for SC students in Class 11 and above.",
+  "benefit": {
+   "display": "Full compulsory course fees + academic allowance ₹2,500–₹13,500/year (B.A./B.Sc./B.Com day scholar: ₹3,000)",
+   "annual_value": 3000
+  },
+  "conditions": [
+   {
+    "field": "category",
+    "op": "eq",
+    "value": "sc",
+    "label": "Belongs to a Scheduled Caste",
+    "doc": "doc_caste_certificate"
+   },
+   {
+    "field": "annual_family_income",
+    "op": "le",
+    "value": 250000,
+    "label": "Parents' income up to ₹2.5 lakh",
+    "doc": "doc_income_certificate"
+   },
+   {
+    "field": "in_full_time_education",
+    "op": "true",
+    "label": "Studying in Class 11 or above"
+   }
+  ],
+  "tags": [
+   "student"
+  ],
+  "life_events": [
+   "passed_class_10",
+   "passed_class_12"
+  ],
+  "apply_url": "https://scholarships.gov.in",
+  "source_url": "https://web.umang.gov.in/landing/scheme/detail/post-matric-scholarship-for-scheduled-caste_pmssc.html",
+  "source_title": "UMANG — Post Matric Scholarship for Scheduled Caste (academic allowance table)",
+  "verified_on": "2026-10-19",
+  "notes": "Earlier source link pointed to the Pre-Matric page; corrected after a TinyFish Fetch re-check on 2026-10-19. Value counts only the Group 3 day-scholar allowance; fees are paid on top."
+ },
+ {
+  "id": "post_matric_st",
+  "name": "Post-Matric Scholarship for ST Students",
+  "name_hi": "अनुसूचित जनजाति के छात्रों के लिए पोस्ट-मैट्रिक छात्रवृत्ति",
+  "category": "scholarship",
+  "level": "central",
+  "summary": "Fees plus maintenance allowance for ST students studying beyond Class 10.",
+  "benefit": {
+   "display": "Fees + maintenance allowance"
+  },
+  "conditions": [
+   {
+    "field": "category",
+    "op": "eq",
+    "value": "st",
+    "label": "Belongs to a Scheduled Tribe",
+    "doc": "doc_caste_certificate"
+   },
+   {
+    "field": "annual_family_income",
+    "op": "le",
+    "value": 250000,
+    "label": "Parents' income up to ₹2.5 lakh",
+    "doc": "doc_income_certificate"
+   },
+   {
+    "field": "in_full_time_education",
+    "op": "true",
+    "label": "Studying beyond Class 10"
+   }
+  ],
+  "tags": [
+   "student"
+  ],
+  "life_events": [
+   "passed_class_10",
+   "passed_class_12"
+  ],
+  "apply_url": "https://scholarships.gov.in",
+  "source_url": "https://scholarships.gov.in/public/schemeGuidelines/EDUPostMatricScholarshipPMSforSTstudents.pdf",
+  "source_title": "NSP — Post-Matric Scholarship for ST students",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "aicte_pragati",
+  "name": "AICTE Pragati Scholarship (girls)",
+  "name_hi": "एआईसीटीई प्रगति छात्रवृत्ति",
+  "category": "scholarship",
+  "level": "central",
+  "summary": "₹50,000 a year for girls in AICTE-approved degree or diploma courses (up to two girls per family).",
+  "benefit": {
+   "display": "₹50,000 per year",
+   "annual_value": 50000
+  },
+  "conditions": [
+   {
+    "field": "gender",
+    "op": "eq",
+    "value": "female",
+    "label": "Girl student"
+   },
+   {
+    "field": "aicte_technical_course",
+    "op": "true",
+    "label": "Admitted to an AICTE-approved technical degree/diploma"
+   },
+   {
+    "field": "annual_family_income",
+    "op": "lt",
+    "value": 800000,
+    "label": "Family income below ₹8 lakh",
+    "doc": "doc_income_certificate"
+   }
+  ],
+  "tags": [
+   "student"
+  ],
+  "life_events": [
+   "passed_class_12"
+  ],
+  "apply_url": "https://scholarships.gov.in",
+  "source_url": "https://aicte.gov.in/sites/default/files/stdc/Pragati/FAQs-Pragati%20Scheme.pdf",
+  "source_title": "AICTE — Pragati scheme FAQs",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "pm_internship",
+  "name": "PM Internship Scheme",
+  "name_hi": "पीएम इंटर्नशिप योजना",
+  "category": "scheme",
+  "level": "central",
+  "summary": "12-month internship in a top company with ₹5,000/month and a one-time ₹6,000 grant.",
+  "benefit": {
+   "display": "₹5,000/month + ₹6,000 one-time",
+   "annual_value": 60000,
+   "one_time_value": 6000
+  },
+  "conditions": [
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 21,
+    "label": "Age 21 or above"
+   },
+   {
+    "field": "age",
+    "op": "le",
+    "value": 24,
+    "label": "Age 24 or below"
+   },
+   {
+    "field": "employed_full_time",
+    "op": "false",
+    "label": "Not employed full-time"
+   },
+   {
+    "field": "in_full_time_education",
+    "op": "false",
+    "label": "Not in full-time education (online/distance is fine)"
+   },
+   {
+    "field": "education",
+    "op": "ge",
+    "value": 3,
+    "label": "Passed Class 10 or higher"
+   },
+   {
+    "field": "annual_family_income",
+    "op": "le",
+    "value": 800000,
+    "label": "No family member earns over ₹8 lakh",
+    "doc": "doc_income_certificate"
+   },
+   {
+    "field": "govt_employee_in_family",
+    "op": "false",
+    "label": "No permanent government employee in the family"
+   }
+  ],
+  "tags": [
+   "job_seeker",
+   "student"
+  ],
+  "life_events": [
+   "graduated",
+   "lost_job"
+  ],
+  "apply_url": "https://pminternship.mca.gov.in",
+  "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2061909",
+  "source_title": "PIB — PM Internship Scheme pilot",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "pm_vidyalaxmi",
+  "name": "PM Vidyalaxmi (education loan)",
+  "name_hi": "पीएम विद्यालक्ष्मी",
+  "category": "loan",
+  "level": "central",
+  "summary": "Collateral-free, guarantor-free education loans at top institutions; 3% interest subvention if family income is up to ₹8 lakh.",
+  "benefit": {
+   "display": "Collateral-free loan + 3% interest subvention"
+  },
+  "conditions": [
+   {
+    "field": "qhei_admission",
+    "op": "true",
+    "label": "Merit admission to one of 1,425 designated institutions (QHEIs)"
+   },
+   {
+    "field": "annual_family_income",
+    "op": "le",
+    "value": 800000,
+    "label": "Family income up to ₹8 lakh (for interest subvention)",
+    "doc": "doc_income_certificate",
+    "soft": true
+   }
+  ],
+  "tags": [
+   "student"
+  ],
+  "life_events": [
+   "passed_class_12"
+  ],
+  "apply_url": "https://pmvidyalaxmi.co.in",
+  "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2290972&reg=3&lang=1",
+  "source_title": "PIB — PM Vidyalaxmi backgrounder",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "delhi_old_age_pension",
+  "name": "Delhi Old Age Pension (Financial Assistance to Senior Citizens)",
+  "name_hi": "दिल्ली वृद्धावस्था पेंशन",
+  "category": "pension",
+  "level": "delhi",
+  "summary": "₹2,000/month at 60–69 and ₹2,500/month at 70+ for low-income Delhi residents.",
+  "benefit": {
+   "display": "₹2,000/month (60–69) · ₹2,500/month (70+)",
+   "annual_value": 24000
+  },
+  "conditions": [
+   {
+    "field": "state",
+    "op": "eq",
+    "value": "Delhi",
+    "label": "Lives in Delhi"
+   },
+   {
+    "field": "years_in_state",
+    "op": "ge",
+    "value": 5,
+    "label": "Resident of Delhi for 5+ years",
+    "doc": "doc_domicile_certificate"
+   },
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 60,
+    "label": "Age 60 or above"
+   },
+   {
+    "field": "annual_family_income",
+    "op": "lt",
+    "value": 100000,
+    "label": "Family income below ₹1 lakh/year",
+    "doc": "doc_income_certificate"
+   },
+   {
+    "field": "receives_other_pension",
+    "op": "false",
+    "label": "Not receiving any other pension"
+   }
+  ],
+  "tags": [
+   "retired",
+   "family"
+  ],
+  "life_events": [
+   "turned_60"
+  ],
+  "apply_url": "https://edistrict.delhigovt.nic.in",
+  "source_url": "https://delhiplanning.delhi.gov.in/sites/default/files/Planning/generic_multiple_files/8_dsw.pdf",
+  "source_title": "Delhi Planning Dept — Social Welfare schemes",
+  "verified_on": "2026-10-19"
+ },
+ {
+  "id": "delhi_widow_pension",
+  "name": "Delhi Pension Scheme to Women in Distress (widow pension)",
+  "name_hi": "दिल्ली संकटग्रस्त महिला पेंशन योजना",
+  "category": "pension",
+  "level": "delhi",
+  "summary": "₹2,500 a month for widowed, divorced, separated or destitute women in Delhi.",
+  "benefit": {
+   "display": "₹2,500 per month",
+   "annual_value": 30000
+  },
+  "conditions": [
+   {
+    "field": "state",
+    "op": "eq",
+    "value": "Delhi",
+    "label": "Lives in Delhi"
+   },
+   {
+    "field": "years_in_state",
+    "op": "ge",
+    "value": 5,
+    "label": "Resident of Delhi for 5+ years",
+    "doc": "doc_domicile_certificate"
+   },
+   {
+    "field": "gender",
+    "op": "eq",
+    "value": "female",
+    "label": "Woman"
+   },
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 18,
+    "label": "Age 18 or above"
+   },
+   {
+    "field": "marital_status",
+    "op": "in",
+    "value": [
+     "widowed",
+     "divorced",
+     "separated"
+    ],
+    "label": "Widowed, divorced, separated or deserted",
+    "doc": "doc_death_certificate"
+   },
+   {
+    "field": "annual_family_income",
+    "op": "lt",
+    "value": 100000,
+    "label": "Family income below ₹1 lakh/year",
+    "doc": "doc_income_certificate"
+   }
+  ],
+  "tags": [
+   "homemaker",
+   "family"
+  ],
+  "life_events": [
+   "death_in_family"
+  ],
+  "myscheme_checker": "dpswdwp",
+  "apply_url": "https://edistrict.delhigovt.nic.in",
+  "source_url": "https://web.umang.gov.in/landing/scheme/detail/delhi-pension-scheme-to-women-in-distress-widow-pension_dpswdwp.html",
+  "source_title": "UMANG — Delhi Pension Scheme to Women in Distress",
+  "verified_on": "2026-10-19",
+  "exclusive_with": [
+   "delhi_lakshmi_yojana"
+  ]
+ },
+ {
+  "id": "delhi_lakshmi_yojana",
+  "name": "Delhi Lakshmi Yojana",
+  "name_hi": "दिल्ली लक्ष्मी योजना",
+  "category": "scheme",
+  "level": "delhi",
+  "summary": "₹2,500 a month for women aged 21–60 from lower-income Delhi families (launched August 2026).",
+  "benefit": {
+   "display": "₹2,500 per month",
+   "annual_value": 30000
+  },
+  "conditions": [
+   {
+    "field": "state",
+    "op": "eq",
+    "value": "Delhi",
+    "label": "Lives in Delhi"
+   },
+   {
+    "field": "years_in_state",
+    "op": "ge",
+    "value": 10,
+    "label": "Resident of Delhi for 10+ years",
+    "doc": "doc_domicile_certificate"
+   },
+   {
+    "field": "gender",
+    "op": "eq",
+    "value": "female",
+    "label": "Woman"
+   },
+   {
+    "field": "age",
+    "op": "ge",
+    "value": 21,
+    "label": "Age 21 or above"
+   },
+   {
+    "field": "age",
+    "op": "le",
+    "value": 60,
+    "label": "Age 60 or below"
+   },
+   {
+    "field": "annual_family_income",
+    "op": "le",
+    "value": 250000,
+    "label": "Family income up to ₹2.5 lakh/year",
+    "doc": "doc_income_certificate"
+   },
+   {
+    "field": "govt_employee_in_family",
+    "op": "false",
+    "label": "No family member is a government employee"
+   },
+   {
+    "field": "receives_other_pension",
+    "op": "false",
+    "label": "Not receiving widow/disability/other pension or assistance"
+   }
+  ],
+  "tags": [
+   "homemaker",
+   "gig_worker",
+   "self_employed",
+   "family"
+  ],
+  "life_events": [],
+  "apply_url": "https://dly.delhi.gov.in",
+  "source_url": "https://dly.delhi.gov.in/",
+  "source_title": "Delhi Lakshmi Yojana — official portal",
+  "verified_on": "2026-10-19",
+  "exclusive_with": [
+   "delhi_widow_pension"
+  ]
+ },
+ {
+  "id": "delhi_disability_pension",
+  "name": "Delhi Disability Pension (Financial Assistance to Persons with Special Needs)",
+  "name_hi": "दिल्ली दिव्यांग पेंशन",
+  "category": "pension",
+  "level": "delhi",
+  "summary": "Monthly assistance for Delhi residents with 40%+ disability and low family income.",
+  "benefit": {
+   "display": "₹2,500 per month",
+   "annual_value": 30000
+  },
+  "conditions": [
+   {
+    "field": "state",
+    "op": "eq",
+    "value": "Delhi",
+    "label": "Lives in Delhi"
+   },
+   {
+    "field": "years_in_state",
+    "op": "ge",
+    "value": 5,
+    "label": "Resident of Delhi for 5+ years",
+    "doc": "doc_domicile_certificate"
+   },
+   {
+    "field": "disability",
+    "op": "true",
+    "label": "Disability of 40% or more",
+    "doc": "doc_udid"
+   },
+   {
+    "field": "annual_family_income",
+    "op": "lt",
+    "value": 100000,
+    "label": "Family income below ₹1 lakh/year",
+    "doc": "doc_income_certificate"
+   }
+  ],
+  "tags": [
+   "all"
+  ],
+  "life_events": [],
+  "apply_url": "https://edistrict.delhigovt.nic.in",
+  "source_url": "https://edistrict.delhi.gov.in/Public/ViewUploadScanDocumentTemplate?q=7aoyF9OA1bfmRq/CCpDHkWz580SlQc8OLJmbDj8dTSc=",
+  "source_title": "e-District Delhi — FAPSN guidelines",
+  "verified_on": "2026-10-19"
+ }
+]
