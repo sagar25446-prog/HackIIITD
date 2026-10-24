@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; }
+body { @apply bg-ink-50 text-ink-900 antialiased; font-feature-settings: "tnum"; }
+.card { @apply bg-white rounded-2xl shadow-card border border-ink-100; }
+.btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 font-semibold transition active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none; }
+.btn-primary { @apply btn bg-teal-500 text-white hover:bg-teal-600; }
+.btn-ghost { @apply btn bg-white text-ink-700 border border-ink-100 hover:bg-ink-50; }
+.btn-amber { @apply btn bg-amber-500 text-white hover:bg-amber-600; }
+.btn-coral { @apply btn bg-coral-500 text-white hover:bg-coral-600; }
+.chip { @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold; }
+.input { @apply w-full rounded-xl border border-ink-100 bg-white px-3.5 py-2.5 outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100; }
+.label { @apply text-xs font-semibold uppercase tracking-wide text-ink-500; }
+@keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(62,173,167,.45); } 100% { box-shadow: 0 0 0 14px rgba(62,173,167,0); } }
+.pulse-ring { animation: pulse-ring 1.4s ease-out infinite; }
+@keyframes fade-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.fade-up { animation: fade-up .35s ease-out both; }
