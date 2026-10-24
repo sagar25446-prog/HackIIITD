@@ -1,0 +1,15 @@
+{
+  "doc_bank_account": {"name": "Savings bank account (Aadhaar-seeded)", "name_hi": "बैंक खाता", "where": "Any bank or post office; PM Jan Dhan accounts have zero balance", "days": 1},
+  "doc_income_certificate": {"name": "Income certificate", "name_hi": "आय प्रमाण पत्र", "where": "e-District Delhi (edistrict.delhigovt.nic.in) or your state e-District portal", "days": 21},
+  "doc_caste_certificate": {"name": "Caste certificate (SC/ST/OBC)", "name_hi": "जाति प्रमाण पत्र", "where": "e-District portal of your state", "days": 21},
+  "doc_domicile_certificate": {"name": "Domicile / residence proof", "name_hi": "निवास प्रमाण पत्र", "where": "e-District portal; voter ID or ration card often accepted", "days": 21},
+  "doc_udid": {"name": "UDID disability card", "name_hi": "यूडीआईडी कार्ड", "where": "swavlambancard.gov.in", "days": 30},
+  "doc_death_certificate": {"name": "Death certificate", "name_hi": "मृत्यु प्रमाण पत्र", "where": "Municipal corporation / Civil Registration System (crsorgi.gov.in)", "days": 7},
+  "doc_legal_heir_certificate": {"name": "Legal heir / succession certificate", "name_hi": "उत्तराधिकार प्रमाण पत्र", "where": "Revenue department (SDM office) via e-District", "days": 30},
+  "doc_birth_certificate": {"name": "Birth certificate", "name_hi": "जन्म प्रमाण पत्र", "where": "Civil Registration System (crsorgi.gov.in)", "days": 7},
+  "doc_bpl_card": {"name": "BPL / ration card (or deprivation declaration)", "name_hi": "बीपीएल / राशन कार्ड", "where": "Food & Supplies department of your state", "days": 30},
+  "doc_land_record": {"name": "Land record in your name", "name_hi": "भूमि अभिलेख", "where": "State land records (Bhulekh) portal", "days": 7},
+  "doc_marksheet": {"name": "Class 10/12 marksheet", "name_hi": "अंकपत्र", "where": "DigiLocker or your board", "days": 1},
+  "doc_age_proof": {"name": "Age proof", "name_hi": "आयु प्रमाण", "where": "Birth certificate, school certificate or Aadhaar", "days": 1},
+  "doc_udyam": {"name": "Udyam registration", "name_hi": "उद्यम पंजीकरण", "where": "udyamregistration.gov.in (free, Aadhaar-based)", "days": 1}
+}
