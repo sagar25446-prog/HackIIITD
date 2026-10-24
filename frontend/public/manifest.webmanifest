@@ -1,0 +1,12 @@
+{
+  "name": "JAAGRUK — your entitlements, found",
+  "short_name": "JAAGRUK",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F7F7",
+  "theme_color": "#3EADA7",
+  "lang": "hi-IN",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
