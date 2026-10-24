@@ -363,4 +363,3 @@ else:
     def root() -> JSONResponse:
         return JSONResponse({"jaagruk": "API running. Build the frontend (cd frontend && npm run build) "
                                         "or run the dev server on :5173."})
-
