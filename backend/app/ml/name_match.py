@@ -233,4 +233,3 @@ def pairwise_examples() -> list[dict]:
           ("Ramesh Kumar Sharma", "रमेश कुमार शर्मा"), ("Ramesh Kumar Sharma", "Suresh Kumar Sharma"),
           ("Mohammad Imran Khan", "Md. Imran Khan"), ("Sunita Devi", "Smt Sunita")]
     return [{"a": a, "b": b, **match_probability(a, b)} for a, b in ex]
-
