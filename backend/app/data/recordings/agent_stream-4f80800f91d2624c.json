@@ -1,0 +1,142 @@
+{
+ "api": "agent_stream",
+ "target": "https://merchant.licindia.in/LICEPS/portlets/visitor/unclaimedPolicyDues/UnclaimedPolicyDuesController.jpf",
+ "recorded_at": "2026-10-22 23:34",
+ "response": [
+  {
+   "type": "STARTED",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "t": 1.31
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 16.34
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 31.31
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 46.35
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 61.31
+  },
+  {
+   "type": "STREAMING_URL",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "streaming_url": "https://ip-54-215-226-122.tetra-data.production.tinyfish.io/tf-453dec43-71be-4d1d-bb41-9e312a04baf1/stream/0",
+   "t": 71.74
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "purpose": "Navigate to LIC unclaimed policy dues search form",
+   "t": 81.36
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "purpose": "Fill policyholder name",
+   "t": 92.39
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 107.37
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "purpose": "Fill date of birth",
+   "t": 108.91
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "purpose": "Submit the search form",
+   "t": 122.77
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 137.78
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "purpose": "Check form elements on the page",
+   "t": 146.08
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "purpose": "Navigate to LIC main website as fallback",
+   "t": 155.34
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 170.34
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "purpose": "Click Customer Services to find unclaimed policy dues link",
+   "t": 183.89
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "purpose": "Click link to unclaimed policy amounts search page",
+   "t": 189.08
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "purpose": "Navigate to unclaimed policy amounts search page",
+   "t": 195.12
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 210.09
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "purpose": "Try alternative unclaimed amounts search page",
+   "t": 215.4
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "purpose": "Check form fields on unclaimed amounts page",
+   "t": 228.02
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 243.02
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 258.02
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "purpose": "Report page unavailable error",
+   "t": 262.2
+  },
+  {
+   "type": "COMPLETE",
+   "run_id": "d60fc844-808f-485e-971f-40dc4308d23b",
+   "status": "COMPLETED",
+   "result": {
+    "found": false,
+    "amount_inr": 0,
+    "holder_name": "",
+    "message": "The specified URL (https://merchant.licindia.in/LICEPS/portlets/visitor/unclaimedPolicyDues/UnclaimedPolicyDuesController.jpf) returned an ERR_EMPTY_RESPONSE error, meaning the website is not working and the search form is not accessible. Unable to complete the unclaimed policy dues search."
+   },
+   "t": 265.48
+  }
+ ]
+}

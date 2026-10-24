@@ -1,0 +1,22 @@
+{
+ "api": "fetch",
+ "target": "https://dly.delhi.gov.in/",
+ "recorded_at": "2026-10-19 01:10",
+ "response": {
+  "results": [
+   {
+    "url": "https://dly.delhi.gov.in/",
+    "final_url": "https://dly.delhi.gov.in/",
+    "title": "Delhi Lakshmi Yojana | Delhi",
+    "description": null,
+    "language": null,
+    "text": "Neither the applicant nor any family member should be employed as a regular or contractual employee in the State Government, Government of India, any Public Sector Undertaking, Board, Local Body, Government Organisation, or is receiving widow pension, disability pension or any other pension, financial assistance or similar.\n\nआवेदक या परिवार का कोई भी सदस्य राज्य सरकार, भारत सरकार, किसी सार्वजनिक क्षेत्र के उपक्रम, बोर्ड, स्थानीय निकाय या सरकारी संगठन में नियमित या अनुबंध-आधारित कर्मचारी के तौर पर कार्यरत नहीं होना चाहिए; और न ही उन्हें विधवा पेंशन, विकलांगता पेंशन या कोई अन्य पेंशन, वित्तीय सहायता या इसी तरह की कोई अन्य मदद मिल रही होनी चाहिए।",
+    "author": null,
+    "published_date": null,
+    "latency_ms": 2221.0692069784272,
+    "format": "markdown"
+   }
+  ],
+  "errors": []
+ }
+}

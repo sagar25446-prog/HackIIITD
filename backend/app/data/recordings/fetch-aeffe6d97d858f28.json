@@ -1,0 +1,22 @@
+{
+ "api": "fetch",
+ "target": "https://ssc.gov.in/home/notice-board",
+ "recorded_at": "2026-10-19 01:10",
+ "response": {
+  "results": [
+   {
+    "url": "https://ssc.gov.in/home/notice-board",
+    "final_url": "https://ssc.gov.in/home/notice-board",
+    "title": "Notice Boards | Staff Selection Commission | GoI",
+    "description": "This is Official Website of Staff Selection Commission.",
+    "language": "en",
+    "text": "## Notice Board\n\nNew Oct122026\n\nConstable (GD) in Central Armed Police Forces (CAPFs) and SSF, and Rifleman (GD) in Assam Rifles Examination, 2026– Shortlisting of candidates to appear in Physical Efficiency Test (PET)/Physical Standard Test (PST)\n\n(1.20 MB)\n\nOct92026\n\nPhase-XIV/2026/Selection Posts Examination - Uploading of Candidate’s Response Sheet(s) along with Tentative Answer Keys and inviting challenges thereon\n\n(394.28 KB)\n\nOct82026\n\nTentative Vacancies of Junior Engineer Examination, 2026.\n\n(61.28 KB)\n\nOct72026\n\nStenographer Grade 'C' and 'D' Examination, 2025: Uploading Marks of CBE and Skill Test\n\n(427.29 KB)\n\nOct72026\n\nCombined Higher Secondary (10+2) Level Examination, 2025: Declaration of Final Result\n\n(647.70 KB)\n\nOct72026\n\nMulti Tasking (Non-Technical) Staff, and Havaldar (CBIC and CBN) Examination, 2025: Declaration of additional result of Computer Based Examination to shortlist candidates for PET/ PST for the post of Havaldar.\n\n(284.75 KB)\n\nOct62026\n\nNOTIFICATION FOR RECRUITMENT OF ENROLLED PERSONS IN THE INDIAN COAST GUARD THROUGH\nCOAST GUARD ENROLLED PERSONS TEST (CGEPT) –BATCHES 01/2027 and 02/2027\n\n(905.46 KB)\n\nOct12026\n\nImportant Notice - Schedule of Examinations\n\n(477.60 KB)\n\nOct12026\n\nCancellation Notice for the post of 'Junior Technical Officer', Post Code KK13526, advertised under Selection Posts Examination, Phase-XIV/2026\n\n(580.31 KB)\n\nOct12026\n\nCancellation Notice for the post of 'Agriculture Assistant', Post Code KK11426, advertised under Selection Posts Examination, Phase-XIV/2026\n\n(579.37 KB)\n\nStaff Selection\n\nCommission\n\n* **Contact Us**\n* Block No-12, CGO Complex, Lodhi Road New Delhi - 110003\n\n© 2026 SSC. All Rights Reserved.  Total Visitor Count: 531877470Last updated on Oct 14, 2026",
+    "author": null,
+    "published_date": null,
+    "latency_ms": 8955.351569020422,
+    "format": "markdown"
+   }
+  ],
+  "errors": []
+ }
+}

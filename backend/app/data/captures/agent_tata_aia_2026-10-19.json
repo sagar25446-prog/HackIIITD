@@ -1,0 +1,34 @@
+{
+ "api": "agent",
+ "captured_via": "TinyFish Agent run-sse (real run 2854a552-6713-4ba3-a46c-f40508b71526)",
+ "captured_at": "2026-10-19 12:53",
+ "source_id": "tata_aia_unclaimed",
+ "url": "https://myinsurance.tataaia.com/portfolio/policy/unclaimed-funds/authenticate",
+ "note": "Events reconstructed from the run record: start/finish times, streaming URL, status and result are real; per-step PROGRESS messages were not captured, so none are shown.",
+ "response": [
+  {
+   "type": "STARTED",
+   "run_id": "2854a552-6713-4ba3-a46c-f40508b71526",
+   "t": 0
+  },
+  {
+   "type": "STREAMING_URL",
+   "run_id": "2854a552-6713-4ba3-a46c-f40508b71526",
+   "streaming_url": "https://ip-54-153-45-72.tetra-data.production.tinyfish.io/tf-f9ae6364-7a80-4d43-8c3c-c6e92660cb5a/stream/0",
+   "t": 3
+  },
+  {
+   "type": "COMPLETE",
+   "run_id": "2854a552-6713-4ba3-a46c-f40508b71526",
+   "status": "COMPLETED",
+   "t": 50,
+   "steps": 5,
+   "result": {
+    "found": false,
+    "message": "No unclaimed funds applicable for entered details.",
+    "amount_inr": 0,
+    "holder_name": ""
+   }
+  }
+ ]
+}
