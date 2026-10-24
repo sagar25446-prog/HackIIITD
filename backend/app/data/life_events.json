@@ -1,0 +1,176 @@
+[
+ {
+  "id": "death_in_family",
+  "label": "Death in the family",
+  "label_hi": "परिवार में मृत्यु",
+  "icon": "CalendarHeart",
+  "intro": "We are sorry for your loss. These are the claims and support your family may be entitled to. Nothing here is filed without your approval.",
+  "schemes": [
+   "delhi_widow_pension",
+   "ignwps",
+   "nfbs",
+   "delhi_lakshmi_yojana"
+  ],
+  "claims": [
+   {
+    "id": "wapsi",
+    "title": "Search for the deceased's unclaimed money",
+    "detail": "Bank deposits, insurance, shares, dividends and mutual funds across official portals.",
+    "action": "wapsi",
+    "title_hi": "दिवंगत सदस्य का लावारिस पैसा खोजें",
+    "detail_hi": "बैंक जमा, बीमा, शेयर, डिविडेंड और म्यूचुअल फंड — सरकारी पोर्टलों पर।"
+   },
+   {
+    "id": "pmjjby_claim",
+    "title": "PMJJBY life cover claim — ₹2,00,000",
+    "detail": "If the deceased was enrolled (₹436/year auto-debit from their bank account), the nominee can claim ₹2 lakh at that bank branch.",
+    "check": "Ask the bank for PMJJBY enrolment on the deceased's account",
+    "value": 200000,
+    "source_url": "https://financialservices.gov.in/pmjjby",
+    "title_hi": "PMJJBY जीवन बीमा दावा — ₹2,00,000",
+    "detail_hi": "अगर दिवंगत सदस्य नामांकित थे (बैंक खाते से ₹436/वर्ष कटता था), तो नॉमिनी उस बैंक शाखा में ₹2 लाख का दावा कर सकता है।",
+    "check_hi": "बैंक से दिवंगत के खाते पर PMJJBY नामांकन पूछें"
+   },
+   {
+    "id": "pmsby_claim",
+    "title": "PMSBY accident cover claim — ₹2,00,000",
+    "detail": "Only if the death was accidental and the deceased was enrolled (₹20/year).",
+    "check": "Check the deceased's bank statement for the PMSBY premium",
+    "value": 200000,
+    "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=1944366",
+    "title_hi": "PMSBY दुर्घटना बीमा दावा — ₹2,00,000",
+    "detail_hi": "केवल तब, जब मृत्यु दुर्घटना से हुई हो और दिवंगत नामांकित थे (₹20/वर्ष)।",
+    "check_hi": "दिवंगत के बैंक स्टेटमेंट में PMSBY प्रीमियम देखें"
+   },
+   {
+    "id": "epf_claim",
+    "title": "EPF balance, pension and EDLI insurance",
+    "detail": "If the deceased was an EPF member, the family can claim the PF balance, family pension and EDLI insurance.",
+    "check": "Find the UAN on salary slips; claim on the EPFO portal",
+    "source_url": "https://www.epfindia.gov.in",
+    "title_hi": "EPF राशि, पेंशन और EDLI बीमा",
+    "detail_hi": "अगर दिवंगत EPF सदस्य थे, तो परिवार PF राशि, पारिवारिक पेंशन और EDLI बीमा का दावा कर सकता है।",
+    "check_hi": "वेतन पर्ची पर UAN देखें; EPFO पोर्टल पर दावा करें"
+   }
+  ],
+  "documents": [
+   "doc_death_certificate",
+   "doc_legal_heir_certificate",
+   "doc_bank_account",
+   "doc_income_certificate"
+  ],
+  "intro_hi": "आपके नुकसान के लिए हमें खेद है। ये वे दावे और सहायता हैं जिनके आपका परिवार हकदार हो सकता है। आपकी अनुमति के बिना कुछ भी दाखिल नहीं किया जाता।"
+ },
+ {
+  "id": "baby_born",
+  "label": "A baby was born",
+  "label_hi": "बच्चे का जन्म",
+  "icon": "Baby",
+  "intro": "Congratulations! Register the birth first — every benefit below needs the birth certificate.",
+  "schemes": [
+   "pmmvy",
+   "ssy"
+  ],
+  "claims": [],
+  "documents": [
+   "doc_birth_certificate",
+   "doc_bank_account"
+  ],
+  "intro_hi": "बधाई हो! सबसे पहले जन्म का पंजीकरण कराएँ — नीचे के हर लाभ के लिए जन्म प्रमाण पत्र चाहिए।"
+ },
+ {
+  "id": "passed_class_12",
+  "label": "Passed Class 12",
+  "label_hi": "कक्षा 12 पास",
+  "icon": "GraduationCap",
+  "intro": "Scholarships open only for a few weeks each year. Here is what you qualify for and when.",
+  "schemes": [
+   "csss",
+   "aicte_pragati",
+   "post_matric_sc",
+   "post_matric_st",
+   "pm_vidyalaxmi"
+  ],
+  "exams": [
+   "ssc_chsl"
+  ],
+  "claims": [],
+  "documents": [
+   "doc_income_certificate",
+   "doc_caste_certificate",
+   "doc_marksheet"
+  ],
+  "intro_hi": "छात्रवृत्तियाँ हर साल कुछ ही हफ़्तों के लिए खुलती हैं। आप किसके पात्र हैं और कब — यहाँ देखें।"
+ },
+ {
+  "id": "lost_job",
+  "label": "Lost a job",
+  "label_hi": "नौकरी छूट गई",
+  "icon": "Briefcase",
+  "intro": "Support to bridge the gap and get back to work.",
+  "schemes": [
+   "eshram",
+   "pm_internship",
+   "pmegp",
+   "apy"
+  ],
+  "claims": [
+   {
+    "id": "epf_withdraw",
+    "title": "Withdraw or transfer your EPF",
+    "detail": "Part of the EPF balance can be withdrawn after a month of unemployment; transfer it when you join a new employer.",
+    "check": "Use your UAN on the EPFO member portal",
+    "source_url": "https://www.epfindia.gov.in",
+    "title_hi": "अपना EPF निकालें या ट्रांसफ़र करें",
+    "detail_hi": "बेरोज़गारी के एक महीने बाद EPF का कुछ हिस्सा निकाला जा सकता है; नई नौकरी में इसे ट्रांसफ़र करें।",
+    "check_hi": "EPFO सदस्य पोर्टल पर अपने UAN से"
+   }
+  ],
+  "documents": [
+   "doc_bank_account"
+  ],
+  "intro_hi": "बीच के समय में सहारा और फिर से काम पर लौटने में मदद।"
+ },
+ {
+  "id": "turned_60",
+  "label": "Turned 60",
+  "label_hi": "60 वर्ष के हुए",
+  "icon": "HeartHandshake",
+  "intro": "Pensions and safe savings for senior citizens.",
+  "schemes": [
+   "delhi_old_age_pension",
+   "ignoaps",
+   "scss",
+   "ab_vay_vandana"
+  ],
+  "claims": [],
+  "documents": [
+   "doc_age_proof",
+   "doc_income_certificate",
+   "doc_domicile_certificate",
+   "doc_bank_account"
+  ],
+  "intro_hi": "वरिष्ठ नागरिकों के लिए पेंशन और सुरक्षित बचत।"
+ },
+ {
+  "id": "starting_business",
+  "label": "Starting a business",
+  "label_hi": "व्यवसाय शुरू करना",
+  "icon": "Store",
+  "intro": "Loans and subsidies for your first enterprise.",
+  "schemes": [
+   "pmmy",
+   "pmegp",
+   "stand_up_india",
+   "pm_vishwakarma",
+   "pm_svanidhi"
+  ],
+  "claims": [],
+  "documents": [
+   "doc_udyam",
+   "doc_bank_account",
+   "doc_caste_certificate"
+  ],
+  "intro_hi": "आपके पहले व्यवसाय के लिए ऋण और सब्सिडी।"
+ }
+]

@@ -1,0 +1,82 @@
+{
+ "api": "search",
+ "target": "PM Viksit Bharat Rozgar Yojana fake PIB fact check",
+ "recorded_at": "2026-10-23 16:00",
+ "response": {
+  "query": "PM Viksit Bharat Rozgar Yojana fake PIB fact check",
+  "results": [
+   {
+    "position": 1,
+    "site_name": "www.pib.gov.in",
+    "snippet": "For authentic information and services under the scheme, employers can visit Pradhan Mantri Viksit Bharat Rozgar Yojana portal (https://pmvbry.",
+    "title": "Ministry of Labour & Employment Cautions Citizens ...",
+    "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2163332",
+    "date": "Sep 3, 2025",
+    "publisher": null,
+    "authors": null,
+    "venue": null,
+    "year": null,
+    "cited_by_count": null,
+    "pdf_url": null
+   },
+   {
+    "position": 2,
+    "site_name": "www.pib.gov.in",
+    "snippet": "PM Shri Narendra Modi. श्री नरेन्‍द्र मोदी. भारत के ... PIB Fact Check. PIB Factcheck X Profile. PIB on Instagram. Content from ...",
+    "title": "होम पेज:पत्र सूचना कार्यालय",
+    "url": "https://www.pib.gov.in/",
+    "date": null,
+    "publisher": null,
+    "authors": null,
+    "venue": null,
+    "year": null,
+    "cited_by_count": null,
+    "pdf_url": null
+   },
+   {
+    "position": 3,
+    "site_name": "www.pib.gov.in",
+    "snippet": "Enactment of Viksit Bharat - Guarantee for Rozgar and Ajeevika Mission (Gramin) - VB-G RAM G Act, Ensures Up to 125 Days of Guaranteed ...",
+    "title": "Department of Rural Development: Year Ender 2025",
+    "url": "https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2210378",
+    "date": "Jan 1, 2026",
+    "publisher": null,
+    "authors": null,
+    "venue": null,
+    "year": null,
+    "cited_by_count": null,
+    "pdf_url": null
+   },
+   {
+    "position": 4,
+    "site_name": "static.pib.gov.in",
+    "snippet": "Viksit Bharat-Guarantee for Rozgar & Ajeevika Mission (Gramin) funds, ... Ayushman Bharat Pradhan Mantri-Jan Arogya Yojana (AB PM-JAY) serves as.",
+    "title": "Contents",
+    "url": "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2026/oct/doc_10079_20261004_09361901.pdf",
+    "date": "Oct 3, 2026",
+    "publisher": null,
+    "authors": null,
+    "venue": null,
+    "year": null,
+    "cited_by_count": null,
+    "pdf_url": null
+   },
+   {
+    "position": 5,
+    "site_name": "newindiasamachar.pib.gov.in",
+    "snippet": "PIB Fact Check investigated these videos to know the truth, in which these fake videos were exposed. Know the reality of these false claims ...",
+    "title": "OPRATION SINDOOR - New India Samachar",
+    "url": "https://newindiasamachar.pib.gov.in/WriteReadData/Magazine//2025/May/M202505161.pdf",
+    "date": "May 16, 2025",
+    "publisher": null,
+    "authors": null,
+    "venue": null,
+    "year": null,
+    "cited_by_count": null,
+    "pdf_url": null
+   }
+  ],
+  "total_results": 5,
+  "page": 0
+ }
+}

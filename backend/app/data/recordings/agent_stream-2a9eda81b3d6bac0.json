@@ -1,0 +1,60 @@
+{
+ "api": "agent_stream",
+ "target": "https://myinsurance.tataaia.com/portfolio/policy/unclaimed-funds/authenticate",
+ "recorded_at": "2026-10-22 23:32",
+ "response": [
+  {
+   "type": "STARTED",
+   "run_id": "8ff5f606-f40d-4bce-9635-a288478d448b",
+   "t": 1.35
+  },
+  {
+   "type": "STREAMING_URL",
+   "run_id": "8ff5f606-f40d-4bce-9635-a288478d448b",
+   "streaming_url": "https://ip-54-183-228-96.tetra-data.production.tinyfish.io/tf-b100cca2-953a-40b0-8a4a-1b68660a22f5/stream/0",
+   "t": 3.29
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "8ff5f606-f40d-4bce-9635-a288478d448b",
+   "purpose": "Navigate to Tata AIA unclaimed funds search page",
+   "t": 4.11
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "8ff5f606-f40d-4bce-9635-a288478d448b",
+   "purpose": "Enter policy holder name",
+   "t": 13.16
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "8ff5f606-f40d-4bce-9635-a288478d448b",
+   "purpose": "Enter date of birth",
+   "t": 18.29
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "8ff5f606-f40d-4bce-9635-a288478d448b",
+   "purpose": "Click Proceed to submit the form",
+   "t": 21.45
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "8ff5f606-f40d-4bce-9635-a288478d448b",
+   "purpose": "Return result of unclaimed funds search",
+   "t": 27.39
+  },
+  {
+   "type": "COMPLETE",
+   "run_id": "8ff5f606-f40d-4bce-9635-a288478d448b",
+   "status": "COMPLETED",
+   "result": {
+    "found": false,
+    "amount_inr": 0,
+    "holder_name": "",
+    "message": "No unclaimed funds applicable for entered details"
+   },
+   "t": 28.77
+  }
+ ]
+}

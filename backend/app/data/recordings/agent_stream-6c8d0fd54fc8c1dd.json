@@ -1,0 +1,311 @@
+{
+ "api": "agent_stream",
+ "target": "https://merchant.licindia.in/LICEPS/portlets/visitor/unclaimedPolicyDues/UnclaimedPolicyDuesController.jpf",
+ "recorded_at": "2026-10-22 23:36",
+ "response": [
+  {
+   "type": "STARTED",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "t": 1.31
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 16.29
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 31.3
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 46.28
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 61.31
+  },
+  {
+   "type": "STREAMING_URL",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "streaming_url": "https://ip-204-236-178-137.tetra-data.production.tinyfish.io/tf-17be786f-3223-40f4-aabf-50427ca3bd48/stream/0",
+   "t": 72.47
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Navigate to LIC Unclaimed Policy Dues search form",
+   "t": 74.46
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Wait before retrying the URL",
+   "t": 79.97
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Retry navigating to LIC Unclaimed Policy Dues form",
+   "t": 85.81
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Retry LIC Unclaimed Policy Dues URL",
+   "t": 95.2
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Find LIC unclaimed policy dues URL",
+   "t": 100.75
+  },
+  {
+   "type": "TF_API_RESULT",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "result": [
+    {
+     "position": 1,
+     "site_name": "merchant.licindia.in",
+     "snippet": "To know whether any amount under your LIC policy is lying unclaimed with us, please key-in any two following details: LIC Policy Number, : Policy-holder's Name ...",
+     "title": "Customer's Unclaimed Policy Dues Details",
+     "url": "https://merchant.licindia.in/LICEPS/portlets/visitor/unclaimedPolicyDues/UnclaimedPolicyDuesController.jpf"
+    },
+    {
+     "date": "Feb 18, 2026",
+     "position": 2,
+     "site_name": "licindia.in",
+     "snippet": "Policy for protection of interests of policyholders ... Content on this website is published and managed by Life Insurance Corporation of India.",
+     "title": "Unclaimed Amounts of Policyholders",
+     "url": "https://licindia.in/unclaimed-amounts-of-policyholders3"
+    },
+    {
+     "position": 3,
+     "site_name": "licindia.in",
+     "snippet": "Explore LIC Unclaimed Dividend Details and reclaim your financial assets. Understand the process to retrieve unclaimed dividends and secure your financial ...",
+     "title": "Unclaimed Dividend Detail",
+     "url": "https://licindia.in/unclaimed-dividend-detail"
+    },
+    {
+     "date": "3 years ago",
+     "position": 4,
+     "site_name": "www.instagram.com",
+     "snippet": "​Visit the LIC portal's \"Unclaimed Policyholders Dues\" section to check if any old maturity/claim amount is pending for your family. ​Insurance ...",
+     "title": "How to Claim *Unclaimed* Amount with LIC Policy ? ...",
+     "url": "https://www.instagram.com/reel/CxiQF-hN16_/?hl=en"
+    },
+    {
+     "date": "1 year ago",
+     "position": 5,
+     "site_name": "www.facebook.com",
+     "snippet": "Navigate to Customer Services Click on the \"Customer Service\" section and select the \"Unclaimed Amounts of Policyholders\" option. 3. Provide ...",
+     "title": "How to Check and Claim Unclaimed Maturity Amounts with ...",
+     "url": "https://www.facebook.com/thevoiceofsikkim/posts/how-to-check-and-claim-unclaimed-maturity-amounts-with-lic-a-step-by-step-guidel/996021159234614/"
+    },
+    {
+     "date": "Aug 11, 2026",
+     "position": 6,
+     "site_name": "licindia.in",
+     "snippet": "Buy life insurance plans and policies from LIC of india avail tax benefits with multiple cover options ... For LIC Associates to check Performance ...",
+     "title": "Home | Life Insurance Corporation of India | Official website of ...",
+     "url": "https://licindia.in/"
+    },
+    {
+     "position": 7,
+     "site_name": "www.policybazaar.com",
+     "snippet": "Ans: You can check unclaimed money in LIC by visiting the LIC website and selecting the \"Unclaimed Amounts of Policyholders\" section under \"Customer Services\".",
+     "title": "How to Check & Claim LIC Unclaimed Amount?",
+     "url": "https://www.policybazaar.com/lic-of-india/lic-unclaimed-deposits/"
+    },
+    {
+     "position": 8,
+     "site_name": "licindia.in",
+     "snippet": "Access your LIC policy status effortlessly online. Get real-time updates on premium payments, maturity dates, and more. Discover the convenience of tracking ...",
+     "title": "Check Your LIC Policy Status | Official website of Life ...",
+     "url": "https://licindia.in/policy-status"
+    },
+    {
+     "position": 9,
+     "site_name": "licindia.in",
+     "snippet": "Explore LIC FAQs for comprehensive answers to your frequently asked questions. Get information and clarity on various aspects of LIC policies and services.",
+     "title": "Answers to Your Frequently Asked Questions",
+     "url": "https://licindia.in/faqs"
+    },
+    {
+     "position": 10,
+     "site_name": "expertvuw.in",
+     "snippet": "Search on licindia.in under unclaimed amounts of policyholders, using the policyholder's name and date of birth. If an amount shows, the claim is made through ...",
+     "title": "LIC Unclaimed Amount Check: What to Do Next",
+     "url": "https://expertvuw.in/lic-unclaimed-amount-check-guide/"
+    }
+   ],
+   "t": 100.79
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Visit LIC unclaimed policy dues form with more wait time",
+   "t": 103.19
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Wait before retrying the URL",
+   "t": 107.99
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Retry LIC unclaimed policy dues form",
+   "t": 115.42
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Visit LIC unclaimed amounts page from licindia.in",
+   "t": 123.88
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 138.86
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Check unclaimed policy dues page content",
+   "t": 139.71
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Try alternative unclaimed amounts page",
+   "t": 144.77
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Cancel the external link popup",
+   "t": 147.56
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Click OK to proceed to external link",
+   "t": 150.41
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Click OK to go to external merchant portal",
+   "t": 154.09
+  },
+  {
+   "type": "STREAMING_URL",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "streaming_url": "https://ip-204-236-178-137.tetra-data.production.tinyfish.io/tf-17be786f-3223-40f4-aabf-50427ca3bd48/stream/1",
+   "t": 162.7
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Go directly to merchant portal unclaimed dues form",
+   "t": 164.44
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Visit unclaimed amounts page from licindia.in",
+   "t": 176.52
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 191.5
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Click unclaimed amounts link to see if form appears",
+   "t": 196.18
+  },
+  {
+   "type": "STREAMING_URL",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "streaming_url": "https://ip-204-236-178-137.tetra-data.production.tinyfish.io/tf-17be786f-3223-40f4-aabf-50427ca3bd48/stream/2",
+   "t": 197.44
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Check current page content",
+   "t": 200.68
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Visit LIC unclaimed amounts page",
+   "t": 203.66
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 218.7
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Click to see unclaimed amounts details or form",
+   "t": 228.36
+  },
+  {
+   "type": "STREAMING_URL",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "streaming_url": "https://ip-204-236-178-137.tetra-data.production.tinyfish.io/tf-17be786f-3223-40f4-aabf-50427ca3bd48/stream/3",
+   "t": 229.57
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Visit unclaimed amounts page to get form",
+   "t": 232.03
+  },
+  {
+   "type": "HEARTBEAT",
+   "t": 247.03
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Click unclaimed amounts link to access search form",
+   "t": 248.37
+  },
+  {
+   "type": "STREAMING_URL",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "streaming_url": "https://ip-204-236-178-137.tetra-data.production.tinyfish.io/tf-17be786f-3223-40f4-aabf-50427ca3bd48/stream/4",
+   "t": 249.53
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Access LIC unclaimed policy dues form",
+   "t": 251.07
+  },
+  {
+   "type": "PROGRESS",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "purpose": "Submit search form results",
+   "t": 263.77
+  },
+  {
+   "type": "COMPLETE",
+   "run_id": "7d311bcb-45ab-467e-b314-ed0b8b5e4ce5",
+   "status": "COMPLETED",
+   "result": {
+    "found": true,
+    "amount_inr": 0,
+    "holder_name": "not found",
+    "message": "Found 0 unclaimed amounts for the search criteria. The search form was successfully filled with policyholder name 'Jaagrukdemo Testcase', date of birth '12/03/1971', PAN 'not provided', and policy number 'not provided'. No unclaimed amount record was listed for this policyholder."
+   },
+   "t": 269.09
+  }
+ ]
+}

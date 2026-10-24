@@ -1,0 +1,43 @@
+[
+  {
+    "id": "sunita", "label": "Sunita, 52 — widow, Delhi", "story": "Her husband passed away last month. She needs to know what the family can claim.",
+    "profile": {
+      "name": "Sunita Devi", "language": "hi", "state": "Delhi", "years_in_state": 22, "age": 52, "gender": "female",
+      "marital_status": "widowed", "occupation": "homemaker", "education": 3, "annual_family_income": 90000,
+      "monthly_income": 0, "category": "general", "disability": false, "has_bank_account": true,
+      "income_tax_payer": false, "govt_employee_in_family": false, "epfo_esic_member": false,
+      "receives_other_pension": false, "bpl": false, "has_lpg_connection": true, "owns_cultivable_land": false,
+      "breadwinner_died_18_59": true, "girl_child_under_10": false, "pregnant_or_new_mother": false,
+      "doc_bank_account": true, "doc_death_certificate": true, "doc_domicile_certificate": true,
+      "life_events": ["death_in_family"],
+      "family": [
+        {"relation": "daughter", "name": "Riya", "age": 18, "gender": "female", "education": 4, "occupation": "student",
+         "in_full_time_education": true, "class12_percentile": 84, "aicte_technical_course": false},
+        {"relation": "late husband", "name": "Ramesh Kumar Sharma", "deceased": true, "dob": "12/03/1971"}
+      ]
+    }
+  },
+  {
+    "id": "riya", "label": "Riya, 20 — SC student, Delhi", "story": "Second-year B.Sc student looking for scholarships and government exams.",
+    "profile": {
+      "name": "Riya Kumari", "language": "en", "state": "Delhi", "years_in_state": 20, "age": 20, "gender": "female",
+      "marital_status": "single", "occupation": "student", "education": 4, "in_full_time_education": true,
+      "employed_full_time": false, "annual_family_income": 210000, "monthly_income": 0, "category": "sc",
+      "disability": false, "has_bank_account": true, "income_tax_payer": false, "govt_employee_in_family": false,
+      "epfo_esic_member": false, "class12_percentile": 76, "aicte_technical_course": false, "qhei_admission": false,
+      "doc_bank_account": true, "doc_caste_certificate": true, "doc_marksheet": true,
+      "life_events": ["passed_class_12"]
+    }
+  },
+  {
+    "id": "ramesh", "label": "Ramesh, 34 — tailor, Delhi", "story": "Runs a small tailoring shop and wants to grow it.",
+    "profile": {
+      "name": "Ramesh Kumar", "language": "hi", "state": "Delhi", "years_in_state": 12, "age": 34, "gender": "male",
+      "marital_status": "married", "occupation": "artisan", "trade": "tailor", "education": 3,
+      "annual_family_income": 180000, "monthly_income": 14000, "category": "obc", "disability": false,
+      "has_bank_account": true, "income_tax_payer": false, "govt_employee_in_family": false,
+      "epfo_esic_member": false, "new_enterprise": false, "girl_child_under_10": true,
+      "doc_bank_account": true, "life_events": ["starting_business"]
+    }
+  }
+]
