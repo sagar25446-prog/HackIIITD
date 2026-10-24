@@ -1,0 +1,13 @@
+# secrets
+.env
+# local environments and caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+frontend/node_modules/
+# runtime data (SQLite call log, snapshots, model metrics) — regenerated on start
+var/
+*.db
+# frontend/dist is committed on purpose so the app runs with Python only (no Node needed)
