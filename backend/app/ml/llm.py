@@ -3,6 +3,7 @@ ANTHROPIC_API_KEY it writes grounded answers and extracts rules from notices.
 
 Every call asks for JSON that matches a schema (structured outputs) and never sees citizen secrets.
 """
+
 from __future__ import annotations
 
 import json
@@ -24,12 +25,21 @@ def _get():
     if _client is None:
         import anthropic
 
-        _client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key, timeout=90.0, max_retries=2)
+        _client = anthropic.AsyncAnthropic(
+            api_key=settings.anthropic_api_key, timeout=90.0, max_retries=2
+        )
     return _client
 
 
-async def json_call(*, system: str, user: str, schema: dict, purpose: str, effort: str = "low",
-                    max_tokens: int = 4000) -> dict | None:
+async def json_call(
+    *,
+    system: str,
+    user: str,
+    schema: dict,
+    purpose: str,
+    effort: str = "low",
+    max_tokens: int = 4000,
+) -> dict | None:
     """One Claude call that must return JSON matching `schema`. Returns None when unavailable or refused."""
     if not available():
         return None
@@ -67,10 +77,21 @@ async def json_call(*, system: str, user: str, schema: dict, purpose: str, effor
 
 
 def _log(purpose: str, status: str, t0: float, detail: str) -> None:
-    db.log_call("llm", purpose=purpose, target=settings.anthropic_model, mode="live", status=status,
-                latency_ms=int((time.perf_counter() - t0) * 1000), detail=detail)
+    db.log_call(
+        "llm",
+        purpose=purpose,
+        target=settings.anthropic_model,
+        mode="live",
+        status=status,
+        latency_ms=int((time.perf_counter() - t0) * 1000),
+        detail=detail,
+    )
 
 
 def schema_obj(props: dict[str, Any], required: list[str] | None = None) -> dict:
-    return {"type": "object", "properties": props, "required": required or list(props),
-            "additionalProperties": False}
+    return {
+        "type": "object",
+        "properties": props,
+        "required": required or list(props),
+        "additionalProperties": False,
+    }

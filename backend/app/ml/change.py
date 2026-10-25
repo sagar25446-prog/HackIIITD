@@ -3,19 +3,32 @@
 Only changes that matter (deadline, new notification, eligibility, vacancy, result, admit card) become
 alerts; navigation tweaks, counters and other cosmetic edits are dropped.
 """
+
 from __future__ import annotations
 
 import hashlib
 import re
 
 KINDS: list[tuple[str, str, int]] = [
-    ("deadline", r"last date|extended|extension|closing date|re-?open|reopen|अंतिम तिथि|बढ़ाई|deadline", 3),
+    (
+        "deadline",
+        r"last date|extended|extension|closing date|re-?open|reopen|अंतिम तिथि|बढ़ाई|deadline",
+        3,
+    ),
     ("cancellation", r"cancel", 2),
     ("answer_key", r"answer key|challenges? thereon", 2),
-    ("new_notification", r"notification|notice of (the )?(exam|recruitment|adv)|advertisement|advt\.?|exam notification|"
-                         r"applications? (are )?invited|recruitment of|renewal applications|is currently open|"
-                         r"portal is open|अधिसूचना", 3),
-    ("eligibility", r"eligib|age limit|qualification|relaxation|neither the applicant|should not be|पात्रता", 3),
+    (
+        "new_notification",
+        r"notification|notice of (the )?(exam|recruitment|adv)|advertisement|advt\.?|exam notification|"
+        r"applications? (are )?invited|recruitment of|renewal applications|is currently open|"
+        r"portal is open|अधिसूचना",
+        3,
+    ),
+    (
+        "eligibility",
+        r"eligib|age limit|qualification|relaxation|neither the applicant|should not be|पात्रता",
+        3,
+    ),
     ("admit_card", r"admit card|e-?admit|call letter|प्रवेश पत्र", 2),
     ("result", r"result|marks|merit list|cut-?off|shortlist|परिणाम", 2),
     ("vacancy", r"vacanc|posts? of|\d+ posts", 2),
@@ -31,12 +44,19 @@ SCHEME_KEYS = {
     "delhi_lakshmi_yojana": r"lakshmi yojana|delhi lakshmi",
     "post_matric_sc": r"post[- ]matric.{0,40}\bsc\b|scheduled castes?",
 }
-COSMETIC = re.compile(r"visitor count|last updated|copyright|©|skip to main|toggle navigation|font size|^\W*$", re.I)
-DATE_RE = re.compile(r"\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s?\d{1,2}\s?,?\s?\d{4}\b"
-                     r"|\b\d{1,2}[-/]\d{1,2}[-/]\d{4}\b"
-                     r"|\b\d{1,2}\s(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s\d{4}\b", re.I)
-BOARD_DATE = re.compile(r"^(?:new\s*)?(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s?(\d{1,2})\s?,?\s?(\d{4})$",
-                        re.I)
+COSMETIC = re.compile(
+    r"visitor count|last updated|copyright|©|skip to main|toggle navigation|font size|^\W*$", re.I
+)
+DATE_RE = re.compile(
+    r"\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s?\d{1,2}\s?,?\s?\d{4}\b"
+    r"|\b\d{1,2}[-/]\d{1,2}[-/]\d{4}\b"
+    r"|\b\d{1,2}\s(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s\d{4}\b",
+    re.I,
+)
+BOARD_DATE = re.compile(
+    r"^(?:new\s*)?(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s?(\d{1,2})\s?,?\s?(\d{4})$",
+    re.I,
+)
 MONTHS = "jan feb mar apr may jun jul aug sep oct nov dec".split()
 SIZE = re.compile(r"^\(?[\d.]+\s?(kb|mb)\)?$", re.I)
 POSTED = re.compile(r"^\[(\d{4}-\d\d-\d\d)\]\s*")
@@ -55,7 +75,9 @@ def _items(text: str, start_after: str | None = None) -> list[str]:
         joined = " ".join(lines)
         m = BOARD_DATE.match(joined.strip())
         if m:  # e.g. "New Oct122026" on the SSC board: the date of the next notice
-            date = f"{m.group(3)}-{MONTHS.index(m.group(1).lower()[:3]) + 1:02d}-{int(m.group(2)):02d}"
+            date = (
+                f"{m.group(3)}-{MONTHS.index(m.group(1).lower()[:3]) + 1:02d}-{int(m.group(2)):02d}"
+            )
             continue
         if SIZE.match(joined):
             continue
@@ -75,7 +97,7 @@ def fingerprint(item: str) -> str:
 
 def classify(item: str) -> dict:
     posted = POSTED.match(item)
-    body = item[posted.end():] if posted else item
+    body = item[posted.end() :] if posted else item
     low = body.lower()
     kind, weight = "other", 0
     for name, pat, w in KINDS:
@@ -84,8 +106,15 @@ def classify(item: str) -> dict:
             break
     exams = [eid for eid, pat in EXAM_KEYS.items() if re.search(pat, low)]
     schemes = [sid for sid, pat in SCHEME_KEYS.items() if re.search(pat, low)]
-    return {"kind": kind, "importance": weight, "exam_ids": exams, "scheme_ids": schemes, "text": body[:500],
-            "posted": posted.group(1) if posted else None, "dates_in_text": DATE_RE.findall(body)[:3]}
+    return {
+        "kind": kind,
+        "importance": weight,
+        "exam_ids": exams,
+        "scheme_ids": schemes,
+        "text": body[:500],
+        "posted": posted.group(1) if posted else None,
+        "dates_in_text": DATE_RE.findall(body)[:3],
+    }
 
 
 def important_items(text: str, start_after: str | None = None) -> list[dict]:
