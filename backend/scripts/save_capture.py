@@ -7,6 +7,7 @@
 Captures are real responses only; recorder.import_captures() turns them into replayable recordings that the
 UI always labels as "replay".
 """
+
 from __future__ import annotations
 
 import argparse
@@ -39,16 +40,26 @@ def main() -> None:
     ap.add_argument("--source-id")
     a = ap.parse_args()
     resp = _load(a.raw)
-    out = {"api": a.api, "captured_via": "TinyFish MCP (real call)", "captured_at": time.strftime("%Y-%m-%d %H:%M"),
-           "response": resp}
+    out = {
+        "api": a.api,
+        "captured_via": "TinyFish MCP (real call)",
+        "captured_at": time.strftime("%Y-%m-%d %H:%M"),
+        "response": resp,
+    }
     if a.api == "fetch":
-        resp["results"] = [r for r in resp.get("results", []) if r.get("text")]  # keep only pages with text
+        resp["results"] = [
+            r for r in resp.get("results", []) if r.get("text")
+        ]  # keep only pages with text
         out["urls"] = [r["url"] for r in resp["results"]]
     elif a.api == "search":
         if not a.query:
             sys.exit("--query is required for search captures")
-        out.update(query=a.query, include_domains=a.include_domains, recency_minutes=a.recency,
-                   domain_type=a.domain_type)
+        out.update(
+            query=a.query,
+            include_domains=a.include_domains,
+            recency_minutes=a.recency,
+            domain_type=a.domain_type,
+        )
     else:
         out.update(url=a.url, source_id=a.source_id)
     CAP.mkdir(parents=True, exist_ok=True)
