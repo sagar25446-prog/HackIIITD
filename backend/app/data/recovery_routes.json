@@ -1,0 +1,183 @@
+{
+  "checked": "2026-10-25",
+  "common": [
+    {"id": "holder_details", "en": "The asset holder's name and date of birth exactly as on their records", "hi": "संपत्ति धारक का नाम और जन्म तिथि, जैसा उनके रिकॉर्ड में है"},
+    {"id": "claimant_kyc", "en": "The claimant's own identity and address proof (KYC)", "hi": "दावेदार का अपना पहचान और पते का प्रमाण (KYC)"},
+    {"id": "claimant_bank", "en": "The claimant's bank account details for the payment", "hi": "भुगतान के लिए दावेदार के बैंक खाते का विवरण"},
+    {"id": "record_reference", "en": "Any reference the search showed (policy number, UDRN, folio)", "hi": "खोज में दिखा कोई भी संदर्भ (पॉलिसी नंबर, UDRN, फोलियो)"}
+  ],
+  "deceased_holder": {"id": "holder_death_certificate", "en": "The holder's death certificate", "hi": "धारक का मृत्यु प्रमाणपत्र"},
+  "capacity": {
+    "holder": {"en": "You are the holder. The institution verifies your identity and bank details.", "hi": "आप स्वयं धारक हैं। संस्था आपकी पहचान और बैंक विवरण जाँचती है।"},
+    "nominee": {"en": "The institution checks its own records to confirm you are the registered nominee.", "hi": "संस्था अपने रिकॉर्ड से जाँचती है कि आप पंजीकृत नामित व्यक्ति हैं।"},
+    "legal_heir": {"en": "Without a nomination, the institution decides which succession evidence it accepts, often depending on the amount. Ask before obtaining any court or legal-heir document.", "hi": "नामांकन न होने पर संस्था तय करती है कि उत्तराधिकार का कौन-सा प्रमाण मान्य है — अक्सर राशि के अनुसार। कोई अदालती या उत्तराधिकार दस्तावेज़ बनवाने से पहले पूछें।"},
+    "joint_holder": {"en": "As a joint holder, the institution confirms the joint holding from its records.", "hi": "संयुक्त धारक के रूप में संस्था अपने रिकॉर्ड से संयुक्त धारिता की पुष्टि करती है।"},
+    "unknown": {"en": "Your claim capacity is not known yet. Find out whether a nomination or joint holding exists before preparing documents.", "hi": "आपकी दावा-क्षमता अभी तय नहीं है। दस्तावेज़ तैयार करने से पहले पता करें कि नामांकन या संयुक्त धारिता है या नहीं।"}
+  },
+  "routes": [
+    {
+      "id": "lic_unclaimed",
+      "name": "LIC unclaimed policy dues",
+      "name_hi": "LIC की लावारिस पॉलिसी राशि",
+      "asset": "insurance",
+      "role": "institution",
+      "responsible": {"en": "Life Insurance Corporation of India (the branch that services the policy)", "hi": "भारतीय जीवन बीमा निगम (पॉलिसी सेवा देने वाली शाखा)"},
+      "automated": "playbook",
+      "official_url": "https://merchant.licindia.in/LICEPS/portlets/visitor/unclaimedPolicyDues/UnclaimedPolicyDuesController.jpf",
+      "guidance_url": "https://licindia.in/",
+      "protected": null,
+      "before_open": [
+        {"en": "Any two of: policy number, policyholder name, date of birth, PAN (as observed on LIC's form on 19 Oct 2026)", "hi": "इनमें से कोई दो: पॉलिसी नंबर, पॉलिसीधारक का नाम, जन्म तिथि, पैन (19 अक्टूबर 2026 को LIC के फ़ॉर्म पर देखा गया)"}
+      ],
+      "after": {"en": "If a record is listed, contact the LIC branch that services the policy to start the claim.", "hi": "रिकॉर्ड दिखे तो दावा शुरू करने के लिए पॉलिसी की सेवा देने वाली LIC शाखा से संपर्क करें।"},
+      "requirements": [],
+      "coverage": "not_reviewed",
+      "coverage_note": {"en": "LIC's claim document list was not reviewed for this version. Confirm it with the branch.", "hi": "इस संस्करण में LIC के दावे की दस्तावेज़ सूची की समीक्षा नहीं हुई। शाखा से पुष्टि करें।"},
+      "no_match_phrases": ["records with respect to entered data not found"],
+      "sources": [{"title": "LIC unclaimed policy dues search (form observed live)", "url": "https://merchant.licindia.in/LICEPS/portlets/visitor/unclaimedPolicyDues/UnclaimedPolicyDuesController.jpf"}]
+    },
+    {
+      "id": "tata_aia_unclaimed",
+      "name": "Tata AIA unclaimed funds",
+      "name_hi": "टाटा AIA लावारिस राशि",
+      "asset": "insurance",
+      "role": "institution",
+      "responsible": {"en": "Tata AIA Life Insurance", "hi": "टाटा AIA लाइफ़ इंश्योरेंस"},
+      "automated": "agent",
+      "official_url": "https://myinsurance.tataaia.com/portfolio/policy/unclaimed-funds/authenticate",
+      "guidance_url": "https://www.tataaia.com/customer-service/unclaimed-insurance-fund.html",
+      "protected": null,
+      "before_open": [
+        {"en": "Choose Individual Policy or Group Policy", "hi": "व्यक्तिगत पॉलिसी या समूह पॉलिसी चुनें"},
+        {"en": "The policyholder's name and date of birth", "hi": "पॉलिसीधारक का नाम और जन्म तिथि"}
+      ],
+      "after": {"en": "To claim, the policy's bank (NEFT) details must be updated — online, at a branch, by email or through the contact centre.", "hi": "दावे के लिए पॉलिसी में बैंक (NEFT) विवरण अपडेट होना चाहिए — ऑनलाइन, शाखा में, ईमेल से या कॉल सेंटर से।"},
+      "requirements": [
+        {"id": "tata_bank_proof", "en": "Self-attested bank proof", "hi": "स्व-सत्यापित बैंक प्रमाण", "applies": "all"},
+        {"id": "tata_kyc", "en": "Self-attested KYC document (ID and address proof)", "hi": "स्व-सत्यापित KYC दस्तावेज़ (पहचान और पता प्रमाण)", "applies": "all"},
+        {"id": "tata_fatca", "en": "For NRIs: FATCA form, foreign address proof and TIN proof matching the FATCA form", "hi": "NRI के लिए: FATCA फ़ॉर्म, विदेशी पते का प्रमाण और FATCA से मेल खाता TIN प्रमाण", "applies": "nri"}
+      ],
+      "coverage": "reviewed",
+      "coverage_note": {"en": "Reviewed from Tata AIA's unclaimed-fund page on 25 Oct 2026. A beneficiary claiming for someone who died must be the rightful beneficiary; Tata AIA confirms what else it needs.", "hi": "25 अक्टूबर 2026 को टाटा AIA के पेज से समीक्षा। दिवंगत व्यक्ति के लिए दावा करने वाला सही लाभार्थी होना चाहिए; टाटा AIA बाकी ज़रूरतें बताती है।"},
+      "no_match_phrases": ["no unclaimed fund"],
+      "sources": [{"title": "Tata AIA: Unclaimed insurance fund", "url": "https://www.tataaia.com/customer-service/unclaimed-insurance-fund.html"}]
+    },
+    {
+      "id": "sbi_life_unclaimed",
+      "name": "SBI Life unclaimed amounts",
+      "name_hi": "SBI लाइफ़ लावारिस राशि",
+      "asset": "insurance",
+      "role": "institution",
+      "responsible": {"en": "SBI Life Insurance", "hi": "SBI लाइफ़ इंश्योरेंस"},
+      "automated": null,
+      "official_url": "https://www.sbilife.co.in/customer-services/services/unclaimed-amount-disclosure",
+      "guidance_url": "https://www.sbilife.co.in/customer-services/services/unclaimed-amount-disclosure",
+      "protected": "captcha",
+      "before_open": [
+        {"en": "At least two of: PAN, policy number, customer name, date of birth", "hi": "इनमें से कम से कम दो: पैन, पॉलिसी नंबर, ग्राहक का नाम, जन्म तिथि"},
+        {"en": "The page has a CAPTCHA — you complete it yourself on SBI Life's site", "hi": "पेज पर CAPTCHA है — इसे आप SBI लाइफ़ की साइट पर खुद भरें"}
+      ],
+      "after": {"en": "If an amount is listed, contact SBI Life customer service to claim it.", "hi": "राशि दिखे तो दावे के लिए SBI लाइफ़ ग्राहक सेवा से संपर्क करें।"},
+      "requirements": [],
+      "coverage": "not_reviewed",
+      "coverage_note": {"en": "SBI Life's claim document list was not reviewed for this version.", "hi": "इस संस्करण में SBI लाइफ़ की दावा दस्तावेज़ सूची की समीक्षा नहीं हुई।"},
+      "no_match_phrases": [],
+      "sources": [{"title": "SBI Life: Unclaimed amount disclosure", "url": "https://www.sbilife.co.in/customer-services/services/unclaimed-amount-disclosure"}]
+    },
+    {
+      "id": "udgam",
+      "name": "RBI UDGAM (bank deposits)",
+      "name_hi": "RBI UDGAM (बैंक जमा)",
+      "asset": "bank_deposits",
+      "role": "discovery",
+      "responsible": {"en": "The bank that holds the deposit — UDGAM only finds it; RBI does not pay", "hi": "जिस बैंक में जमा है — UDGAM केवल खोजता है; भुगतान RBI नहीं करता"},
+      "institution_label": {"en": "Bank shown by UDGAM", "hi": "UDGAM में दिखा बैंक"},
+      "automated": null,
+      "official_url": "https://udgam.rbi.org.in/unclaimed-deposits/#/login",
+      "guidance_url": "https://www.rbi.org.in/commonman/English/Scripts/FAQs.aspx?Id=3579",
+      "protected": "otp_login",
+      "before_open": [
+        {"en": "Register with your name and mobile number (OTP)", "hi": "अपने नाम और मोबाइल नंबर (OTP) से पंजीकरण करें"},
+        {"en": "The account holder's name and the bank(s) to search", "hi": "खाताधारक का नाम और खोजने के लिए बैंक"},
+        {"en": "One or more of: PAN, driving licence, voter ID, passport number or date of birth (or the address if none is known)", "hi": "इनमें से एक या अधिक: पैन, ड्राइविंग लाइसेंस, वोटर ID, पासपोर्ट नंबर या जन्म तिथि (कुछ न हो तो पता)"}
+      ],
+      "after": {"en": "Note the bank and the UDRN shown in the result. The claim is made with that bank, not with RBI.", "hi": "परिणाम में दिखा बैंक और UDRN नोट करें। दावा उसी बैंक में होता है, RBI में नहीं।"},
+      "requirements": [],
+      "coverage": "not_reviewed",
+      "coverage_note": {"en": "Each bank publishes its own claim process (UDGAM shows it with the result). Bank-specific lists were not reviewed for this version.", "hi": "हर बैंक की अपनी दावा प्रक्रिया है (UDGAM परिणाम के साथ दिखाता है)। बैंक-वार सूची की इस संस्करण में समीक्षा नहीं हुई।"},
+      "no_match_phrases": [],
+      "sources": [{"title": "RBI: FAQs on UDGAM", "url": "https://www.rbi.org.in/commonman/English/Scripts/FAQs.aspx?Id=3579"}]
+    },
+    {
+      "id": "mitra",
+      "name": "MITRA on MF Central (mutual funds)",
+      "name_hi": "MF Central पर MITRA (म्यूचुअल फंड)",
+      "asset": "mutual_funds",
+      "role": "discovery",
+      "responsible": {"en": "The mutual fund (AMC) or its registrar (RTA) that holds the folio", "hi": "फोलियो रखने वाला म्यूचुअल फंड (AMC) या उसका रजिस्ट्रार (RTA)"},
+      "institution_label": {"en": "AMC / registrar shown by MITRA", "hi": "MITRA में दिखा AMC / रजिस्ट्रार"},
+      "automated": null,
+      "official_url": "https://app.mfcentral.com/investor/signin",
+      "guidance_url": "https://www.sebi.gov.in/legal/circulars/feb-2025/service-platform-for-investors-to-trace-inactive-and-unclaimed-mutual-fund-folios-mitra-mutual-fund-investment-tracing-and-retrieval-assistant-_91847.html",
+      "protected": "otp_login",
+      "before_open": [
+        {"en": "Sign in to MF Central with your own mobile/email OTP", "hi": "अपने मोबाइल/ईमेल OTP से MF Central में साइन इन करें"},
+        {"en": "Investors, nominees and legal heirs can trace inactive or unclaimed folios", "hi": "निवेशक, नामित व्यक्ति और उत्तराधिकारी निष्क्रिय या लावारिस फोलियो खोज सकते हैं"}
+      ],
+      "after": {"en": "Note the AMC and folio shown. The claim or transmission is done with that AMC or its registrar.", "hi": "दिखा AMC और फोलियो नोट करें। दावा या हस्तांतरण उसी AMC या उसके रजिस्ट्रार से होता है।"},
+      "requirements": [],
+      "coverage": "not_reviewed",
+      "coverage_note": {"en": "AMC/registrar requirements were not reviewed for this version.", "hi": "इस संस्करण में AMC/रजिस्ट्रार की ज़रूरतों की समीक्षा नहीं हुई।"},
+      "no_match_phrases": [],
+      "sources": [{"title": "SEBI circular: MITRA", "url": "https://www.sebi.gov.in/legal/circulars/feb-2025/service-platform-for-investors-to-trace-inactive-and-unclaimed-mutual-fund-folios-mitra-mutual-fund-investment-tracing-and-retrieval-assistant-_91847.html"}]
+    },
+    {
+      "id": "iepf",
+      "name": "IEPF (shares and dividends)",
+      "name_hi": "IEPF (शेयर और लाभांश)",
+      "asset": "shares_dividends",
+      "role": "discovery",
+      "responsible": {"en": "The company whose shares or dividends were transferred (its nodal officer verifies), then the IEPF Authority refunds", "hi": "जिस कंपनी के शेयर/लाभांश स्थानांतरित हुए (उसका नोडल अधिकारी सत्यापन करता है), फिर IEPF प्राधिकरण वापस करता है"},
+      "institution_label": {"en": "Company", "hi": "कंपनी"},
+      "automated": null,
+      "official_url": "https://www.mca.gov.in/content/mca/global/en/mca/iepf-related-services.html",
+      "guidance_url": "https://www.iepf.gov.in/content/iepf/global/master/Home/Home.html",
+      "protected": "otp_login",
+      "before_open": [
+        {"en": "The company's name and the holder's name as on the share records", "hi": "कंपनी का नाम और शेयर रिकॉर्ड में धारक का नाम"},
+        {"en": "Refund claims use form IEPF-5 on the MCA portal (your own login)", "hi": "वापसी का दावा MCA पोर्टल पर फ़ॉर्म IEPF-5 से होता है (आपका अपना लॉगिन)"}
+      ],
+      "after": {"en": "After filing IEPF-5, send the claim documents to the company's nodal officer; the IEPF Authority refunds on the company's verification. A nominee or legal heir must first complete transmission of the shares — the conditions differ by case.", "hi": "IEPF-5 भरने के बाद दस्तावेज़ कंपनी के नोडल अधिकारी को भेजें; कंपनी के सत्यापन पर IEPF प्राधिकरण वापसी करता है। नामित व्यक्ति या उत्तराधिकारी को पहले शेयरों का हस्तांतरण पूरा करना होता है — शर्तें हर मामले में अलग होती हैं।"},
+      "requirements": [],
+      "coverage": "partial",
+      "coverage_note": {"en": "The route is reviewed; the IEPF instruction kit has conditional transmission branches, so no single checklist is shown.", "hi": "मार्ग की समीक्षा हुई है; IEPF निर्देश पुस्तिका में हस्तांतरण की अलग-अलग शर्तें हैं, इसलिए एक सूची नहीं दिखाई जाती।"},
+      "no_match_phrases": [],
+      "sources": [
+        {"title": "IEPF Authority", "url": "https://www.iepf.gov.in/content/iepf/global/master/Home/Home.html"},
+        {"title": "IEPF-5 instruction kit", "url": "https://www.iepf.gov.in/content/dam/iepf/pdf/iepf-forms/Instruction-Kit-Form-No-IEPF-5-20240718.pdf"}
+      ]
+    },
+    {
+      "id": "epfo",
+      "name": "EPFO (provident fund)",
+      "name_hi": "EPFO (भविष्य निधि)",
+      "asset": "provident_fund",
+      "role": "institution",
+      "responsible": {"en": "EPFO, through the member's employer or EPFO office", "hi": "EPFO — सदस्य के नियोक्ता या EPFO कार्यालय के माध्यम से"},
+      "automated": null,
+      "official_url": "https://unifiedportal-mem.epfindia.gov.in/memberinterface/",
+      "guidance_url": "https://www.epfindia.gov.in/",
+      "protected": "otp_login",
+      "before_open": [
+        {"en": "A living member signs in with their own UAN and OTP — there is no search by name alone", "hi": "जीवित सदस्य अपने UAN और OTP से साइन इन करते हैं — केवल नाम से कोई खोज नहीं है"},
+        {"en": "For a member who died, the family's claim goes through the employer or the EPFO office", "hi": "दिवंगत सदस्य के लिए परिवार का दावा नियोक्ता या EPFO कार्यालय के माध्यम से होता है"}
+      ],
+      "after": {"en": "Ask the employer or EPFO office which claim applies to your situation.", "hi": "नियोक्ता या EPFO कार्यालय से पूछें कि आपकी स्थिति में कौन-सा दावा लागू है।"},
+      "requirements": [],
+      "coverage": "not_reviewed",
+      "coverage_note": {"en": "EPFO claim forms were not reviewed for this version.", "hi": "इस संस्करण में EPFO दावा फ़ॉर्म की समीक्षा नहीं हुई।"},
+      "no_match_phrases": [],
+      "sources": [{"title": "EPFO member portal", "url": "https://unifiedportal-mem.epfindia.gov.in/memberinterface/"}]
+    }
+  ]
+}

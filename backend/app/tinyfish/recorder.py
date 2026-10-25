@@ -3,6 +3,7 @@
 Recordings are only ever produced by real TinyFish calls (live runs of this app, or runs captured
 during development). Replayed responses are always labelled as replays in the UI and the call log.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -23,9 +24,19 @@ def key(api: str, parts: list[Any]) -> str:
 
 def save(k: str, api: str, target: str | None, response: Any) -> None:
     try:
-        (REC_DIR / f"{k}.json").write_text(json.dumps(
-            {"api": api, "target": target, "recorded_at": time.strftime("%Y-%m-%d %H:%M"), "response": response},
-            ensure_ascii=False, indent=1), encoding="utf-8")
+        (REC_DIR / f"{k}.json").write_text(
+            json.dumps(
+                {
+                    "api": api,
+                    "target": target,
+                    "recorded_at": time.strftime("%Y-%m-%d %H:%M"),
+                    "response": response,
+                },
+                ensure_ascii=False,
+                indent=1,
+            ),
+            encoding="utf-8",
+        )
     except OSError:
         pass
 
@@ -39,7 +50,9 @@ def load(k: str) -> dict | None:
 
 def age_hours(rec: dict) -> float:
     try:
-        return (time.time() - time.mktime(time.strptime(rec.get("recorded_at", ""), "%Y-%m-%d %H:%M"))) / 3600
+        return (
+            time.time() - time.mktime(time.strptime(rec.get("recorded_at", ""), "%Y-%m-%d %H:%M"))
+        ) / 3600
     except ValueError:
         return 1e9
 
@@ -54,7 +67,9 @@ def load_similar(api: str, target: str | None) -> dict | None:
             rec = json.loads(p.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             continue
-        if rec.get("target") == target and (best is None or rec.get("recorded_at", "") > best.get("recorded_at", "")):
+        if rec.get("target") == target and (
+            best is None or rec.get("recorded_at", "") > best.get("recorded_at", "")
+        ):
             best = rec
     return best
 
@@ -80,8 +95,14 @@ def load_closest(api: str, target: str | None, min_score: int = 55) -> dict | No
 def _write(k: str, api: str, target: str | None, response: Any, when: str) -> None:
     p = REC_DIR / f"{k}.json"
     if not p.exists():
-        p.write_text(json.dumps({"api": api, "target": target, "recorded_at": when, "response": response},
-                                ensure_ascii=False, indent=1), encoding="utf-8")
+        p.write_text(
+            json.dumps(
+                {"api": api, "target": target, "recorded_at": when, "response": response},
+                ensure_ascii=False,
+                indent=1,
+            ),
+            encoding="utf-8",
+        )
 
 
 def import_captures() -> int:
@@ -93,12 +114,24 @@ def import_captures() -> int:
         if cap["api"] == "fetch":
             urls = cap.get("urls") or [r["url"] for r in resp.get("results", [])]
             _write(key("fetch", [sorted(urls), "markdown"]), "fetch", ", ".join(urls), resp, when)
-            for r in resp.get("results", []):  # single-page reads (rule re-checks, monitor webhooks)
-                _write(key("fetch", [[r["url"]], "markdown"]), "fetch", r["url"],
-                       {"results": [r], "errors": []}, when)
+            for r in resp.get(
+                "results", []
+            ):  # single-page reads (rule re-checks, monitor webhooks)
+                _write(
+                    key("fetch", [[r["url"]], "markdown"]),
+                    "fetch",
+                    r["url"],
+                    {"results": [r], "errors": []},
+                    when,
+                )
                 n += 1
         elif cap["api"] == "search":
-            parts = [cap["query"], cap.get("include_domains"), cap.get("recency_minutes"), cap.get("domain_type")]
+            parts = [
+                cap["query"],
+                cap.get("include_domains"),
+                cap.get("recency_minutes"),
+                cap.get("domain_type"),
+            ]
             _write(key("search", parts), "search", cap["query"], resp, when)
             n += 1
         elif cap["api"] == "agent":

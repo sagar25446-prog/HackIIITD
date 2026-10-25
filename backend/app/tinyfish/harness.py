@@ -1,7 +1,10 @@
-"""Agent harness: planner -> parallel TinyFish agents -> verifier -> self-heal.
+"""Agent harness: planner -> TinyFish agents -> verifier -> self-heal (used by the official-checker second opinion).
+
+Recovery lookups use services/recovery_lookup.py, which reads results strictly per portal.
 
 Every task emits events onto a queue that the API streams to the browser (the "live agent grid").
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -13,20 +16,36 @@ from typing import Any
 from urllib.parse import urlparse
 
 from ..config import DATA_DIR, settings
-from . import playbooks, recorder
+from . import recorder  # noqa: F401 - recordings are used through the client
 from .client import TinyFishUnavailable, tinyfish
 
 OFFICIAL_SUFFIXES = (".gov.in", ".nic.in")
-OFFICIAL_DOMAINS = ("rbi.org.in", "licindia.in", "mfcentral.com", "npscra.nsdl.co.in", "pfrda.org.in",
-                    "nsiindia.gov.in", "indiapost.gov.in", "standupmitra.in", "mudra.org.in",
-                    # insurers' own unclaimed-amount portals (IRDAI requires each insurer to host one)
-                    "tataaia.com", "sbilife.co.in", "irdai.gov.in")
+OFFICIAL_DOMAINS = (
+    "rbi.org.in",
+    "licindia.in",
+    "mfcentral.com",
+    "npscra.nsdl.co.in",
+    "pfrda.org.in",
+    "nsiindia.gov.in",
+    "indiapost.gov.in",
+    "standupmitra.in",
+    "mudra.org.in",
+    # insurers' own unclaimed-amount portals (IRDAI requires each insurer to host one)
+    "tataaia.com",
+    "sbilife.co.in",
+    "irdai.gov.in",
+)
 BLOCK_SIGNALS = re.compile(
     r"captcha|access denied|verify (that )?you are (a )?human|are you a robot|blocked|forbidden|403|"
-    r"too many requests|login required|sign in to continue|cloudflare|request rejected", re.I)
+    r"too many requests|login required|sign in to continue|cloudflare|request rejected",
+    re.I,
+)
 # the portal itself failed (seen live on the myScheme checker: "We're Sorry! Something went wrong")
-SITE_ERROR = re.compile(r"something went wrong|please try again|service unavailable|internal server error|"
-                        r"page not found|under maintenance", re.I)
+SITE_ERROR = re.compile(
+    r"something went wrong|please try again|service unavailable|internal server error|"
+    r"page not found|under maintenance",
+    re.I,
+)
 
 
 def load_sources() -> list[dict]:
@@ -61,7 +80,9 @@ class Task:
 
 
 # ---------------------------------------------------------------------------- planner
-def plan(kind: str, tags: set[str], context: dict[str, Any] | None = None, limit: int = 12) -> list[Task]:
+def plan(
+    kind: str, tags: set[str], context: dict[str, Any] | None = None, limit: int = 12
+) -> list[Task]:
     """Pick the sources relevant to this task kind and persona, and render their goals."""
     context = context or {}
     tasks: list[Task] = []
@@ -74,7 +95,15 @@ def plan(kind: str, tags: set[str], context: dict[str, Any] | None = None, limit
         values = _Blank({k: v for k, v in context.items() if v not in (None, "")})
         goal = src.get("goal", "").format_map(values)
         url = src["url"].format_map(values)
-        tasks.append(Task(source=src, goal=goal, url=url, output_schema=src.get("output_schema"), context=dict(values)))
+        tasks.append(
+            Task(
+                source=src,
+                goal=goal,
+                url=url,
+                output_schema=src.get("output_schema"),
+                context=dict(values),
+            )
+        )
     return tasks[:limit]
 
 
@@ -83,14 +112,27 @@ def verify(task: Task, status: str | None, result: Any, error: Any) -> tuple[str
     """Return (verdict, reason). COMPLETED means the agent ran — not that it succeeded."""
     if status != "COMPLETED":
         msg = (error or {}).get("message") if isinstance(error, dict) else str(error or "")
-        return ("blocked" if msg and BLOCK_SIGNALS.search(msg) else "failed"), (msg or f"run ended {status}")
+        return ("blocked" if msg and BLOCK_SIGNALS.search(msg) else "failed"), (
+            msg or f"run ended {status}"
+        )
     if result in (None, {}, [], ""):
         return "failed", "agent completed but returned no data"
-    if isinstance(result, dict) and SITE_ERROR.search(json.dumps(result)) and not result.get("found"):
+    if (
+        isinstance(result, dict)
+        and SITE_ERROR.search(json.dumps(result))
+        and not result.get("found")
+    ):
         return "failed", "the official portal itself returned an error — try again later"
-    if isinstance(result, dict) and not result.get("found") and BLOCK_SIGNALS.search(json.dumps(result)):
+    if (
+        isinstance(result, dict)
+        and not result.get("found")
+        and BLOCK_SIGNALS.search(json.dumps(result))
+    ):
         # seen live: an agent hit a CAPTCHA, tried to get past it, then reported found=false
-        return "blocked", "the portal asked for a CAPTCHA / OTP / login — a person has to complete it"
+        return (
+            "blocked",
+            "the portal asked for a CAPTCHA / OTP / login — a person has to complete it",
+        )
     text = json.dumps(result, ensure_ascii=False) if not isinstance(result, str) else result
     if BLOCK_SIGNALS.search(text) and len(text) < 600:
         return "blocked", "page showed a CAPTCHA / bot wall / login wall"
@@ -99,12 +141,18 @@ def verify(task: Task, status: str | None, result: Any, error: Any) -> tuple[str
         # A field that exists but is blank is as bad as a missing one (seen in real runs: COMPLETED with "" values)
         empty = [k for k in schema.get("required", []) if result.get(k) in (None, "", [], {})]
         if empty and len(empty) == len(schema.get("required", [])):
-            return "failed", f"agent completed but every required field is empty ({', '.join(empty)})"
+            return (
+                "failed",
+                f"agent completed but every required field is empty ({', '.join(empty)})",
+            )
         if empty:
             return "suspicious", f"result has empty required fields: {', '.join(empty)}"
     bad_links = [u for u in re.findall(r"https?://[^\s\"']+", text) if not is_official(u)]
     if bad_links and task.source.get("kind") != "factcheck":
-        return "suspicious", f"result links to non-official domain {urlparse(bad_links[0]).hostname}"
+        return (
+            "suspicious",
+            f"result links to non-official domain {urlparse(bad_links[0]).hostname}",
+        )
     return "verified", "status COMPLETED, schema satisfied, only official links"
 
 
@@ -120,46 +168,80 @@ def heal_goal(task: Task, reason: str) -> str:
         "If the page layout looks different from expected, use the site's search box or menu to find the section.",
         "Close any pop-up or language-selection dialog first.",
     ]
-    return f"{task.goal}\n\nPrevious attempt failed ({reason[:160]}). Recovery hints: " + " ".join(hints)
+    return f"{task.goal}\n\nPrevious attempt failed ({reason[:160]}). Recovery hints: " + " ".join(
+        hints
+    )
 
 
 # ---------------------------------------------------------------------------- executor
 async def run_task(task: Task, emit) -> dict:
     """Run one task with up to 2 self-heal retries. Emits grid events; returns the final task record."""
     src = task.source
-    base = {"task_id": task.id, "source_id": src["id"], "name": src["name"],
-            "domain": urlparse(task.url).hostname, "kind": src.get("kind")}
+    base = {
+        "task_id": task.id,
+        "source_id": src["id"],
+        "name": src["name"],
+        "domain": urlparse(task.url).hostname,
+        "kind": src.get("kind"),
+    }
     await emit({**base, "phase": "queued"})
     if src.get("requires_human"):
-        await emit({**base, "phase": "needs_human",
-                    "message": src.get("human_note", "Login with your own OTP needed — open assisted session")})
+        await emit(
+            {
+                **base,
+                "phase": "needs_human",
+                "message": src.get(
+                    "human_note", "Login with your own OTP needed — open assisted session"
+                ),
+            }
+        )
         return {**base, "verdict": "needs_human", "result": None}
 
-    if src.get("playbook"):
-        rec = await _run_playbook(task, base, emit, src["playbook"])
-        if rec is not None:
-            return rec
-        await emit({**base, "phase": "healing", "message": "Portal changed or unreachable — handing over to a TinyFish Agent"})
-
-    goal, stealth, tried_playbook = task.goal, False, False
+    goal, stealth = task.goal, False
     for attempt in range(1, 4):
         task.attempts = attempt
         status = result = error = None
         streaming_url = None
         replay = False
         try:
-            async for ev in tinyfish.agent_stream(task.url, goal, output_schema=task.output_schema,
-                                                  stealth=stealth, purpose=f"{src.get('kind')}: {src['name']}"):
+            async for ev in tinyfish.agent_stream(
+                task.url,
+                goal,
+                output_schema=task.output_schema,
+                stealth=stealth,
+                purpose=f"{src.get('kind')}: {src['name']}",
+            ):
                 replay = replay or bool(ev.get("replay"))
                 t = ev.get("type")
                 if t == "STREAMING_URL":
                     streaming_url = ev.get("streaming_url")
-                    await emit({**base, "phase": "streaming", "streaming_url": streaming_url, "replay": replay})
+                    await emit(
+                        {
+                            **base,
+                            "phase": "streaming",
+                            "streaming_url": streaming_url,
+                            "replay": replay,
+                        }
+                    )
                 elif t == "PROGRESS":
-                    await emit({**base, "phase": "progress", "message": ev.get("purpose"), "replay": replay})
+                    await emit(
+                        {
+                            **base,
+                            "phase": "progress",
+                            "message": ev.get("purpose"),
+                            "replay": replay,
+                        }
+                    )
                 elif t == "STARTED":
-                    await emit({**base, "phase": "started", "run_id": ev.get("run_id"), "replay": replay,
-                                "attempt": attempt})
+                    await emit(
+                        {
+                            **base,
+                            "phase": "started",
+                            "run_id": ev.get("run_id"),
+                            "replay": replay,
+                            "attempt": attempt,
+                        }
+                    )
                 elif t == "COMPLETE":
                     status, result, error = ev.get("status"), ev.get("result"), ev.get("error")
         except TinyFishUnavailable as exc:
@@ -177,75 +259,75 @@ async def run_task(task: Task, emit) -> dict:
         await emit({**base, "phase": "verifying"})
         verdict, reason = verify(task, status, result, error)
         if verdict in ("verified", "suspicious"):
-            await emit({**base, "phase": "done", "verdict": verdict, "reason": reason, "result": result,
-                        "streaming_url": streaming_url, "replay": replay, "attempts": attempt})
-            return {**base, "verdict": verdict, "reason": reason, "result": result, "attempts": attempt}
+            await emit(
+                {
+                    **base,
+                    "phase": "done",
+                    "verdict": verdict,
+                    "reason": reason,
+                    "result": result,
+                    "streaming_url": streaming_url,
+                    "replay": replay,
+                    "attempts": attempt,
+                }
+            )
+            return {
+                **base,
+                "verdict": verdict,
+                "reason": reason,
+                "result": result,
+                "attempts": attempt,
+            }
         if attempt == 3:
             break
         # self-heal
         human_check = re.search(r"captcha|otp|login|sign in", reason, re.I)
         if verdict == "blocked" and human_check:
-            await emit({**base, "phase": "needs_human",
-                        "message": "The portal asks for a CAPTCHA/OTP/login. JAAGRUK never solves these — open the "
-                                   "assisted session and complete it yourself."})
+            await emit(
+                {
+                    **base,
+                    "phase": "needs_human",
+                    "message": "The portal asks for a CAPTCHA/OTP/login. JAAGRUK never solves these — open the "
+                    "assisted session and complete it yourself.",
+                }
+            )
             return {**base, "verdict": "needs_human", "reason": reason, "result": None}
-        if src.get("playbook_fallback") and not tried_playbook:
-            tried_playbook = True
-            await emit({**base, "phase": "healing", "message": "Agent did not finish — switching to the portal playbook"})
-            rec = await _run_playbook(task, base, emit, src["playbook_fallback"])
-            if rec is not None:
-                return rec
         if verdict == "blocked" and settings.allow_stealth_retry and not stealth:
             stealth = True
-            await emit({**base, "phase": "healing", "message": "Bot wall detected — retrying with stealth browser"})
+            await emit(
+                {
+                    **base,
+                    "phase": "healing",
+                    "message": "Bot wall detected — retrying with stealth browser",
+                }
+            )
         elif verdict == "blocked":
-            await emit({**base, "phase": "needs_human",
-                        "message": "Site needs a human check (CAPTCHA/OTP). Open an assisted session."})
+            await emit(
+                {
+                    **base,
+                    "phase": "needs_human",
+                    "message": "Site needs a human check (CAPTCHA/OTP). Open an assisted session.",
+                }
+            )
             return {**base, "verdict": "needs_human", "reason": reason, "result": None}
         else:
-            fallback = (src.get("fallback_urls") or [None])[attempt - 1] if src.get("fallback_urls") else None
+            fallback = (
+                (src.get("fallback_urls") or [None])[attempt - 1]
+                if src.get("fallback_urls")
+                else None
+            )
             if fallback:
                 task.url = fallback
             goal = heal_goal(task, reason)
-            await emit({**base, "phase": "healing", "message": f"Re-planning from the goal ({reason[:80]})"})
+            await emit(
+                {
+                    **base,
+                    "phase": "healing",
+                    "message": f"Re-planning from the goal ({reason[:80]})",
+                }
+            )
     await emit({**base, "phase": "failed", "message": reason})
     return {**base, "verdict": "failed", "reason": reason, "result": None}
-
-
-async def _run_playbook(task: Task, base: dict, emit, name: str) -> dict | None:
-    """Run the portal's compiled playbook on a TinyFish Browser session. None means: fall back to the agent."""
-    src = task.source
-    key = f"playbook-{name}"
-    events: list[dict] = []
-
-    async def rec_emit(ev: dict) -> None:
-        events.append(ev)
-        await emit({**base, **ev})
-
-    if tinyfish.live:
-        try:
-            result = await playbooks.run(name, task.url, task.context, rec_emit, src["name"])
-        except playbooks.PlaybookBroken as exc:
-            await emit({**base, "phase": "progress", "message": f"Playbook: {exc}"})
-            return None
-        except Exception as exc:  # noqa: BLE001 - network / browser problems: let the agent try
-            await emit({**base, "phase": "progress", "message": f"Browser session failed: {type(exc).__name__}"})
-            return None
-        recorder.save(key, "playbook", task.url, {"events": events, "result": result})
-        replay = False
-    else:
-        rec = recorder.load(key)
-        if rec is None:
-            return None
-        for ev in rec["response"]["events"]:
-            await asyncio.sleep(0.8)
-            await emit({**base, **ev, "replay": True})
-        result, replay = rec["response"]["result"], True
-    await emit({**base, "phase": "verifying"})
-    verdict, reason = verify(task, "COMPLETED", result, None)
-    await emit({**base, "phase": "done", "verdict": verdict, "reason": reason, "result": result, "replay": replay,
-                "engine": "playbook", "attempts": 1})
-    return {**base, "verdict": verdict, "reason": reason, "result": result, "attempts": 1, "engine": "playbook"}
 
 
 async def run_plan(tasks: list[Task], queue: asyncio.Queue, concurrency: int = 6) -> list[dict]:
@@ -259,10 +341,15 @@ async def run_plan(tasks: list[Task], queue: asyncio.Queue, concurrency: int = 6
             return await run_task(t, emit)
 
     results = await asyncio.gather(*(one(t) for t in tasks))
-    await queue.put({"phase": "all_done", "summary": {
-        "total": len(results),
-        "verified": sum(r["verdict"] == "verified" for r in results),
-        "needs_human": sum(r["verdict"] == "needs_human" for r in results),
-        "failed": sum(r["verdict"] in ("failed", "unavailable") for r in results),
-    }})
+    await queue.put(
+        {
+            "phase": "all_done",
+            "summary": {
+                "total": len(results),
+                "verified": sum(r["verdict"] == "verified" for r in results),
+                "needs_human": sum(r["verdict"] == "needs_human" for r in results),
+                "failed": sum(r["verdict"] in ("failed", "unavailable") for r in results),
+            },
+        }
+    )
     return results
