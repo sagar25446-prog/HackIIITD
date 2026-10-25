@@ -11,3 +11,6 @@ frontend/node_modules/
 var/
 *.db
 # frontend/dist is committed on purpose so the app runs with Python only (no Node needed)
+
+# Local date-test compilation
+frontend/.test-build/

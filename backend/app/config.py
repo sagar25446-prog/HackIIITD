@@ -1,4 +1,5 @@
 """Runtime settings, read from environment variables or the project's .env file."""
+
 from __future__ import annotations
 
 import os
@@ -27,11 +28,15 @@ class Settings:
     anthropic_model: str = os.getenv("ANTHROPIC_MODEL", "claude-opus-5-5")
     # live: always call TinyFish · replay: only use recorded real runs · auto: live, fall back to replay on failure
     tinyfish_mode: str = os.getenv("TINYFISH_MODE", "auto").lower()
-    public_base_url: str | None = os.getenv("PUBLIC_BASE_URL") or None  # needed for Monitor webhooks
-    db_path: Path = field(default_factory=lambda: Path(os.getenv("JAAGRUK_DB", str(VAR_DIR / "jaagruk.db"))))
+    public_base_url: str | None = (
+        os.getenv("PUBLIC_BASE_URL") or None
+    )  # needed for Monitor webhooks
+    db_path: Path = field(
+        default_factory=lambda: Path(os.getenv("JAAGRUK_DB", str(VAR_DIR / "jaagruk.db")))
+    )
     agent_max_steps: int = int(os.getenv("AGENT_MAX_STEPS", "30"))
     # exit country for TinyFish browsers/agents; Indian government portals often block foreign IPs
-    proxy_country: str | None = (os.getenv("TINYFISH_PROXY_COUNTRY", "IN").strip().upper() or None)
+    proxy_country: str | None = os.getenv("TINYFISH_PROXY_COUNTRY", "IN").strip().upper() or None
     agent_max_seconds: int = int(os.getenv("AGENT_MAX_SECONDS", "180"))
     allow_stealth_retry: bool = _bool("ALLOW_STEALTH_RETRY", True)
 

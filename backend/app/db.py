@@ -1,4 +1,5 @@
 """SQLite storage: TinyFish call log, page snapshots, alerts, monitors and a small JSON cache."""
+
 from __future__ import annotations
 
 import json
@@ -66,6 +67,9 @@ def conn() -> sqlite3.Connection:
         settings.db_path.parent.mkdir(parents=True, exist_ok=True)
         _conn = sqlite3.connect(settings.db_path, check_same_thread=False)
         _conn.row_factory = sqlite3.Row
+        # WAL: readers never block the writer; a busy timeout instead of "database is locked" errors
+        _conn.execute("PRAGMA journal_mode=WAL")
+        _conn.execute("PRAGMA busy_timeout=5000")
         _conn.executescript(SCHEMA)
     return _conn
 
@@ -82,14 +86,37 @@ def query(sql: str, params: tuple = ()) -> list[dict[str, Any]]:
         return [dict(r) for r in conn().execute(sql, params).fetchall()]
 
 
-def log_call(api: str, *, purpose: str | None, target: str | None, mode: str, status: str,
-             latency_ms: int | None = None, run_id: str | None = None, streaming_url: str | None = None,
-             steps: int | None = None, verdict: str | None = None, detail: str | None = None) -> int:
+def log_call(
+    api: str,
+    *,
+    purpose: str | None,
+    target: str | None,
+    mode: str,
+    status: str,
+    latency_ms: int | None = None,
+    run_id: str | None = None,
+    streaming_url: str | None = None,
+    steps: int | None = None,
+    verdict: str | None = None,
+    detail: str | None = None,
+) -> int:
     return execute(
         "INSERT INTO tf_calls (ts, api, purpose, target, mode, status, latency_ms, run_id, streaming_url, steps, verdict, detail)"
         " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
-        (time.time(), api, purpose, target, mode, status, latency_ms, run_id, streaming_url, steps, verdict,
-         (detail or "")[:2000]),
+        (
+            time.time(),
+            api,
+            purpose,
+            target,
+            mode,
+            status,
+            latency_ms,
+            run_id,
+            streaming_url,
+            steps,
+            verdict,
+            (detail or "")[:2000],
+        ),
     )
 
 
@@ -103,4 +130,7 @@ def cache_get(key: str, max_age_s: float | None = None) -> Any | None:
 
 
 def cache_set(key: str, value: Any) -> None:
-    execute("INSERT OR REPLACE INTO cache (key, value, ts) VALUES (?,?,?)", (key, json.dumps(value), time.time()))
+    execute(
+        "INSERT OR REPLACE INTO cache (key, value, ts) VALUES (?,?,?)",
+        (key, json.dumps(value), time.time()),
+    )

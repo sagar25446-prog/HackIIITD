@@ -3,11 +3,11 @@
 * Scan now: TinyFish Fetch (free, ttl=0 for a fresh read) reads every watched page in ONE call
   (up to 10 URLs) → diff against the stored snapshot → classify → personalised alerts.
 * Always-on: one TinyFish Monitor per page (cron, $0.005 per check) posts to our webhook; the webhook
-  re-reads the page with Fetch and runs the same diff. A search monitor watches for new
-  "fake scheme" fact-checks and feeds Scam Shield.
+  re-reads the page with Fetch and runs the same diff.
 * Baselines: the first snapshot of each page ships with the app (a real TinyFish Fetch capture with its
   date), so the first live scan shows what genuinely changed since then.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -23,8 +23,30 @@ from ..tinyfish.client import TinyFishUnavailable, tinyfish
 
 START_AFTER = {"upsc_whats_new": "What's New\nWhat's New"}
 SCHEDULE = "CRON_TZ=Asia/Kolkata 0 7,13,19 * * *"  # 3 checks a day per page
-ACTIONABLE = {"deadline", "new_notification", "eligibility", "admit_card"}  # things a family must act on
-FAKE_SCHEME_QUERY = "PIB Fact Check fake government scheme yojana website"
+ACTIONABLE = {
+    "deadline",
+    "new_notification",
+    "eligibility",
+    "admit_card",
+}  # things a family must act on
+
+
+def _webhook_token() -> str:
+    """Private callback secret: TinyFish gets it inside the webhook URL; nobody else sees it."""
+    import os
+    import secrets
+
+    tok = os.environ.get("JAAGRUK_WEBHOOK_TOKEN") or db.cache_get("webhook_token")
+    if not tok:
+        tok = secrets.token_urlsafe(24)
+        db.cache_set("webhook_token", tok)
+    return tok
+
+
+def webhook_token_ok(token: str) -> bool:
+    import secrets
+
+    return bool(token) and secrets.compare_digest(token, _webhook_token())
 
 
 def sources() -> list[dict]:
@@ -43,8 +65,10 @@ def seed_baselines() -> int:
         ts = time.mktime(time.strptime(cap["captured_at"], "%Y-%m-%d %H:%M"))
         for r in cap["response"]["results"]:
             if not db.query("SELECT 1 FROM snapshots WHERE url = ?", (r["url"],)):
-                db.execute("INSERT INTO snapshots (url, text, sha, fetched_at) VALUES (?,?,?,?)",
-                           (r["url"], r["text"], _sha(r["text"]), ts))
+                db.execute(
+                    "INSERT INTO snapshots (url, text, sha, fetched_at) VALUES (?,?,?,?)",
+                    (r["url"], r["text"], _sha(r["text"]), ts),
+                )
                 n += 1
     return n
 
@@ -63,25 +87,57 @@ def ingest(src: dict, text: str, via: str, *, replay: bool = False) -> dict:
             continue
         aid = db.execute(
             "INSERT INTO alerts (ts, source_id, url, kind, title, summary, affects, evidence) VALUES (?,?,?,?,?,?,?,?)",
-            (time.time(), src["id"], src["url"], c["kind"], title, c["text"], json.dumps(affects),
-             json.dumps({"via": via, "replay": replay, "posted": c["posted"], "dates": c["dates_in_text"],
-                         "importance": c["importance"], "exam_ids": c["exam_ids"], "scheme_ids": c["scheme_ids"],
-                         "since": since})))
+            (
+                time.time(),
+                src["id"],
+                src["url"],
+                c["kind"],
+                title,
+                c["text"],
+                json.dumps(affects),
+                json.dumps(
+                    {
+                        "via": via,
+                        "replay": replay,
+                        "posted": c["posted"],
+                        "dates": c["dates_in_text"],
+                        "importance": c["importance"],
+                        "exam_ids": c["exam_ids"],
+                        "scheme_ids": c["scheme_ids"],
+                        "since": since,
+                    }
+                ),
+            ),
+        )
         new_alerts.append({"id": aid, **c, "source_id": src["id"]})
     if not replay:  # a replayed recording is not a new observation of the page
-        db.execute("INSERT OR REPLACE INTO snapshots (url, text, sha, fetched_at) VALUES (?,?,?,?)",
-                   (src["url"], text, _sha(text), time.time()))
-    return {"source_id": src["id"], "name": src["name"], "url": src["url"], "baseline": old is None,
-            "changed": bool(old is not None and _sha(old) != _sha(text)), "new_alerts": new_alerts,
-            "previous_snapshot_at": since, "via": via, "replay": replay}
+        db.execute(
+            "INSERT OR REPLACE INTO snapshots (url, text, sha, fetched_at) VALUES (?,?,?,?)",
+            (src["url"], text, _sha(text), time.time()),
+        )
+    return {
+        "source_id": src["id"],
+        "name": src["name"],
+        "url": src["url"],
+        "baseline": old is None,
+        "changed": bool(old is not None and _sha(old) != _sha(text)),
+        "new_alerts": new_alerts,
+        "previous_snapshot_at": since,
+        "via": via,
+        "replay": replay,
+    }
 
 
 async def scan(ids: list[str] | None = None) -> dict:
     srcs = [s for s in sources() if not ids or s["id"] in ids]
     seed_baselines()
     try:
-        res = await tinyfish.fetch([s["url"] for s in srcs], purpose="Change Radar: detect new notices, "
-                                   "deadline extensions and eligibility changes on official pages", ttl=0)
+        res = await tinyfish.fetch(
+            [s["url"] for s in srcs],
+            purpose="Change Radar: detect new notices, "
+            "deadline extensions and eligibility changes on official pages",
+            ttl=0,
+        )
     except TinyFishUnavailable as exc:
         return {"ok": False, "error": str(exc), "pages": []}
     replay = bool(res.get("_replay"))
@@ -90,15 +146,29 @@ async def scan(ids: list[str] | None = None) -> dict:
     for s in srcs:
         r = by_url.get(s["url"].rstrip("/"))
         if not r or not r.get("text"):
-            err = next((e.get("error") for e in res.get("errors", []) if e.get("url", "").rstrip("/") == s["url"].rstrip("/")), "no text")
+            err = next(
+                (
+                    e.get("error")
+                    for e in res.get("errors", [])
+                    if e.get("url", "").rstrip("/") == s["url"].rstrip("/")
+                ),
+                "no text",
+            )
             pages.append({"source_id": s["id"], "name": s["name"], "url": s["url"], "error": err})
             continue
         pages.append(ingest(s, r["text"], "fetch", replay=replay))
-    return {"ok": True, "replay": replay, "recorded_at": res.get("_recorded_at"), "pages": pages,
-            "new_alerts": sum(len(p.get("new_alerts", [])) for p in pages)}
+    return {
+        "ok": True,
+        "replay": replay,
+        "recorded_at": res.get("_recorded_at"),
+        "pages": pages,
+        "new_alerts": sum(len(p.get("new_alerts", [])) for p in pages),
+    }
 
 
-def board(ids: list[str] | None = None, interests: tuple[set[str], set[str], set[str]] | None = None) -> list[dict]:
+def board(
+    ids: list[str] | None = None, interests: tuple[set[str], set[str], set[str]] | None = None
+) -> list[dict]:
     """What is on each watched board right now (latest snapshot), important items only.
 
     With the family's interests (tags, eligible exams, matched schemes), items about *their* exams or schemes are
@@ -115,11 +185,20 @@ def board(ids: list[str] | None = None, interests: tuple[set[str], set[str], set
             continue
         items = change.important_items(snap[0]["text"], START_AFTER.get(s["id"]))[:12]
         for it in items:
-            it["specific"] = sorted((set(it["exam_ids"]) & exams) | (set(it["scheme_ids"]) & schemes))
+            it["specific"] = sorted(
+                (set(it["exam_ids"]) & exams) | (set(it["scheme_ids"]) & schemes)
+            )
             it["for_you"] = bool(it["specific"]) and it["kind"] in ACTIONABLE
         items.sort(key=lambda i: (not i["for_you"], -i["importance"]))
-        out.append({"source_id": s["id"], "name": s["name"], "url": s["url"], "snapshot_at": snap[0]["fetched_at"],
-                    "items": items})
+        out.append(
+            {
+                "source_id": s["id"],
+                "name": s["name"],
+                "url": s["url"],
+                "snapshot_at": snap[0]["fetched_at"],
+                "items": items,
+            }
+        )
     return out
 
 
@@ -129,56 +208,79 @@ def deadlines_for(interests: tuple[set[str], set[str], set[str]]) -> list[dict]:
     for b in board(None, interests):
         for it in b["items"]:
             if it["for_you"] and it["kind"] in ACTIONABLE:
-                out.append({**it, "source": b["name"], "url": b["url"], "snapshot_at": b["snapshot_at"]})
+                out.append(
+                    {**it, "source": b["name"], "url": b["url"], "snapshot_at": b["snapshot_at"]}
+                )
     return out
 
 
-def alerts_for(tags: set[str], exam_ids: set[str], scheme_ids: set[str], limit: int = 30) -> list[dict]:
+def alerts_for(
+    tags: set[str], exam_ids: set[str], scheme_ids: set[str], limit: int = 30
+) -> list[dict]:
     rows = db.query("SELECT * FROM alerts ORDER BY ts DESC LIMIT 300")
     out = []
     for r in rows:
         ev = json.loads(r["evidence"] or "{}")
         affects = set(json.loads(r["affects"] or "[]"))
-        specific = (set(ev.get("exam_ids", [])) & exam_ids) | (set(ev.get("scheme_ids", [])) & scheme_ids)
+        specific = (set(ev.get("exam_ids", [])) & exam_ids) | (
+            set(ev.get("scheme_ids", [])) & scheme_ids
+        )
         for_you = bool(specific) or bool(affects & tags)
-        out.append({**{k: r[k] for k in ("id", "ts", "source_id", "url", "kind", "title", "summary")},
-                    "evidence": ev, "for_you": for_you, "specific": sorted(specific),
-                    "score": ev.get("importance", 1) * (3 if specific else 2 if for_you else 1)})
+        out.append(
+            {
+                **{k: r[k] for k in ("id", "ts", "source_id", "url", "kind", "title", "summary")},
+                "evidence": ev,
+                "for_you": for_you,
+                "specific": sorted(specific),
+                "score": ev.get("importance", 1) * (3 if specific else 2 if for_you else 1),
+            }
+        )
     out.sort(key=lambda a: (-a["score"], -a["ts"]))
     return out[:limit]
 
 
 # ------------------------------------------------------------------ always-on monitors
 async def register_monitors() -> dict:
-    """Create one TinyFish fetch-monitor per watched page plus a fake-scheme search monitor."""
+    """Create one TinyFish fetch-monitor per watched page."""
     # with a public URL TinyFish pushes every scheduled check to our webhook; without one, "Run now" pulls results
-    hook = settings.public_base_url.rstrip("/") + "/api/radar/webhook" if settings.public_base_url else None
+    hook = (
+        settings.public_base_url.rstrip("/") + "/api/radar/webhook?token=" + _webhook_token()
+        if settings.public_base_url
+        else None
+    )
     made = []
     existing = {r["source_id"] for r in db.query("SELECT source_id FROM monitors")}
     for s in sources():
         if s["id"] in existing:
             continue
-        m = await tinyfish.monitor_create(mtype="fetch", config={"url": s["url"], "format": "markdown"},
-                                          schedule_cron=SCHEDULE, name=f"JAAGRUK · {s['name']}",
-                                          purpose=s.get("purpose", "important notice changes"), webhook_url=hook)
+        m = await tinyfish.monitor_create(
+            mtype="fetch",
+            config={"url": s["url"], "format": "markdown"},
+            schedule_cron=SCHEDULE,
+            name=f"JAAGRUK · {s['name']}",
+            purpose=s.get("purpose", "important notice changes"),
+            webhook_url=hook,
+        )
         mid = _monitor_id(m)
-        db.execute("INSERT OR REPLACE INTO monitors (id, source_id, type, target, created_at) VALUES (?,?,?,?,?)",
-                   (mid, s["id"], "fetch", s["url"], time.time()))
+        db.execute(
+            "INSERT OR REPLACE INTO monitors (id, source_id, type, target, created_at) VALUES (?,?,?,?,?)",
+            (mid, s["id"], "fetch", s["url"], time.time()),
+        )
         text = _find_text(m)  # creation returns the baseline check: diff it right away
-        made.append({"source_id": s["id"], "monitor_id": mid,
-                     "baseline": ingest(s, text, "monitor")["changed"] if text else None})
-    if "scam_feed" not in existing:
-        m = await tinyfish.monitor_create(mtype="search", config={"query": FAKE_SCHEME_QUERY, "recency_minutes": 1440},
-                                          schedule_cron="CRON_TZ=Asia/Kolkata 0 8 * * *",
-                                          name="JAAGRUK · fake scheme fact-checks",
-                                          purpose="PIB Fact Check flags a new fake government scheme or website",
-                                          webhook_url=hook)
-        mid = _monitor_id(m)
-        db.execute("INSERT OR REPLACE INTO monitors (id, source_id, type, target, created_at) VALUES (?,?,?,?,?)",
-                   (mid, "scam_feed", "search", FAKE_SCHEME_QUERY, time.time()))
-        made.append({"source_id": "scam_feed", "monitor_id": mid})
-    checks_per_day = 3 * len(sources()) + 1
-    return {"ok": True, "created": made, "cost_per_day_usd": round(checks_per_day * 0.005, 3), "webhook": hook}
+        made.append(
+            {
+                "source_id": s["id"],
+                "monitor_id": mid,
+                "baseline": ingest(s, text, "monitor")["changed"] if text else None,
+            }
+        )
+    checks_per_day = 3 * len(sources())
+    return {
+        "ok": True,
+        "created": made,
+        "cost_per_day_usd": round(checks_per_day * 0.005, 3),
+        "webhook": hook,
+    }
 
 
 def _monitor_id(m: dict) -> str | None:
@@ -204,21 +306,29 @@ def _find_text(payload: Any) -> str | None:
 
 
 async def on_webhook(payload: dict) -> dict:
+    """Validate the monitor, ignore duplicates, then read the registered page ourselves before diffing."""
     mid = payload.get("monitor_id") or (payload.get("monitor") or {}).get("id") or payload.get("id")
-    row = db.query("SELECT source_id FROM monitors WHERE id = ?", (mid,)) if mid else []
-    db.log_call("monitor", purpose="webhook received", target=str(mid), mode="live", status="ok",
-                detail=json.dumps(payload)[:1500])
+    row = db.query("SELECT source_id FROM monitors WHERE id = ?", (str(mid),)) if mid else []
     if not row:
         return {"ok": False, "error": "unknown monitor"}
+    run = payload.get("run_id") or (payload.get("run") or {}).get("id") or hashlib.sha1(
+        json.dumps(payload, sort_keys=True, default=str).encode()
+    ).hexdigest()
+    seen_key = f"webhook_seen:{mid}:{run}"
+    if db.cache_get(seen_key):
+        return {"ok": True, "duplicate": True}
+    db.cache_set(seen_key, True)
+    db.log_call("monitor", purpose="webhook received", target=str(mid), mode="live", status="ok")
     sid = row[0]["source_id"]
-    if sid == "scam_feed":
-        return {"ok": True, "scam_feed": True}
-    src = next(s for s in sources() if s["id"] == sid)
-    text = _find_text(payload)
-    if not text:  # payload had no page text: read the page ourselves (free)
-        res = await tinyfish.fetch([src["url"]], purpose="Change Radar: monitor fired, re-read page", ttl=0)
-        text = (res.get("results") or [{}])[0].get("text") or ""
-    return {"ok": True, **ingest(src, text, "monitor")}
+    src = next((s for s in sources() if s["id"] == sid), None)
+    if not src:
+        return {"ok": False, "error": "source no longer watched"}
+    # the payload is a trigger only: the page text always comes from our own fresh read of the registered URL
+    res = await tinyfish.fetch([src["url"]], purpose="Change Radar: monitor fired, re-read page", ttl=0)
+    text = (res.get("results") or [{}])[0].get("text") or ""
+    if not text:
+        return {"ok": False, "error": "the registered page could not be read"}
+    return {"ok": True, **ingest(src, text, "monitor", replay=bool(res.get("_replay")))}
 
 
 async def run_monitor_now(source_id: str) -> dict:
