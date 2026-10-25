@@ -10,9 +10,7 @@
 | Unlock path ("this one document makes ₹X claimable") via z3.Optimize | ✅ | `ml/eligibility.py::unlock_paths` |
 | Live rule re-check: TinyFish Fetch → extractor → Z3 equivalence proof / counter-example | ✅ | `services/discover.py`, `ml/extract.py` |
 | Life-event mode (death, birth, Class 12, job loss, turning 60, business) | ✅ | `data/life_events.json`, Life page |
-| Wapsi — 7 unclaimed-money portals in parallel (playbook / agent / assisted) | ✅ | `services/wapsi.py`, `tinyfish/harness.py`, `tinyfish/playbooks.py` |
-| Assisted session — TinyFish Browser over CDP, citizen types OTP/CAPTCHA | ✅ | `services/assisted.py` |
-| Scam Shield — ML + rules + look-alike domains + live PIB Fact Check evidence | ✅ | `ml/scam.py`, `services/scam_shield.py` |
+| Wapsi — recovery cases over 7 official routes (qualified playbook / agent, official-site handoff) | ✅ | `services/recovery_lookup.py`, `services/recovery_cases.py`, `tinyfish/playbooks.py` |
 | Change Radar — notice boards via Fetch, personalised alerts, Monitor + webhook | ✅ (monitors opt-in) | `services/change_radar.py` |
 | Ask JAAGRUK — cited answers + TinyFish Research | ✅ | `ml/assistant.py` |
 | Application packs and CPGRAMS grievance drafts (citizen approves, never auto-submitted) | ✅ | `services/claims.py` |
