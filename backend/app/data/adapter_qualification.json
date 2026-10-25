@@ -1,0 +1,18 @@
+{
+ "lic_unclaimed": {
+  "qualified": true,
+  "outcome": "no_match",
+  "engine": "playbook",
+  "message": "LIC's result area: \u201cRecords with respect to entered data not found\u201d.",
+  "latency_ms": 38627,
+  "checked_at": "2026-10-25T00:41:18+00:00"
+ },
+ "tata_aia_unclaimed": {
+  "qualified": true,
+  "outcome": "no_match",
+  "engine": "agent",
+  "message": "Result area: \u201cNo unclaimed funds applicable for entered details\u201d",
+  "latency_ms": 66189,
+  "checked_at": "2026-10-25T00:42:24+00:00"
+ }
+}

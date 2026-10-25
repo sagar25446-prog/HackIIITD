@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html lang="en"><head><script language="JavaScript" type="text/JavaScript">
+<!--
+
+// **** This section contains code that will run when the page is loaded ****
+
+
+// Build the netui_names table to map the tagId attributes
+// to the real id written into the HTML
+if (netui_names == null)
+   var netui_names = new Object();
+netui_names.panNo="{actionForm.panNo}"
+netui_names.getUnclaimedData="getUnclaimedData"
+netui_names.dobDate="{actionForm.dateOfBirth}"
+netui_names.policyNo="{actionForm.policyNo}"
+netui_names.custName="{actionForm.custName}"
+
+
+// **** This section contains functions typically run as events ****
+
+
+// method which will return a real id for a tagId
+function getNetuiTagName(id) {
+   return netui_names[id];
+}
+
+// method which will return a real id for a tagId,
+// the tag parameter will be used to find the scopeId for
+// containers that may scope their ids
+function getNetuiTagName(id, tag)
+{
+   var scopeId = getScopeId(tag);
+   if (scopeId == "")
+      return netui_names[id];
+   else
+      return netui_names[scopeId  + "__" + id];
+}
+
+// method which get a tag will find any scopeId that,
+// was inserted by the containers
+function getScopeId(tag)
+{
+   if (tag == null)
+      return "";
+   if (tag.getAttribute) { 
+      if (tag.getAttribute('scopeId') != null)
+         return tag.getAttribute('scopeId');
+   } 
+   if (tag.scopeId != null)
+      return tag.scopeId;
+   return getScopeId(tag.parentNode);
+}
+-->
+</script>
+
+
+    <title>LIC of India - Customer's Unclaimed Policy Dues Details</title>
+    
+
+    <link href="/LICEPS/resources/css/LICPortal.css" rel="stylesheet"> 
+    <script src="/LICEPS/resources/js/SimpleFormValidation.js"></script>
+    <script src="/LICEPS/resources/js/SysDate.js"></script> 
+    <script>setSysDate(new Date(1792888249761));</script>
+    <script src="/LICEPS/resources/js/Calender.js"></script> 
+    <script src="/LICEPS/resources/js/UserRegistration.js"></script>
+    <script src="/LICEPS/resources/js/EPSDate.js"></script>
+    <script src="/LICEPS/resources/js/AdminUpdateProfile.js"></script>
+    <script>
+    function validateAndSubmit(formObj) {
+        // --- Access form elements consistently ---
+        var policyNoElement = formObj.elements[getNetuiTagName('policyNo')];
+        var custNameElement = formObj.elements[getNetuiTagName('custName')];
+        var dobElement = formObj.elements[getNetuiTagName('dobDate')];
+        var panElement = formObj.elements[getNetuiTagName('panNo')];
+
+        // --- Get the trimmed values from the elements ---
+        var policyNo = policyNoElement.value.trim();
+        var custName = custNameElement.value.trim();
+        var dob = dobElement.value.trim();
+        var panNo = panElement.value.trim();
+
+        // --- Step 1: Validate the format of each field if it has a value ---
+
+        // Policy Number must be numeric
+        if (policyNo !== "" && !/^\d+$/.test(policyNo)) {
+            alert("Policy number must contain numbers only.");
+            policyNoElement.focus(); // CORRECTED: Use the element reference to set focus
+            return false;
+        }
+
+        // Date of Birth format validation (dd/mm/yyyy)
+        if (dob !== "") {
+            var dobPattern = /^([0-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/\d{4}$/;
+            if (!dobPattern.test(dob)) {
+                alert("Date of Birth must be in dd/mm/yyyy format.");
+                dobElement.focus(); // CORRECTED: Use the element reference to set focus
+                return false;
+            }
+        }
+
+        // PAN Number format validation
+        if (panNo !== "") {
+            var panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+            if (!panPattern.test(panNo.toUpperCase())) {
+                alert("Invalid PAN Number format. A valid PAN is 10 characters long, like ABCDE1234F.");
+                panElement.focus(); // CORRECTED: Use the element reference to set focus
+                return false;
+            }
+        }
+
+        // --- Step 2: Count how many fields have been filled correctly ---
+        var filledFields = 0;
+        if (policyNo !== "") filledFields++;
+        if (custName !== "") filledFields++;
+        if (dob !== "") filledFields++;
+        
+
+        // --- Step 3: Check if at least two fields have been filled ---
+        if (filledFields >= 2) {
+            return true;
+        } else {
+            alert("Please enter at least any two of the following details:\n1) LIC Policy Number\n2) Policy-holder's Name\n3) Date of Birth");
+            return false;
+        }
+    }
+</script>
+<!--         function validateAndSubmit(formObj) {
+            var policyNo = formObj.elements[getNetuiTagName('policyNo')].value.trim();
+            var custName = formObj.elements[getNetuiTagName('custName')].value.trim();
+            var dob = formObj.elements[getNetuiTagName('dobDate')].value.trim();
+			alert
+            if (dob !== "") {
+                var dobPattern = /^([0-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/\d{4}$/;  // dd/mm/yyyy
+                if (!dobPattern.test(dob)) {
+                    alert("Date of Birth must be in dd/mm/yyyy format");
+                    return false;
+                }
+            }
+			if (policyNo !== "" && !/^\d+$/.test(policyNo)) {
+		        alert("Policy number must contain numbers only");
+		        return false;
+		    }
+			
+            // Case 1: Name + Policy No
+            if (custName !== "" && policyNo !== "") {
+                return true;
+            }
+
+            // Case 2: Name + DOB
+            if (custName !== "" && dob !== "") {
+                return true;
+            }
+
+            // Case 3: Policy No + DOB
+            //alert("policy no is : " +policyNo);
+            if (policyNo !== "" && dob !== "") {
+                return true;
+            }
+
+            // Else fail
+            alert("Please enter any two of the following:\n1) Name\n2) Policy No\n3) Date of Birth");
+            return false;
+        }
+        
+    </script> -->
+</head>
+
+<body style="background-color:#19375D; font-family: Arial, sans-serif;">
+
+
+
+
+	<!-- Outer container -->
+	<div style="max-width: 750px; margin: 30px auto; background: #ffffff; border-radius: 12px; 
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.3); padding: 20px;">
+
+    <!-- LIC Logo Centered -->
+    <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 15px;">
+        <img src="/LICEPS/resources/images/LICTitleAndLogo.jpg" alt="LIC Logo" style="height: 60px;">
+    </div>
+
+    <!-- Title -->
+    <div style="background:#ffc800; padding:12px; border-radius: 8px; text-align:center; margin-bottom: 20px;">
+        <span style="font-size:20px; font-weight:bold; color:#7F00FF; font-family:Centaur;">
+            Unclaimed and Outstanding amounts to Policyholders
+        </span>
+    </div>
+
+    <!-- Info message -->
+    <p style="background:#f8f8f8; border-left:5px solid #ffc800; padding:10px; border-radius:6px; font-size:14px; margin-bottom:20px;">
+        To know whether any amount under your LIC policy is lying unclaimed with us, please key-in any two following details:
+    </p>
+
+    <!-- Form Card -->
+    <form name="getUnclaimedDataForm" id="getUnclaimedData" action="https://merchant.licindia.in/LICEPS/portlets/visitor/unclaimedPolicyDues/getUnclaimedData.do" method="post" onsubmit="return validateAndSubmit(this)">
+        <table cellpadding="8" cellspacing="0" width="100%">
+            <tbody><tr>
+                <td style="width:40%; color:#003399; font-weight:bold;">LIC Policy Number</td>
+                <td style="width:5%; text-align:center; color:#003399; ">:</td>
+                <td>
+                    <input type="text" name="{actionForm.policyNo}" id="{actionForm.policyNo}" value="" maxlength="9" size="15" style="height:30px; width:220px; border:1px solid #ccc; border-radius:6px; padding:4px;">
+                </td>
+            </tr>
+
+            <tr>
+                <td style="color:#003399; font-weight:bold;">Policy-holder's Name </td>
+                <td style="text-align:center; color:#003399;">:</td>
+                <td>
+                    <input type="text" name="{actionForm.custName}" id="{actionForm.custName}" value="Jaagrukdemo Testcase" maxlength="30" size="30" style="height:30px; width:220px; border:1px solid #ccc; border-radius:6px; padding:4px;">
+                    
+                </td>
+            </tr>
+
+            <tr>
+                <td style="color:#003399; font-weight:bold;">Date Of Birth <i style="font-size:12px;">(dd/mm/yyyy)</i></td>
+                <td style="text-align:center; color:#003399;">:</td>
+                <td>
+                    <input type="text" name="{actionForm.dateOfBirth}" id="{actionForm.dateOfBirth}" value="12/03/1971" maxlength="10" style="height:30px; width:220px; border:1px solid #ccc; border-radius:6px; padding:4px;">
+                    <input type="button" value=".." onclick="openCalendar('getUnclaimedData', 'dobDate')" style="padding:4px 8px; border-radius:6px; border:1px solid #ccc; background:#ffc800; font-weight:bold; cursor:pointer;">
+                </td>
+            </tr>
+            
+            <tr>
+                <td style="width:40%; color:#003399; font-weight:bold;">PAN Number</td>
+                <td style="width:5%; text-align:center; color:#003399;">:</td>
+                <td>
+                    <input type="text" name="{actionForm.panNo}" id="{actionForm.panNo}" value="" maxlength="10" size="15" style="height:30px; width:220px; border:1px solid #ccc; border-radius:6px; padding:4px;">
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="3" style="padding-top:10px; font-size:13px;">
+                    <b><font color="RED">*</font><i>Please enter at least any two fields.</i></b>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="3" align="center" style="padding-top:15px;">
+                    <input type="submit" value="Submit" style="background:#19375D; color:white; font-weight:bold; border:none; padding:8px 20px; border-radius:6px; cursor:pointer;">
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="3" align="center" style="padding-top:10px; font-size:13px;">
+                    <b><u>NOTE</u>: <font color="RED"><i>This information is updated on half-yearly basis</i></font></b>
+                </td>
+            </tr>
+
+            
+            <tr>
+                <td colspan="3" align="center" style="padding-top:10px;">
+                    <b><font color="red">Records with respect to entered data not found !!!</font></b>
+                </td>
+            </tr>
+            
+        </tbody></table>
+    </form>
+</div>
+
+</body></html>
