@@ -4,6 +4,7 @@ Months are angles on a circle (December is next to January), so we use circular 
 the circular mean gives the expected month and the circular standard deviation gives the window.
 We report the empirical hit-rate of that window on the history, not an invented confidence.
 """
+
 from __future__ import annotations
 
 import math
@@ -45,6 +46,9 @@ def next_notice(exam: dict, today: date | None = None) -> dict | None:
         return min(d, 12 - d)
 
     hits = sum(dist(m, centre) <= half for m in months)
-    return {"expected": fmt(centre, year), "window": f"{fmt(lo_m, year)} – {fmt(hi_m, year)}",
-            "history_hits": f"{hits} of {len(months)} past notices fell in this window",
-            "method": f"circular mean ± 1σ of {len(months)} past notice months"}
+    return {
+        "expected": fmt(centre, year),
+        "window": f"{fmt(lo_m, year)} – {fmt(hi_m, year)}",
+        "history_hits": f"{hits} of {len(months)} past notices fell in this window",
+        "method": f"circular mean ± 1σ of {len(months)} past notice months",
+    }

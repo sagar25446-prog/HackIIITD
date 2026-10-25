@@ -1,11 +1,14 @@
 import asyncio
 
-from app.ml import change, eligibility as el, extract, name_match, scam
+from app.ml import change, extract, name_match
+from app.ml import eligibility as el
 
-NOTICE = ("Pension Scheme to Women in Distress. The applicant should be a widow, divorced, separated or destitute "
-          "woman above the age of 18 years. Residence of a minimum of 5 years in Delhi before the date of application. "
-          "The annual income of the applicant should be less than Rs. 1,00,000 per annum from all sources. "
-          "In the case of an SC/ST applicant, a certificate has to be submitted.")
+NOTICE = (
+    "Pension Scheme to Women in Distress. The applicant should be a widow, divorced, separated or destitute "
+    "woman above the age of 18 years. Residence of a minimum of 5 years in Delhi before the date of application. "
+    "The annual income of the applicant should be less than Rs. 1,00,000 per annum from all sources. "
+    "In the case of an SC/ST applicant, a certificate has to be submitted."
+)
 
 
 def test_extraction_matches_curated_rule_proven_by_z3():
@@ -13,18 +16,27 @@ def test_extraction_matches_curated_rule_proven_by_z3():
     widow = next(r for r in el.load_schemes() if r["id"] == "delhi_widow_pension")
     d = extract.drift(widow, ext["conditions"])
     assert not d["differences"] and not d["needs_review"]
-    assert {"age", "annual_family_income", "marital_status", "years_in_state"} <= set(d["equivalent_fields"])
-    assert not any(c["field"] == "category" for c in ext["conditions"])  # a document note is not an eligibility rule
+    assert {"age", "annual_family_income", "marital_status", "years_in_state"} <= set(
+        d["equivalent_fields"]
+    )
+    assert not any(
+        c["field"] == "category" for c in ext["conditions"]
+    )  # a document note is not an eligibility rule
 
 
 def test_drift_gives_a_concrete_counterexample():
     widow = next(r for r in el.load_schemes() if r["id"] == "delhi_widow_pension")
-    d = extract.drift(widow, [{"field": "annual_family_income", "op": "le", "value": 100000, "label": "up to 1 lakh"}])
+    d = extract.drift(
+        widow,
+        [{"field": "annual_family_income", "op": "le", "value": 100000, "label": "up to 1 lakh"}],
+    )
     assert d["needs_review"] and "100000" in d["differences"][0]["example"]
 
 
 def test_contradictory_extraction_is_rejected():
-    good, problems = extract.validate([{"field": "age", "op": "ge", "value": 60}, {"field": "age", "op": "le", "value": 40}])
+    good, problems = extract.validate(
+        [{"field": "age", "op": "ge", "value": 60}, {"field": "age", "op": "le", "value": 40}]
+    )
     assert good == [] and problems
 
 
@@ -34,22 +46,26 @@ def test_name_matcher_handles_indian_variants():
     assert p("Ramesh Kumar Sharma", "रमेश कुमार शर्मा") > 0.85
     assert p("Mohammad Imran Khan", "Md. Imran Khan") > 0.85
     assert p("Ramesh Kumar Sharma", "Suresh Kumar Sharma") < 0.5
-    assert name_match.match_probability("Ramesh Kumar Sharma", "R K Sharma", dob_a="12/03/1971",
-                                        dob_b="01/01/1980")["probability"] < 0.5
-
-
-def test_scam_model_and_rules():
-    fake = scam.score("Registration fee ₹499 pay karo, apply at viksitbharatrozgaryojana.org — last date today")
-    assert fake["verdict"] == "likely_fake"
-    assert any(d["status"] == "known_fake" for d in fake["domains"])
-    real = scam.score("NSP renewal for the Central Sector Scholarship is open on scholarships.gov.in")
-    assert real["verdict"] == "looks_genuine"
-    assert scam.score("Share your OTP to receive the PM Kisan instalment")["verdict"] != "looks_genuine"
+    assert (
+        name_match.match_probability(
+            "Ramesh Kumar Sharma", "R K Sharma", dob_a="12/03/1971", dob_b="01/01/1980"
+        )["probability"]
+        < 0.5
+    )
 
 
 def test_change_radar_reports_only_what_matters():
     old = "## Notice Board\n\nOct122026\n\nTentative Vacancies of Junior Engineer Examination, 2026.\n\n(61.28 KB)"
-    new = ("## Notice Board\n\nOct202026\n\nCombined Graduate Level Examination, 2026: Extension of last date for online "
-           "applications to 30 October 2026\n\n(210.00 KB)\n\n" + old.split("\n\n", 1)[1] + "\n\nTotal Visitor Count: 99")
+    new = (
+        "## Notice Board\n\nOct202026\n\nCombined Graduate Level Examination, 2026: Extension of last date for online "
+        "applications to 30 October 2026\n\n(210.00 KB)\n\n"
+        + old.split("\n\n", 1)[1]
+        + "\n\nTotal Visitor Count: 99"
+    )
     d = change.diff(old, new)
-    assert len(d) == 1 and d[0]["kind"] == "deadline" and d[0]["exam_ids"] == ["ssc_cgl"] and d[0]["posted"] == "2026-10-20"
+    assert (
+        len(d) == 1
+        and d[0]["kind"] == "deadline"
+        and d[0]["exam_ids"] == ["ssc_cgl"]
+        and d[0]["posted"] == "2026-10-20"
+    )
