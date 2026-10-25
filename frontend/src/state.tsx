@@ -1,13 +1,43 @@
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { api, Profile } from "./api";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { api, Profile, stream } from "./api";
 import { Key, Lang, t as tr } from "./i18n";
 
-export type Page = "home" | "life" | "wapsi" | "scam" | "radar" | "ask" | "ops";
+export const PAGES = [
+  "home",
+  "explore",
+  "life",
+  "paperwork",
+  "wapsi",
+  "radar",
+  "calendar",
+  "ask",
+  "ops",
+] as const;
+export type Page = (typeof PAGES)[number];
+
+export type Toast = {
+  title: string;
+  body?: string;
+  tone?: "info" | "success" | "alert";
+  action?: { label: string; page: Page };
+};
+
+/** Something a page should open with, e.g. a paperwork service chosen on My plan. */
+export type Intent = Record<string, any> | null;
 
 type Ctx = {
   lang: Lang;
   setLang: (l: Lang) => void;
-  t: (k: Key) => string;
+  t: (k: Key, vars?: Record<string, string | number>) => string;
   profile: Profile | null;
   setProfile: (p: Profile | null, personaId?: string | null) => void;
   patchProfile: (patch: Profile, memberIndex?: number | null) => void;
@@ -20,7 +50,16 @@ type Ctx = {
   catalog: any | null;
   health: any | null;
   page: Page;
-  go: (p: Page) => void;
+  go: (p: Page, intent?: Intent) => void;
+  intent: Intent;
+  takeIntent: (page: Page) => Intent;
+  tracked: string[];
+  toggleTrack: (id: string) => void;
+  eligibleIds: string[];
+  toast: Toast | null;
+  showToast: (t: Toast | null) => void;
+  updates: number;
+  clearUpdates: () => void;
 };
 
 const C = createContext<Ctx | null>(null);
@@ -41,6 +80,10 @@ function save(k: string, v: unknown) {
     /* storage unavailable: state just won't persist */
   }
 }
+const pageFromHash = (): Page => {
+  const h = location.hash.slice(1);
+  return (PAGES as readonly string[]).includes(h) ? (h as Page) : "home";
+};
 
 export function Provider({ children }: { children: ReactNode }) {
   const [lang, setLangS] = useState<Lang>(() => load("jk.lang", "en"));
@@ -51,19 +94,25 @@ export function Provider({ children }: { children: ReactNode }) {
   const [evaluating, setEvaluating] = useState(false);
   const [catalog, setCatalog] = useState<any | null>(null);
   const [health, setHealth] = useState<any | null>(null);
-  const [page, setPage] = useState<Page>(() => (location.hash.slice(1) as Page) || "home");
+  const [page, setPage] = useState<Page>(pageFromHash);
+  const [intent, setIntent] = useState<Intent>(null);
+  const [tracked, setTracked] = useState<string[]>(() => load("jk.tracked", []));
+  const [toast, showToast] = useState<Toast | null>(null);
+  const [updates, setUpdates] = useState<number>(() => load("jk.updates", 0));
+  const evalRequest = useRef(0);
 
+  useEffect(() => {
+    document.documentElement.lang = lang === "hi" ? "hi" : "en";
+  }, [lang]);
   const setLang = (l: Lang) => {
     setLangS(l);
     save("jk.lang", l);
-    document.documentElement.lang = l === "hi" ? "hi" : "en";
   };
   const setProfile = (p: Profile | null, pid: string | null = null) => {
     setProfileS(p);
-    setPersonaId(pid);
+    if (pid !== undefined && (pid !== null || p === null)) setPersonaId(pid);
     save("jk.profile", p);
-    save("jk.persona", pid);
-    setWapsiFound(0);
+    if (pid !== null || p === null) save("jk.persona", pid);
     if (p?.language === "hi" || p?.language === "en") setLang(p.language);
   };
   const patchProfile = (patch: Profile, memberIndex: number | null = null) => {
@@ -84,38 +133,184 @@ export function Provider({ children }: { children: ReactNode }) {
     setWapsiFoundS(n);
     save("jk.wapsi", n);
   };
-  const go = (p: Page) => {
+  const toggleTrack = (id: string) => {
+    setTracked((cur) => {
+      const next = cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id];
+      save("jk.tracked", next);
+      return next;
+    });
+  };
+  const addUpdates = (n: number) =>
+    setUpdates((cur) => {
+      save("jk.updates", cur + n);
+      return cur + n;
+    });
+  const clearUpdates = () => {
+    setUpdates(0);
+    save("jk.updates", 0);
+  };
+  const go = (p: Page, next: Intent = null) => {
+    setIntent(next ? { ...next, page: p } : null);
     setPage(p);
-    location.hash = p;
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (location.hash.slice(1) !== p) location.hash = p;
+  };
+  const takeIntent = (p: Page) => {
+    if (!intent || intent.page !== p) return null;
+    const value = intent;
+    // pages read their intent while rendering; clear it after this render, not during it
+    setTimeout(() => setIntent((cur) => (cur === value ? null : cur)), 0);
+    return value;
   };
 
   const refresh = useCallback(async () => {
     if (!profile) return setEvaluation(null);
+    const id = ++evalRequest.current;
     setEvaluating(true);
     try {
-      setEvaluation(await api.post("/api/evaluate", { profile, wapsi_found_inr: wapsiFound }));
+      const r = await api.post("/api/evaluate", { profile, wapsi_found_inr: 0 });
+      if (id === evalRequest.current) setEvaluation(r);
+    } catch {
+      if (id === evalRequest.current) setEvaluation(null);
     } finally {
-      setEvaluating(false);
+      if (id === evalRequest.current) setEvaluating(false);
     }
-  }, [profile, wapsiFound]);
+  }, [profile]);
 
   useEffect(() => {
     refresh();
   }, [refresh]);
   useEffect(() => {
-    api.get("/api/catalog").then(setCatalog).catch(() => null);
-    api.get("/api/health").then(setHealth).catch(() => null);
-    const onHash = () => setPage((location.hash.slice(1) as Page) || "home");
+    api
+      .get("/api/catalog")
+      .then(setCatalog)
+      .catch(() => null);
+    api
+      .get("/api/health")
+      .then(setHealth)
+      .catch(() => null);
+    const onHash = () => setPage(pageFromHash());
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
-  const value = useMemo<Ctx>(
-    () => ({ lang, setLang, t: (k) => tr(k, lang), profile, setProfile, patchProfile, personaId, evaluation, evaluating, refresh,
-      wapsiFound, setWapsiFound, catalog, health, page, go }),
+  // Keep official deadlines and tracked schemes fresh: re-read the NSP list when it is older than
+  // 6 h (free) and re-check tracked official pages not checked for 24 h. Only with a live key.
+  useEffect(() => {
+    if (!health?.tinyfish?.live) return;
+    let stop: (() => void) | undefined;
+    (async () => {
+      try {
+        const info = await api.get<any>("/api/explore/deadlines");
+        if (!info.fetched_at || Date.now() / 1000 - info.fetched_at > 6 * 3600) {
+          const r = await api.post<any>("/api/explore/deadlines/refresh");
+          if (r.changes?.length) {
+            addUpdates(r.changes.length);
+            showToast({
+              tone: "alert",
+              title:
+                lang === "hi"
+                  ? `${r.changes.length} आधिकारिक समय-सीमा बदली`
+                  : `${r.changes.length} official deadline change(s)`,
+              body: r.changes[0].name,
+              action: { label: lang === "hi" ? "अलर्ट" : "Alerts", page: "radar" },
+            });
+          }
+        }
+        if (!tracked.length) return;
+        const { due } = await api.post<any>("/api/explore/due", { ids: tracked });
+        if (!due.length) return;
+        const { job_id } = await api.post<any>("/api/explore/recheck", { ids: due.slice(0, 4) });
+        stop = stream(
+          `/api/jobs/${job_id}/events`,
+          () => null,
+          (res) => {
+            const changed = (res?.results || []).filter((x: any) => x.outcome === "changed");
+            if (changed.length) {
+              addUpdates(changed.length);
+              showToast({
+                tone: "alert",
+                title:
+                  lang === "hi"
+                    ? `${changed.length} ट्रैक की गई योजना बदली`
+                    : `${changed.length} tracked scheme(s) changed`,
+                body:
+                  lang === "hi"
+                    ? "आधिकारिक पेज पर समय-सीमा या नियम बदले"
+                    : "Deadline or rules updated on the official page",
+                action: { label: lang === "hi" ? "अलर्ट" : "Alerts", page: "radar" },
+              });
+            }
+          },
+        );
+      } catch {
+        /* offline: tracked schemes keep their last checked state */
+      }
+    })();
+    return () => stop?.();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [lang, profile, personaId, evaluation, evaluating, refresh, wapsiFound, catalog, health, page]
+  }, [health?.tinyfish?.live]);
+
+  const eligibleIds = useMemo<string[]>(
+    () =>
+      Array.from(
+        new Set(
+          (evaluation?.matches || [])
+            .filter((m: any) => m.decision.status === "eligible")
+            .map((m: any) => m.scheme_id),
+        ),
+      ),
+    [evaluation],
+  );
+  const value = useMemo<Ctx>(
+    () => ({
+      lang,
+      setLang,
+      t: (k, vars) => {
+        let s = tr(k, lang);
+        for (const [name, v] of Object.entries(vars || {})) s = s.replace(`{${name}}`, String(v));
+        return s;
+      },
+      profile,
+      setProfile,
+      patchProfile,
+      personaId,
+      evaluation,
+      evaluating,
+      refresh,
+      wapsiFound,
+      setWapsiFound,
+      catalog,
+      health,
+      page,
+      go,
+      intent,
+      takeIntent,
+      tracked,
+      toggleTrack,
+      eligibleIds,
+      toast,
+      showToast,
+      updates,
+      clearUpdates,
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      lang,
+      profile,
+      personaId,
+      evaluation,
+      evaluating,
+      refresh,
+      wapsiFound,
+      catalog,
+      health,
+      page,
+      intent,
+      tracked,
+      eligibleIds,
+      toast,
+      updates,
+    ],
   );
   return <C.Provider value={value}>{children}</C.Provider>;
 }
@@ -127,4 +322,5 @@ export const useApp = () => {
 };
 
 /** Pick the Hindi variant of a field when available (e.g. name / name_hi). */
-export const hi = (o: any, field: string, lang: Lang) => (lang === "hi" && o?.[field + "_hi"]) || o?.[field];
+export const hi = (o: any, field: string, lang: Lang) =>
+  (lang === "hi" && o?.[field + "_hi"]) || o?.[field];
