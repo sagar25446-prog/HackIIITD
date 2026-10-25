@@ -1,61 +1,508 @@
 {
- "intro": {"en": "10 quick questions, about 90 seconds. Speak or tap. Your answers stay on this device and our server; nothing is shared with any portal without your approval.",
-           "hi": "10 छोटे सवाल, लगभग 90 सेकंड। बोलिए या टैप कीजिए। आपके जवाब किसी पोर्टल को आपकी अनुमति के बिना नहीं भेजे जाते।"},
- "questions": [
-  {"field": "name", "type": "text", "q": "What is your name?", "q_hi": "आपका नाम क्या है?"},
-  {"field": "age", "type": "number", "min": 0, "max": 110, "q": "How old are you?", "q_hi": "आपकी उम्र कितनी है?"},
-  {"field": "gender", "type": "choice", "q": "Are you a woman, a man, or other?", "q_hi": "आप महिला हैं, पुरुष हैं, या अन्य?",
-   "options": [{"v": "female", "en": "Woman", "hi": "महिला", "say": ["woman", "female", "lady", "mahila", "aurat", "महिला", "औरत"]},
-               {"v": "male", "en": "Man", "hi": "पुरुष", "say": ["man", "male", "purush", "aadmi", "पुरुष", "आदमी"]},
-               {"v": "other", "en": "Other", "hi": "अन्य", "say": ["other", "anya", "अन्य", "transgender"]}]},
-  {"field": "state", "type": "choice", "q": "Which state do you live in?", "q_hi": "आप किस राज्य में रहते हैं?",
-   "options": [{"v": "Delhi", "en": "Delhi", "hi": "दिल्ली", "say": ["delhi", "dilli", "दिल्ली"]},
-               {"v": "Uttar Pradesh", "en": "Uttar Pradesh", "hi": "उत्तर प्रदेश", "say": ["uttar pradesh", "up", "उत्तर प्रदेश"]},
-               {"v": "Haryana", "en": "Haryana", "hi": "हरियाणा", "say": ["haryana", "हरियाणा"]},
-               {"v": "Bihar", "en": "Bihar", "hi": "बिहार", "say": ["bihar", "बिहार"]},
-               {"v": "Other", "en": "Other state", "hi": "दूसरा राज्य", "say": ["other", "dusra", "दूसरा"]}]},
-  {"field": "occupation", "type": "choice", "q": "What do you do for a living?", "q_hi": "आप क्या काम करते हैं?",
-   "options": [{"v": "homemaker", "en": "Homemaker", "hi": "गृहिणी", "say": ["homemaker", "housewife", "grihini", "ghar", "गृहिणी", "घर"]},
-               {"v": "student", "en": "Student", "hi": "विद्यार्थी", "say": ["student", "padhai", "vidyarthi", "छात्र", "विद्यार्थी", "पढ़ाई"]},
-               {"v": "job_seeker", "en": "Looking for a job", "hi": "नौकरी ढूँढ रहे हैं", "say": ["job seeker", "berozgar", "naukri dhoondh", "बेरोज़गार", "नौकरी"]},
-               {"v": "artisan", "en": "Craftsperson (tailor, carpenter…)", "hi": "कारीगर (दर्ज़ी, बढ़ई…)", "say": ["tailor", "darzi", "carpenter", "karigar", "कारीगर", "दर्ज़ी"]},
-               {"v": "street_vendor", "en": "Street vendor", "hi": "रेहड़ी-पटरी", "say": ["vendor", "rehri", "thela", "ठेला", "रेहड़ी"]},
-               {"v": "gig_worker", "en": "Daily wage / gig worker", "hi": "दिहाड़ी / गिग वर्कर", "say": ["daily wage", "mazdoor", "delivery", "gig", "मज़दूर", "दिहाड़ी"]},
-               {"v": "farmer", "en": "Farmer", "hi": "किसान", "say": ["farmer", "kisan", "kheti", "किसान", "खेती"]},
-               {"v": "self_employed", "en": "Own business", "hi": "अपना काम", "say": ["business", "dukaan", "shop", "dhandha", "दुकान", "व्यापार"]},
-               {"v": "private_employee", "en": "Private job", "hi": "प्राइवेट नौकरी", "say": ["private job", "company", "naukri", "प्राइवेट"]},
-               {"v": "govt_employee", "en": "Government job", "hi": "सरकारी नौकरी", "say": ["government job", "sarkari", "सरकारी"]},
-               {"v": "retired", "en": "Retired", "hi": "सेवानिवृत्त", "say": ["retired", "pension", "रिटायर"]}]},
-  {"field": "education", "type": "choice", "q": "How far did you study?", "q_hi": "आपने कहाँ तक पढ़ाई की है?",
-   "options": [{"v": 0, "en": "No schooling", "hi": "पढ़ाई नहीं की", "say": ["no", "nahi", "अनपढ़", "नहीं"]},
-               {"v": 2, "en": "Up to Class 8", "hi": "8वीं तक", "say": ["8", "eight", "aathvi", "आठवीं"]},
-               {"v": 3, "en": "Class 10", "hi": "10वीं", "say": ["10", "ten", "dasvi", "दसवीं", "matric"]},
-               {"v": 4, "en": "Class 12", "hi": "12वीं", "say": ["12", "twelve", "barahvi", "बारहवीं", "inter"]},
-               {"v": 5, "en": "Diploma / ITI", "hi": "डिप्लोमा / आईटीआई", "say": ["diploma", "iti", "डिप्लोमा"]},
-               {"v": 6, "en": "Graduate", "hi": "स्नातक", "say": ["graduate", "graduation", "ba", "bsc", "bcom", "ग्रेजुएट", "स्नातक"]},
-               {"v": 7, "en": "Postgraduate", "hi": "स्नातकोत्तर", "say": ["post graduate", "ma", "msc", "mba", "पोस्ट"]}]},
-  {"field": "annual_family_income", "type": "number", "min": 0, "max": 100000000, "unit": "₹ per year",
-   "q": "Roughly how much does your whole family earn in a year?", "q_hi": "आपके पूरे परिवार की साल भर की कमाई लगभग कितनी है?",
-   "chips": [{"v": 60000, "en": "₹60,000", "hi": "₹60 हज़ार"}, {"v": 90000, "en": "₹90,000", "hi": "₹90 हज़ार"},
-             {"v": 180000, "en": "₹1.8 lakh", "hi": "₹1.8 लाख"}, {"v": 300000, "en": "₹3 lakh", "hi": "₹3 लाख"},
-             {"v": 600000, "en": "₹6 lakh", "hi": "₹6 लाख"}, {"v": 1200000, "en": "₹12 lakh+", "hi": "₹12 लाख+"}]},
-  {"field": "category", "type": "choice", "q": "Which category do you belong to?", "q_hi": "आप किस वर्ग से हैं?",
-   "options": [{"v": "general", "en": "General", "hi": "सामान्य", "say": ["general", "samanya", "सामान्य"]},
-               {"v": "obc", "en": "OBC", "hi": "ओबीसी", "say": ["obc", "पिछड़ा", "ओबीसी"]},
-               {"v": "sc", "en": "SC", "hi": "अनुसूचित जाति (SC)", "say": ["sc", "scheduled caste", "अनुसूचित जाति", "एससी"]},
-               {"v": "st", "en": "ST", "hi": "अनुसूचित जनजाति (ST)", "say": ["st", "scheduled tribe", "जनजाति", "एसटी"]},
-               {"v": "ews", "en": "EWS", "hi": "ईडब्ल्यूएस", "say": ["ews", "ईडब्ल्यूएस"]}]},
-  {"field": "marital_status", "type": "choice", "q": "Are you married?", "q_hi": "क्या आप शादीशुदा हैं?",
-   "options": [{"v": "single", "en": "Not married", "hi": "अविवाहित", "say": ["single", "not married", "unmarried", "kunwara", "अविवाहित"]},
-               {"v": "married", "en": "Married", "hi": "विवाहित", "say": ["married", "shaadi", "शादीशुदा", "विवाहित"]},
-               {"v": "widowed", "en": "Widowed", "hi": "विधवा / विधुर", "say": ["widow", "vidhwa", "widower", "विधवा", "विधुर"]},
-               {"v": "divorced", "en": "Divorced / separated", "hi": "तलाकशुदा / अलग", "say": ["divorced", "separated", "talaq", "तलाक"]}]},
-  {"field": "life_events", "type": "multi", "q": "Has anything big happened in the family recently?", "q_hi": "क्या हाल ही में परिवार में कुछ बड़ा हुआ है?",
-   "options": [{"v": "death_in_family", "en": "A death in the family", "hi": "परिवार में किसी की मृत्यु", "say": ["death", "died", "passed away", "mrityu", "guzar", "मृत्यु", "गुज़र"]},
-               {"v": "baby_born", "en": "A baby was born", "hi": "बच्चे का जन्म", "say": ["baby", "born", "bachcha", "जन्म", "बच्चा"]},
-               {"v": "passed_class_12", "en": "Someone passed Class 12", "hi": "किसी ने 12वीं पास की", "say": ["passed", "12th", "barahvi", "बारहवीं"]},
-               {"v": "lost_job", "en": "Lost a job", "hi": "नौकरी छूट गई", "say": ["lost job", "naukri chali", "नौकरी छूट"]},
-               {"v": "turned_60", "en": "Turned 60", "hi": "60 साल के हुए", "say": ["60", "sixty", "saath", "साठ"]},
-               {"v": "starting_business", "en": "Starting a business", "hi": "नया काम शुरू कर रहे हैं", "say": ["business", "shop", "dhandha", "व्यापार", "दुकान"]}]}
- ]
+  "intro": {
+    "en": "A few quick questions to start your personal plan. Your plan stays in this browser; only a case you choose to share is stored for helper access. You can enable Family mode later.",
+    "hi": "अपनी व्यक्तिगत योजना के लिए कुछ छोटे सवाल। योजना इस ब्राउज़र में रहती है; सहायक के लिए केवल आपके चुने साझा मामले सहेजे जाते हैं। परिवार मोड बाद में चुन सकते हैं।"
+  },
+  "questions": [
+    {
+      "field": "name",
+      "type": "text",
+      "q": "What is your name?",
+      "q_hi": "आपका नाम क्या है?"
+    },
+    {
+      "field": "age",
+      "type": "number",
+      "min": 0,
+      "max": 110,
+      "q": "How old are you?",
+      "q_hi": "आपकी उम्र कितनी है?"
+    },
+    {
+      "field": "gender",
+      "type": "choice",
+      "q": "Are you a woman, a man, or other?",
+      "q_hi": "आप महिला हैं, पुरुष हैं, या अन्य?",
+      "options": [
+        {
+          "v": "female",
+          "en": "Woman",
+          "hi": "महिला",
+          "say": [
+            "woman",
+            "female",
+            "lady",
+            "mahila",
+            "aurat",
+            "महिला",
+            "औरत"
+          ]
+        },
+        {
+          "v": "male",
+          "en": "Man",
+          "hi": "पुरुष",
+          "say": [
+            "man",
+            "male",
+            "purush",
+            "aadmi",
+            "पुरुष",
+            "आदमी"
+          ]
+        },
+        {
+          "v": "other",
+          "en": "Other",
+          "hi": "अन्य",
+          "say": [
+            "other",
+            "anya",
+            "अन्य",
+            "transgender"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "state",
+      "type": "choice",
+      "q": "Which state do you live in?",
+      "q_hi": "आप किस राज्य में रहते हैं?",
+      "options": [
+        {
+          "v": "Delhi",
+          "en": "Delhi",
+          "hi": "दिल्ली",
+          "say": [
+            "delhi",
+            "dilli",
+            "दिल्ली"
+          ]
+        },
+        {
+          "v": "Uttar Pradesh",
+          "en": "Uttar Pradesh",
+          "hi": "उत्तर प्रदेश",
+          "say": [
+            "uttar pradesh",
+            "up",
+            "उत्तर प्रदेश"
+          ]
+        },
+        {
+          "v": "Haryana",
+          "en": "Haryana",
+          "hi": "हरियाणा",
+          "say": [
+            "haryana",
+            "हरियाणा"
+          ]
+        },
+        {
+          "v": "Bihar",
+          "en": "Bihar",
+          "hi": "बिहार",
+          "say": [
+            "bihar",
+            "बिहार"
+          ]
+        },
+        {
+          "v": "Other",
+          "en": "Other state",
+          "hi": "दूसरा राज्य",
+          "say": [
+            "other",
+            "dusra",
+            "दूसरा"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "occupation",
+      "type": "choice",
+      "q": "What do you do for a living?",
+      "q_hi": "आप क्या काम करते हैं?",
+      "options": [
+        {
+          "v": "homemaker",
+          "en": "Homemaker",
+          "hi": "गृहिणी",
+          "say": [
+            "homemaker",
+            "housewife",
+            "grihini",
+            "ghar",
+            "गृहिणी",
+            "घर"
+          ]
+        },
+        {
+          "v": "student",
+          "en": "Student",
+          "hi": "विद्यार्थी",
+          "say": [
+            "student",
+            "padhai",
+            "vidyarthi",
+            "छात्र",
+            "विद्यार्थी",
+            "पढ़ाई"
+          ]
+        },
+        {
+          "v": "job_seeker",
+          "en": "Looking for a job",
+          "hi": "नौकरी ढूँढ रहे हैं",
+          "say": [
+            "job seeker",
+            "berozgar",
+            "naukri dhoondh",
+            "बेरोज़गार",
+            "नौकरी"
+          ]
+        },
+        {
+          "v": "artisan",
+          "en": "Craftsperson (tailor, carpenter…)",
+          "hi": "कारीगर (दर्ज़ी, बढ़ई…)",
+          "say": [
+            "tailor",
+            "darzi",
+            "carpenter",
+            "karigar",
+            "कारीगर",
+            "दर्ज़ी"
+          ]
+        },
+        {
+          "v": "street_vendor",
+          "en": "Street vendor",
+          "hi": "रेहड़ी-पटरी",
+          "say": [
+            "vendor",
+            "rehri",
+            "thela",
+            "ठेला",
+            "रेहड़ी"
+          ]
+        },
+        {
+          "v": "gig_worker",
+          "en": "Daily wage / gig worker",
+          "hi": "दिहाड़ी / गिग वर्कर",
+          "say": [
+            "daily wage",
+            "mazdoor",
+            "delivery",
+            "gig",
+            "मज़दूर",
+            "दिहाड़ी"
+          ]
+        },
+        {
+          "v": "farmer",
+          "en": "Farmer",
+          "hi": "किसान",
+          "say": [
+            "farmer",
+            "kisan",
+            "kheti",
+            "किसान",
+            "खेती"
+          ]
+        },
+        {
+          "v": "self_employed",
+          "en": "Own business",
+          "hi": "अपना काम",
+          "say": [
+            "business",
+            "dukaan",
+            "shop",
+            "dhandha",
+            "दुकान",
+            "व्यापार"
+          ]
+        },
+        {
+          "v": "private_employee",
+          "en": "Private job",
+          "hi": "प्राइवेट नौकरी",
+          "say": [
+            "private job",
+            "company",
+            "naukri",
+            "प्राइवेट"
+          ]
+        },
+        {
+          "v": "govt_employee",
+          "en": "Government job",
+          "hi": "सरकारी नौकरी",
+          "say": [
+            "government job",
+            "sarkari",
+            "सरकारी"
+          ]
+        },
+        {
+          "v": "retired",
+          "en": "Retired",
+          "hi": "सेवानिवृत्त",
+          "say": [
+            "retired",
+            "pension",
+            "रिटायर"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "education",
+      "type": "choice",
+      "q": "How far did you study?",
+      "q_hi": "आपने कहाँ तक पढ़ाई की है?",
+      "options": [
+        {
+          "v": 0,
+          "en": "No schooling",
+          "hi": "पढ़ाई नहीं की",
+          "say": [
+            "no",
+            "nahi",
+            "अनपढ़",
+            "नहीं"
+          ]
+        },
+        {
+          "v": 2,
+          "en": "Up to Class 8",
+          "hi": "8वीं तक",
+          "say": [
+            "8",
+            "eight",
+            "aathvi",
+            "आठवीं"
+          ]
+        },
+        {
+          "v": 3,
+          "en": "Class 10",
+          "hi": "10वीं",
+          "say": [
+            "10",
+            "ten",
+            "dasvi",
+            "दसवीं",
+            "matric"
+          ]
+        },
+        {
+          "v": 4,
+          "en": "Class 12",
+          "hi": "12वीं",
+          "say": [
+            "12",
+            "twelve",
+            "barahvi",
+            "बारहवीं",
+            "inter"
+          ]
+        },
+        {
+          "v": 5,
+          "en": "Diploma / ITI",
+          "hi": "डिप्लोमा / आईटीआई",
+          "say": [
+            "diploma",
+            "iti",
+            "डिप्लोमा"
+          ]
+        },
+        {
+          "v": 6,
+          "en": "Graduate",
+          "hi": "स्नातक",
+          "say": [
+            "graduate",
+            "graduation",
+            "ba",
+            "bsc",
+            "bcom",
+            "ग्रेजुएट",
+            "स्नातक"
+          ]
+        },
+        {
+          "v": 7,
+          "en": "Postgraduate",
+          "hi": "स्नातकोत्तर",
+          "say": [
+            "post graduate",
+            "ma",
+            "msc",
+            "mba",
+            "पोस्ट"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "annual_family_income",
+      "type": "number",
+      "min": 0,
+      "max": 100000000,
+      "unit": "₹ per year",
+      "q": "Roughly how much does your whole family earn in a year?",
+      "q_hi": "आपके पूरे परिवार की साल भर की कमाई लगभग कितनी है?",
+      "chips": [
+        {
+          "v": 60000,
+          "en": "₹60,000",
+          "hi": "₹60 हज़ार"
+        },
+        {
+          "v": 90000,
+          "en": "₹90,000",
+          "hi": "₹90 हज़ार"
+        },
+        {
+          "v": 180000,
+          "en": "₹1.8 lakh",
+          "hi": "₹1.8 लाख"
+        },
+        {
+          "v": 300000,
+          "en": "₹3 lakh",
+          "hi": "₹3 लाख"
+        },
+        {
+          "v": 600000,
+          "en": "₹6 lakh",
+          "hi": "₹6 लाख"
+        },
+        {
+          "v": 1200000,
+          "en": "₹12 lakh+",
+          "hi": "₹12 लाख+"
+        }
+      ]
+    },
+    {
+      "field": "category",
+      "type": "choice",
+      "q": "Which category do you belong to?",
+      "q_hi": "आप किस वर्ग से हैं?",
+      "options": [
+        {
+          "v": "general",
+          "en": "General",
+          "hi": "सामान्य",
+          "say": [
+            "general",
+            "samanya",
+            "सामान्य"
+          ]
+        },
+        {
+          "v": "obc",
+          "en": "OBC",
+          "hi": "ओबीसी",
+          "say": [
+            "obc",
+            "पिछड़ा",
+            "ओबीसी"
+          ]
+        },
+        {
+          "v": "sc",
+          "en": "SC",
+          "hi": "अनुसूचित जाति (SC)",
+          "say": [
+            "sc",
+            "scheduled caste",
+            "अनुसूचित जाति",
+            "एससी"
+          ]
+        },
+        {
+          "v": "st",
+          "en": "ST",
+          "hi": "अनुसूचित जनजाति (ST)",
+          "say": [
+            "st",
+            "scheduled tribe",
+            "जनजाति",
+            "एसटी"
+          ]
+        },
+        {
+          "v": "ews",
+          "en": "EWS",
+          "hi": "ईडब्ल्यूएस",
+          "say": [
+            "ews",
+            "ईडब्ल्यूएस"
+          ]
+        }
+      ]
+    },
+    {
+      "field": "marital_status",
+      "type": "choice",
+      "q": "Are you married?",
+      "q_hi": "क्या आप शादीशुदा हैं?",
+      "options": [
+        {
+          "v": "single",
+          "en": "Not married",
+          "hi": "अविवाहित",
+          "say": [
+            "single",
+            "not married",
+            "unmarried",
+            "kunwara",
+            "अविवाहित"
+          ]
+        },
+        {
+          "v": "married",
+          "en": "Married",
+          "hi": "विवाहित",
+          "say": [
+            "married",
+            "shaadi",
+            "शादीशुदा",
+            "विवाहित"
+          ]
+        },
+        {
+          "v": "widowed",
+          "en": "Widowed",
+          "hi": "विधवा / विधुर",
+          "say": [
+            "widow",
+            "vidhwa",
+            "widower",
+            "विधवा",
+            "विधुर"
+          ]
+        },
+        {
+          "v": "divorced",
+          "en": "Divorced / separated",
+          "hi": "तलाकशुदा / अलग",
+          "say": [
+            "divorced",
+            "separated",
+            "talaq",
+            "तलाक"
+          ]
+        }
+      ]
+    }
+  ]
 }

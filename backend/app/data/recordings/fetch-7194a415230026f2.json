@@ -1,7 +1,7 @@
 {
  "api": "fetch",
  "target": "https://web.umang.gov.in/landing/scheme/detail/delhi-pension-scheme-to-women-in-distress-widow-pension_dpswdwp.html",
- "recorded_at": "2026-10-22 23:09",
+ "recorded_at": "2026-10-24 21:37",
  "response": {
   "results": [
    {
@@ -16,7 +16,7 @@
     "format": "markdown",
     "links": [],
     "image_links": [],
-    "latency_ms": 16292.073347000041,
+    "latency_ms": 15199.21648500167,
     "not_modified": null,
     "etag": null,
     "last_modified": null,
