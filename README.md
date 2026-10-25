@@ -1,262 +1,185 @@
 # JAAGRUK (जागरूक) — every rupee your family is owed: found, proven, claimed
 
 **Janta's AI Agent for Government Rights, Updates & Knowledge.** A Hindi/English web app (installable PWA) that tells an
-Indian family what it is entitled to — schemes, scholarships, exams, insurance and its own **unclaimed money** — *proves*
-each answer, watches official notice boards for changes, catches scam "yojanas", and helps the family claim, with the
-citizen approving every step. It works on the **live government web through [TinyFish](https://tinyfish.ai)**.
+Indian family what it is entitled to — schemes, scholarships, exams, insurance and its own **unclaimed money** — checks
+each answer against reviewed rules with a solver, turns life changes into ready-to-act cases, watches official pages
+for changes, and prepares claims with the right institution. The citizen approves every step. It works on the **live
+government web through [TinyFish](https://tinyfish.ai)**.
 
 > **Team:** Ayush · Saif · Sagar
 
-![Haq Meter](docs/screenshots/01-haq-meter.png)
+![My plan](docs/screenshots/01-my-plan.png)
 
 ---
 
-## ⚡ Evaluate in 3 minutes (no API key needed)
+## ⚡ Run it in 3 minutes
 
 ```bash
-git clone https://github.com/sagar25446-prog/HackIIITD.git
-cd HackIIITD
 python -m venv .venv
-# Windows:            .venv\Scripts\activate
-# macOS / Linux:      source .venv/bin/activate
+# Windows:        .venv\Scripts\activate
+# macOS / Linux:  source .venv/bin/activate
 pip install -r requirements.txt
-python run.py --replay
+python run.py            # live TinyFish if TINYFISH_API_KEY is set, otherwise recorded real runs
+python run.py --replay   # force recorded real TinyFish runs (no key or internet needed)
 ```
 
-Open **http://localhost:8000**, click the **Sunita** demo family, and follow the [walkthrough](#-evaluation-walkthrough).
+Open **http://localhost:8000** and pick the **Sunita** sample family (or build your own profile). The frontend is
+pre-built in `frontend/dist`, so Node is only needed to change it. The server listens on this computer only; use
+`--host 0.0.0.0` deliberately if other devices should reach it (they could then use your TinyFish key).
 
-`--replay` serves **recorded real TinyFish responses** (captured from the live government portals on 19 Oct 2026), so
-every screen works without a key or internet; the UI labels them "replay". To see TinyFish calls happen live, add a key
-([below](#run-with-live-tinyfish)). The frontend is pre-built in `frontend/dist`, so **Node is not needed** to run it.
+Before relying on the automated Wapsi checks, re-run their live qualification (≈ $0.10, fictional test identity):
 
----
-
-## Contents
-1. [The problem](#1-the-problem) · 2. [What JAAGRUK does](#2-what-jaagruk-does) · 3. [How TinyFish is used](#3-how-tinyfish-is-used)
-4. [Run it](#4-run-it) · 5. [Evaluation walkthrough](#-evaluation-walkthrough) · 6. [Tests](#6-tests)
-7. [Architecture & AI/ML](#7-architecture--aiml) · 8. [Revenue model](#8-revenue-model) · 9. [Safety & privacy](#9-safety--privacy)
-10. [Limitations](#10-honest-limitations) · 11. [Repository layout](#11-repository-layout) · 12. [Team](#12-team)
+```bash
+python backend/scripts/qualify_adapters.py
+```
 
 ---
 
 ## 1. The problem
 
-* **≈ ₹1.04 lakh crore of citizens' money sits unclaimed** — bank deposits ₹78k cr, insurance ₹14k cr, dividends ₹9k cr,
-  mutual funds ₹3k cr (PIB, Dec 2025). When people were *helped*, ₹5,777 cr went back to 22.95 lakh claimants in three
-  months (PIB, Mar 2026) — the money is claimable; people just can't find it.
+* **≈ ₹1.04 lakh crore of citizens' money sits unclaimed** — bank deposits, insurance, dividends, mutual funds (PIB,
+  Dec 2025). When people were *helped*, ₹5,777 cr went back to 22.95 lakh claimants in three months (PIB, Mar 2026).
 * Scheme rules are spread across hundreds of portals and PDFs, in legal English, and they **change without notice**.
-* Each unclaimed-money portal covers one asset type, needs its own form, login, OTP or CAPTCHA.
-* Scammers fill the gap: fake "yojana" sites charge "registration fees" (PIB Fact Check flags them regularly).
+* Each unclaimed-money portal covers one asset type and needs its own form, login, OTP or CAPTCHA — and the portal that
+  *finds* money (UDGAM, MITRA, IEPF) is often not the institution that *pays* it.
 
-**Our problem statement:** millions of eligible Indians miss benefits, deadlines and even their own money because the
-information is fragmented, unstructured, changing and rarely in their language. Portals *list* information; nobody
-*watches, matches, verifies and acts* for the individual family.
+Portals *list* information; nobody *watches, matches, verifies and acts* for the individual family. JAAGRUK does.
 
 ## 2. What JAAGRUK does
 
+Four destinations: **My plan · Life update · Paperwork · Wapsi**. *Ask* and *Under the hood* are secondary.
+
 | Feature | What the citizen sees | How it works |
 |---|---|---|
-| **Profile in 90 s** | 10 voice-friendly questions in Hindi or English | Web Speech API (hi-IN/en-IN), multi-label persona (`services/persona.py`) |
-| **Haq Meter** | One ₹ number for the whole family: yearly, one-time, insurance cover, credit | Only **proven-eligible** schemes counted; mutually exclusive schemes counted once |
-| **Proof, not guesses** | "Why?" shows every rule clause, the family's value and the official source | **Z3 SMT solver**: eligible / not eligible / needs one answer, with the failing clause (unsat core) |
-| **Re-check live** | "Matches the live official page — Z3-proven identical" | **TinyFish Fetch** re-reads the official page → rule extractor → Z3 proves equivalence or shows a counter-example |
-| **Make it claimable** | "Income certificate → ₹62,000 becomes claimable" | `z3.Optimize` weighted set cover over missing documents |
-| **Life-event mode** | Death in family, baby born, Class 12, job loss, turning 60, new business → checklist | Curated claims + schemes per event |
-| **Wapsi (unclaimed money)** | 7 official portals searched in parallel, live agent grid, claim kit | **TinyFish Agent + Browser**, verifier, self-heal, Indic name matcher |
-| **Scam Shield** | Paste a message → "Likely fake", reasons, PIB Fact Check links, 1930 helpline | ML text model + fraud rules + look-alike domains + **TinyFish Search** evidence |
-| **Change Radar** | "Your daughter's CSSS renewal closes 31-10-2026" | **TinyFish Fetch** of official notice boards → diff → classifier → personalised alerts; **TinyFish Monitors** for always-on watching |
-| **Ask JAAGRUK** | Cited answers; "Read official sites live" | Retrieval over the verified rules + **TinyFish Research** |
-| **Acts for you** | Application packs, CPGRAMS grievance drafts, assisted sessions | Never submits anything itself; the citizen approves and types OTPs |
-| **Under the hood** | Every TinyFish call, live vs replay, latency, run IDs; model metrics | SQLite call log |
+| **My plan** | Next three actions (person, reason, date) → active cases → coming dates → benefit estimates by type → schemes | Actions come from cases *and* from schemes that match; "Prepare this application" opens the right case |
+| **Benefit estimates** | Recurring assistance, academic-year awards, one-time help, insurance cover, credit and possible recovery — each with its period and status, never one combined total | Mutually exclusive schemes counted once |
+| **Reasons, not guesses** | "Why?" on every scheme: each clause, the family's value, the official source, what is still unknown | **Z3** — matches / does not match / one answer missing |
+| **Re-check live** | Which fields of the rule were compared with today's official page | **TinyFish Fetch** + Z3 equivalence proof |
+| **Discover (1,135 schemes)** | Search in your own words, filters, Track; live discovery | myScheme pages read with **TinyFish Browser**; live **Search → Fetch → Browser** |
+| **Life update → Preview what changes** | Write or say what happened; see who and which facts change, which cases, questions, documents and dates — and what stays the same — before applying | Local EN/HI/Hinglish reader; apply is refused if the plan or rules changed after the preview |
+| **Paperwork** | The minimum checklist for this person, service and state | Reviewed routes + **TinyFish Search** for official guidance elsewhere |
+| **Wapsi** | Start a recovery (holder, claimant, relationship, claim capacity, asset, route) → case → automated check or official site → evidence → claim preparation → official next step → follow-up | **TinyFish Browser playbook** (LIC) and **Agent** (Tata AIA), each live-qualified; strict outcomes |
+| **Updates** | Notices that affect you, scholarship deadlines, tracked schemes and reviewed rule changes in one inbox | **TinyFish Fetch** (all boards in one call), diff, classifier; optional **Monitors** |
+| **Ask** | Cited answers; live research | Retrieval over the reviewed rules + **TinyFish Research** |
+| **Helper link** | Share one case for 24 h; readable summary; field-by-field conflict view | Hashed capability token in the URL fragment; helpers cannot change search evidence |
+| **Under the hood** | Every TinyFish call (live/replay, latency), adapter qualification, rules version, model metrics | SQLite call log, redacted |
 
-| Proof + live re-check | Wapsi live agent grid |
+| Life update → Preview what changes | Wapsi recovery case |
 |---|---|
-| ![](docs/screenshots/02-z3-proof-live-recheck.png) | ![](docs/screenshots/03-wapsi-live-agent-grid.png) |
-| **Scam Shield** | **Change Radar** |
-| ![](docs/screenshots/04-scam-shield.png) | ![](docs/screenshots/05-change-radar.png) |
+| ![](docs/screenshots/04-life-update.png) | ![](docs/screenshots/05-wapsi.png) |
+| **Claim preparation** | **Updates inbox** |
+| ![](docs/screenshots/05b-wapsi-preparation.png) | ![](docs/screenshots/07-alerts.png) |
 
-## 3. How TinyFish is used
+**Personal and Family mode.** JAAGRUK starts in Personal mode. Family mode keeps each person's facts, documents and
+cases separate — a parent's bank account or certificate is never assumed for a child.
 
-TinyFish is the core of JAAGRUK, not a decoration: without it the app cannot read official pages, search for evidence,
-or act on portals. **All six TinyFish products** are used, each for what it is best at.
+## 3. Wapsi, done honestly
 
-| TinyFish product | JAAGRUK feature | Code | What happens |
-|---|---|---|---|
-| **Web Agent** — `run-sse`, `output_schema`, India proxy | Wapsi (Tata AIA), official-checker second opinion, self-heal fallback for broken playbooks | `backend/app/tinyfish/client.py::agent_stream`, `tinyfish/harness.py` | Natural-language goal with a strict JSON schema; `STREAMING_URL` and `PROGRESS` events stream into the live agent grid ("Watch" button) |
-| **Browser Infrastructure** — CDP + Playwright, India proxy | Wapsi playbooks (LIC), **assisted sessions** (SBI Life, IEPF, UDGAM, MF Central, EPFO, CPGRAMS) | `tinyfish/playbooks.py`, `services/assisted.py` | Deterministic scripts on a TinyFish cloud browser (LIC answers in ~25 s); for OTP/CAPTCHA portals the citizen clicks/types on a streamed remote browser — the OTP goes straight to the site |
-| **Fetch** — up to 10 URLs per call, `ttl=0` | Change Radar, Re-check live, deadline cards | `services/change_radar.py`, `services/discover.py::refresh_rule` | Reads SSC, UPSC, NSP and Delhi Lakshmi Yojana boards in **one call**; re-reads each scheme's official page for the Z3 drift proof |
-| **Search** — `include_domains`, recency | Scam Shield evidence, "New on official sites" | `services/scam_shield.py`, `services/discover.py::discover` | PIB Fact Check + official-site existence + fraud reports for unknown domains |
-| **Monitor** — fetch & search monitors, cron, webhook | Always-on Change Radar | `change_radar.register_monitors / on_webhook` | One monitor per notice board (3×/day) + a fake-scheme topic monitor → `/api/radar/webhook` → diff → alerts (opt-in from the Alerts page; ≈ $0.07/day) |
-| **Research** — `run-research` SSE | Ask → "Read official sites live" | `client.py::research`, `ml/assistant.py` | Plans sub-questions, reads sources, streams a cited report; official sources are badged |
+* The **recovery case is created first**; every lookup is bound to that case, holder and route. Changing the holder,
+  name, date of birth or route clears consent, and a result can never be attached to a person selected later.
+* Outcomes are explicit: **Possible record · No match for these submitted details · Citizen step required · Missing
+  input · Unavailable · Failed · Uncertain · Cancelled**. "No match" requires the portal's own no-record message in its
+  result area; CAPTCHA, outages and timeouts never become "no match".
+* A record is never ownership, an approved claim or money received. Amounts stay attached to each record; nothing is
+  summed. Name differences are explained in plain words; a similarity score never verifies ownership.
+* Portals that need the citizen's OTP, login or CAPTCHA open on the **official website in a normal tab**. Nothing typed
+  there passes through JAAGRUK; the citizen records what happened back in the case.
+* Discovery services (UDGAM, MITRA, IEPF) are separated from the institution that pays (the bank, AMC/registrar,
+  company). Claim requirements are shown only where they were reviewed from official pages; the rest is labelled.
 
-**The harness** (`tinyfish/harness.py`) turns raw TinyFish calls into something a citizen can trust:
-planner → playbook ⇄ agent in parallel → **verifier** ("COMPLETED ≠ success": catches empty results, a CAPTCHA reported
-as "not found", the agent echoing the searched name, non-official links, portal errors) → **self-heal** (playbook ⇄
-agent, re-planned goal, stealth retry) → **human hand-off** for CAPTCHA/OTP/login → **record & replay**.
+| Route | JAAGRUK |
+|---|---|
+| LIC | Automated: playbook on a TinyFish Browser (agent only if the script breaks *before* submitting) |
+| Tata AIA | Automated: TinyFish Agent (playbook only if the agent fails *before* submitting) |
+| SBI Life | Official site — the citizen completes its CAPTCHA |
+| RBI UDGAM | Official site → record the bank and UDRN → claim with the bank |
+| MITRA (MF Central) | Official site → record the AMC/registrar → claim or transmission there |
+| IEPF | Official route; company nodal officer verifies; conditional transmission for heirs |
+| EPFO | Official route; no name-only search |
 
-**Tested on the real portals** — run IDs, costs and what we changed are in
-[docs/TINYFISH_EVIDENCE.md](docs/TINYFISH_EVIDENCE.md). Highlights: Indian portals refused foreign IPs (fixed with
-`country_code: IN`); an agent "completed" on SBI Life by hitting a CAPTCHA (now caught by the verifier and routed to the
-citizen); IEPF moved behind a login (assisted session). Total spend on all live validation ≈ $0.60.
+**Live qualification, 25 Oct 2026** (fictional identity "Jaagrukdemo Testcase", 12/03/1971): LIC — playbook, 38.6 s,
+official no-record message recognised; Tata AIA — agent, 5 steps, 66 s, official no-record message recognised.
 
-![Under the hood](docs/screenshots/06-under-the-hood.png)
+## 4. How TinyFish is used
 
-## 4. Run it
+| TinyFish product | JAAGRUK feature | Code |
+|---|---|---|
+| **Web Agent** (`run-sse`, `output_schema`, India proxy) | Wapsi (Tata AIA), official-checker second opinion | `services/recovery_lookup.py`, `tinyfish/harness.py` |
+| **Browser** (CDP + Playwright, India proxy) | LIC playbook, Discover catalogue and re-checks | `tinyfish/playbooks.py`, `services/catalog.py` |
+| **Fetch** | Updates scan, Re-check live, NSP deadlines, rule-source review | `services/change_radar.py`, `services/discover.py`, `services/source_changes.py` |
+| **Search** | Discover live search, paperwork guidance, new-on-official-sites | `services/catalog.py`, `services/service_paperwork.py`, `services/discover.py` |
+| **Monitor** | Always-on board watching (operator-enabled) with a private webhook | `services/change_radar.py` |
+| **Research** | Ask → live research | `tinyfish/client.py::research`, `ml/assistant.py` |
 
-**Prerequisites:** Python **3.11 or 3.12** (developed on 3.12). Node 20+ is *only* needed if you change the frontend.
+Every call goes through `tinyfish/client.py`, which logs it, records successful public responses and replays **only an
+exact earlier request** when there is no key or network. Personal lookups are never recorded or replayed.
 
-### Run offline (replay of real TinyFish runs) — recommended for a first look
-```bash
-pip install -r requirements.txt
-python run.py --replay          # → http://localhost:8000
-```
+## 5. Settings (`.env`)
 
-### Run with live TinyFish
-1. Create a free TinyFish account and an API key at **https://agent.tinyfish.ai/api-keys**.
-2. Copy the example config and paste the key:
-   ```bash
-   cp .env.example .env            # Windows: copy .env.example .env
-   # edit .env →  TINYFISH_API_KEY=your-key
-   ```
-3. `python run.py` → http://localhost:8000. The sidebar shows **"TinyFish live"**; the *Under the hood* page shows each call.
+Copy `.env.example` to `.env` (never commit it). An environment variable already set in the operating system wins.
 
-`TINYFISH_MODE=auto` (default) calls TinyFish live and falls back to a recorded real response if the network fails.
-
-### All settings (`.env`)
 | Variable | Default | Meaning |
 |---|---|---|
-| `TINYFISH_API_KEY` | — | Your TinyFish key. Without it the app runs on recorded real runs. |
+| `TINYFISH_API_KEY` | — | Your key from https://agent.tinyfish.ai/api-keys. Without it the app runs on recorded real runs. |
 | `TINYFISH_MODE` | `auto` | `live` · `replay` · `auto` |
-| `TINYFISH_PROXY_COUNTRY` | `IN` | Exit country for TinyFish browsers/agents (Indian portals often block foreign IPs) |
-| `AGENT_MAX_SECONDS` / `AGENT_MAX_STEPS` | `180` / `30` | Hard caps per agent run (step cap used only where the account supports it) |
-| `ANTHROPIC_API_KEY` | — | Optional: Claude writes cited answers and extracts rules (structured outputs). Deterministic fallbacks otherwise. |
-| `PUBLIC_BASE_URL` | — | Optional public https URL (e.g. a tunnel) so TinyFish Monitors can push to `/api/radar/webhook` |
-
-### Develop
-```bash
-python run.py --dev                     # API with auto-reload on :8000
-cd frontend && npm install && npm run dev   # UI on :5173 (proxies /api)
-```
-
-## 🧪 Evaluation walkthrough
-
-Works in `--replay` mode; steps marked **(live)** need a TinyFish key.
-
-| # | Do | You should see |
-|---|---|---|
-| 1 | Open http://localhost:8000 → **Build my profile** → press 🎤 (Chrome/Edge) and speak, or type | 10 questions, read aloud, Hindi/English toggle |
-| 2 | **Back** → click **Sunita, 52 — widow, Delhi** | Haq Meter **₹62,000** (₹42,000/yr + ₹20,000 one-time), ₹6 lakh cover, "counted once" note |
-| 3 | Scroll: **Deadlines for your family** | CSSS scholarship renewal for her daughter, dates **31-10-2026**, read from the NSP page by TinyFish Fetch |
-| 4 | **Make it claimable** card | Income certificate → ₹62,000 across 4 schemes (z3.Optimize) |
-| 5 | Click **Delhi Pension Scheme to Women in Distress → Why?** → **Re-check live** | Proof lines (✓ per clause), official UMANG source, then "Matches the live official page — Z3-proven identical: age, income, gender, marital status, state, years in state" |
-| 6 | **Wapsi** → name `Jaagrukdemo Testcase`, DOB `12/03/1971`, tick consent → **Search all portals** | Live agent grid: LIC (Playbook · TinyFish Browser, with the real LIC page as evidence), Tata AIA (TinyFish Agent, progress steps), five portals "Needs you" with the reason (CAPTCHA/OTP/login) |
-| 7 | **(live)** On SBI Life click **Open assisted session** → **End session** | The real SBI Life page streamed from a TinyFish cloud browser; you could click and type the CAPTCHA |
-| 8 | **Scam Shield** → click the first example | **Likely fake**: "PM Viksit Bharat Rozgar Yojana is a real scheme, but PIB Fact Check has flagged fake websites…", PIB links, 1930 helpline |
-| 9 | **Alerts** → **Scan official pages now** | 4 official boards read in one Fetch call; items classified (deadline, result, vacancy…), "For you" highlights |
-| 10 | **Ask** → tap *"Delhi widow pension: monthly amount and who is eligible"* → **Read official sites live** | Cited answer from the rule base, then a TinyFish Research report with official sources badged |
-| 11 | **Under the hood** | Every TinyFish call (Search/Fetch/Agent/Browser/Playbook/Research), live vs replay, latency, run IDs; name-matcher F1 0.976, scam-model F1 0.932 |
-| 12 | Switch to **हि** (top right); open on a phone-width window | Hindi UI; responsive layout with bottom navigation |
-
-The other demo families: **Riya** (SC student — scholarships, SSC eligibility with age relaxation) and **Ramesh**
-(tailor — PM Vishwakarma, Mudra credit).
+| `TINYFISH_PROXY_COUNTRY` | `IN` | Exit country for TinyFish browsers and agents |
+| `AGENT_MAX_SECONDS` / `AGENT_MAX_STEPS` | `180` / `30` | Hard caps per agent run |
+| `ANTHROPIC_API_KEY` | — | Optional: Claude writes cited answers and extracts rules. Rule-based fallbacks otherwise. |
+| `PUBLIC_BASE_URL` | — | Optional public https URL so TinyFish Monitors can call the webhook |
+| `JAAGRUK_REVIEW_KEY` | — | Enables rule review and monitor controls (operator only) |
+| `JAAGRUK_DB` | `var/jaagruk.db` | Server database (call log, job ledger, helper links, reviewed changes) |
 
 ## 6. Tests
 
 ```bash
-cd backend
-python -m pytest -q        # 21 tests, fully offline (TinyFish in replay mode)
+python -m pytest backend/tests -q      # 103 tests, offline (replay mode, throwaway database)
+cd frontend
+npm ci
+npm test                               # calendar, workspace scope/sharing/storage, life-update consent
+npm run build
 ```
 
-Covered: Z3 three-valued proofs and unsat cores, the Sunita Haq Meter story, family-member evaluation, exam age
-relaxation, rule extraction + Z3 drift proofs, contradiction rejection, Indic name matching, the scam model, Change Radar
-diffs, the verifier (CAPTCHA-as-success, echoed names, non-official links, portal errors), planner routing, API end-to-end,
-**72 parallel requests** (Z3 thread safety), and the Research stream always ending. CI runs the tests and the frontend
-build on every push (`.github/workflows/ci.yml`).
+Tests use saved or mocked evidence and fictional families. They do not establish live-portal success, beneficiary
+outcomes or model generalisation. See [docs/VALIDATION.md](docs/VALIDATION.md).
 
 ## 7. Architecture & AI/ML
 
-```
-React + TypeScript + Tailwind PWA (Hindi/English, Web Speech voice)
-        │  REST + Server-Sent Events (live agent grid, research stream)
-FastAPI (backend/app/main.py) — also serves the built PWA
-  ├─ tinyfish/client.py     Search · Fetch · Agent run-sse · Browser · Monitor · Research · record/replay
-  ├─ tinyfish/harness.py    planner → executor → verifier → self-heal → human hand-off
-  ├─ tinyfish/playbooks.py  deterministic portal scripts on TinyFish Browser (LIC, Tata AIA)
-  ├─ ml/eligibility.py      Z3 proofs, unsat cores, unlock path (z3.Optimize), exam age relaxation
-  ├─ ml/extract.py          notice text → rule conditions (Claude structured output or patterns) → Z3 drift proof
-  ├─ ml/name_match.py       Devanagari→Latin + Indic phonetic key + fuzzy/initials features → logistic model
-  ├─ ml/scam.py             TF-IDF (char 2-5 + word 1-2) logistic model + fraud rules + look-alike domains
-  ├─ ml/change.py           notice-board diff + change classifier
-  ├─ ml/assistant.py        retrieval over verified rules, cited answers, support check, Research stream
-  ├─ ml/forecaster.py       next exam-notice window (circular statistics over past notice months)
-  └─ services/*             entitlements (Haq Meter), wapsi, scam_shield, change_radar, assisted, claims, discover
-SQLite: TinyFish call log, notice snapshots, alerts, cache
-```
+* **Backend:** FastAPI (Python 3.12); jobs with a SQLite ledger (idempotent starts, cancellation, account-wide and
+  per-client limits, honest "uncertain" after a restart); SQLite WAL; in-memory FTS5 for Discover.
+* **One reviewed rule registry** (`services/rules_registry.py`): My plan, cases, Discover, Ask and the official checker
+  read the same version; public reads only create review candidates; approval publishes atomically.
+* **Frontend:** React 18 + TypeScript + Vite + Tailwind PWA, Hindi/English, lazy-loaded screens, one accessible dialog
+  primitive, error boundary, stale-response protection.
+* **Reasoning:** Z3 three-valued eligibility with unsat cores, `z3.Optimize` unlock paths, rule-drift proofs.
+* **Models:** Indic name matcher (fuzzy, phonetic, initials; F1 0.979 on *synthetic* pairs with an identity-grouped
+  split); circular-statistics exam forecaster. The life-update reader is editable patterns, not a trained model.
 
-| Model | Result |
-|---|---|
-| Name matcher (Wapsi) | F1 **0.976**, AUC 0.992 on held-out pairs; exact matching finds only **14 %** of true variants ("R. K. Sarma", "रमेश कुमार शर्मा") |
-| Scam classifier | F1 **0.932**, 5-fold stratified CV on 99 labelled Hindi/English/Hinglish messages |
-| Eligibility | Z3 proofs over 29 scheme rules + 3 exams; rule drift proven against live official pages |
+## 8. Data, privacy and safety
 
-## 8. Revenue model
+* The family workspace and journal live **in this browser**; plan requests are evaluated per request and not stored.
+* A helper link stores only one case for 24 hours behind a hashed token; helpers cannot rewrite search evidence.
+* No identity numbers, passwords or OTPs are requested; no OTP or password ever passes through JAAGRUK.
+* Private responses are `no-store`; questions never travel in URLs; monitor and reviewer controls need the operator key;
+  webhooks need a private token and are re-read from the registered page before any alert.
 
-**Citizens never pay** (genuine schemes never charge, and JAAGRUK says so on every screen). Revenue comes from those who
-already pay or earn to reach these citizens:
+## 9. Honest limitations
 
-| Who pays | What | Price | Justification |
-|---|---|---|---|
-| CSC operators, NGOs, college scholarship cells | Multi-family console, pre-filled packs, alerts, Wapsi runs | **₹199 / centre / month** | A CSC already earns **₹30 per scholarship application** (NSP) — 7 extra applications a month pay for it; 5.16 lakh CSCs exist |
-| Banks, insurers, AMCs | Consented, name-matched, document-ready claimants for their unclaimed accounts | **1 % of settled amount, max ₹500/claim** | RBI pays banks **5–7.5 %** of each settled unclaimed deposit; average campaign claim ≈ ₹25,000 → ≈ ₹250 fee |
-| District / state departments | Entitlement-gap dashboards (aggregated, privacy-preserving) | **₹2 lakh / district / year** after a free pilot | Funded from scheme awareness budgets; price to be validated in pilots |
+* Reviewed preparation routes cover the modelled conditions (Delhi pensions, CSSS, ONORC, selected Aadhaar/PAN/licence
+  and income-certificate routes). Other services get official-guidance leads, not invented checklists.
+* 2 of 7 Wapsi routes are automated; 5 need the citizen on the official site by design. Detailed claim checklists are
+  reviewed only for Tata AIA; others are labelled.
+* Discover covers 1,135 pages read so far; most myScheme pages state no date, shown as "availability unknown".
+* No real money has been found: all live tests use a fictional identity.
 
-Year-2 projection ≈ **₹2.9 crore** (1 % of CSCs, 50,000 settled claims, 20 districts) against a measured marginal cost of
-≈ ₹8.5 per Wapsi search. Full market research, sources and unit economics: **[docs/REVENUE_MODEL.md](docs/REVENUE_MODEL.md)**.
-
-## 9. Safety & privacy
-
-* **Never solves CAPTCHAs.** Portals with a CAPTCHA, OTP or login open as an assisted session where the citizen types it.
-* **No passwords, tokens or OTPs in any agent goal.** Assisted-session keystrokes go straight to the website — never
-  logged, stored or shown to an AI.
-* **Consent before every portal search; nothing is submitted on the citizen's behalf.**
-* **No Aadhaar collected.** The profile lives in the browser (localStorage); the server keeps only the TinyFish call log
-  and notice snapshots.
-* Every eligibility result, alert and answer links to its **official source**. Development tests used only the fictional
-  name "Jaagrukdemo Testcase".
-
-## 10. Honest limitations
-
-* Coverage today: Central + Delhi (29 schemes, 3 exams), 7 unclaimed-money portals, 4 notice boards.
-* Of the 7 Wapsi portals, LIC and Tata AIA are automated end to end; the other five require the citizen's CAPTCHA/OTP/login
-  by design.
-* TinyFish Research is limited to 5 runs/day per account; JAAGRUK reuses research per question and falls back to the
-  closest earlier real run.
-* Without an Anthropic key, Ask answers quote the verified rule text rather than writing prose.
-* Assisted sessions and live agent runs need a TinyFish key (replay mode shows recorded real runs).
-* Some secondary screens are still English in Hindi mode. Voice uses the browser's Web Speech API (Chrome/Edge).
-
-More in [docs/ENGINEERING_NOTES.md](docs/ENGINEERING_NOTES.md) (14 problems found by live testing and how each was fixed)
-and [docs/FAQ.md](docs/FAQ.md).
-
-## 11. Repository layout
+## 10. Repository layout
 
 ```
-run.py                     one-command launcher (builds the PWA if needed, serves on :8000)
-requirements.txt           Python dependencies (pinned)
-.env.example               configuration template (copy to .env)
-backend/app/               FastAPI app, TinyFish client + harness, ML, services
-backend/app/data/          scheme rules (official sources), exams, life events, documents, portals, personas, scam dataset
-backend/app/data/captures/ real TinyFish responses captured during live testing (provenance for replay)
-backend/app/data/recordings/ replayable recordings (generated from captures + live runs)
-backend/tests/             21 offline tests
-backend/scripts/           tooling to save new TinyFish captures
-frontend/                  React PWA source; frontend/dist is the pre-built app
-docs/                      pitch deck, revenue model, TinyFish evidence, engineering notes, FAQ, demo-video script, screenshots
-ROADMAP.md                 what's built and what's next
+backend/app/        FastAPI app, routers, services (planning, paperwork, recovery, rules registry, catalog…), ML, TinyFish client
+backend/app/data/   rules, recovery routes, adapter qualification, personas, catalogue (myScheme + NSP), recordings
+backend/scripts/    qualify_adapters.py, crawl_myscheme.py, save_capture.py
+backend/tests/      103 offline tests
+frontend/src/       React app: pages/, workspace/ (cases, life updates, sharing), components/
+docs/               JUDGE_BUILD_CHANGES.md, VALIDATION.md, EXPLORE.md, TINYFISH_EVIDENCE.md, REVENUE_MODEL.md, FAQ.md
 ```
 
-## 12. Team
-
-Ayush · Saif · Sagar
-
-Licensed under the MIT License.
+MIT licensed. Team: Ayush, Saif and Sagar.

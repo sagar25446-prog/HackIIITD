@@ -14,7 +14,6 @@ earn when a citizen is reunited with their money.
 | Demand for self-service search | 18.86 lakh registered users on RBI's UDGAM portal (1 Mar 2026) | same PIB release |
 | Assisted-service channel | 5.16 lakh functional Common Service Centres (June 2026) | PIB, Ministry of I&B, 2026 |
 | What citizens already pay an assisted centre | **₹30** fixed charge for a full scholarship application at a CSC (NSP OTR + application) | National Scholarship Portal home page (read with TinyFish Fetch, 19 Oct 2026) |
-| Scale of the scam problem | ₹3,216 crore lost to job & investment scams in 11 months (1 lakh+ cases) | Government data Jan–Nov 2024 (as cited in our deck) |
 
 ## 2. Our costs (measured, not guessed)
 
@@ -22,7 +21,7 @@ Measured on live portals on 19 Oct 2026 (see [TINYFISH_EVIDENCE.md](TINYFISH_EVI
 
 | Action | TinyFish cost | In ₹ (at ₹85/$, assumption) |
 |---|---|---|
-| Eligibility proof, Haq Meter, Scam Shield model, name matching | ₹0 (runs on our server) | ₹0 |
+| Eligibility checks, benefit estimates, name matching | ₹0 (runs on our server) | ₹0 |
 | Reading official pages (Search, Fetch, Research) | $0 (free tiers) | ₹0 |
 | One full Wapsi search (one 5-step agent + ~1 browser-minute) | ≈ $0.10 | ≈ ₹8.5 |
 | Always-on Change Radar (13 monitor checks/day, shared by *all* users) | ≈ $0.07/day | ≈ ₹180/month total |
@@ -33,7 +32,7 @@ So the marginal cost of serving a family is **≈ ₹10 per Wapsi search** and c
 ## 3. Revenue streams and prices
 
 ### A. Citizens — free
-The full app (profile, Haq Meter, proofs, Life-event mode, Scam Shield, alerts, Wapsi search) is free. This is what
+The full app (profile, plan, reasons, life updates, alerts, Wapsi recovery cases) is free. This is what
 drives adoption and trust.
 
 ### B. CSC / NGO operator console — ₹199 per centre per month
@@ -59,7 +58,7 @@ and the bank still keeps 4–6.5 %.
 
 ### D. Government (B2G) — district entitlement-gap dashboard (pilot, then licence)
 *Who pays:* district administrations / state social-welfare departments.
-*What they get:* privacy-preserving, aggregated "who is eligible but not enrolled" maps per scheme, scam-message
+*What they get:* privacy-preserving, aggregated "who is eligible but not enrolled" maps per scheme
 trends, notice-change alerts.
 *Price:* free 3-month pilot, then **₹2 lakh per district per year** (to be validated in pilots — we have no signed
 customer yet). Funded from IEC/awareness budgets that schemes already carry.
@@ -82,7 +81,7 @@ small team — the model is profitable without charging a single citizen.
 
 | Alternative | Gap JAAGRUK fills |
 |---|---|
-| myScheme (government scheme finder) | Lists schemes; does not prove eligibility per family, watch notice boards, check scams or search unclaimed money |
+| myScheme (government scheme finder) | Lists schemes; does not prove eligibility per family, watch notice boards or prepare unclaimed-money recovery |
 | UDGAM / Bima Bharosa / MITRA / IEPF | One asset type each, separate logins; JAAGRUK searches across them and hands OTP/CAPTCHA steps to the citizen |
 | RBI's planned single unclaimed-assets portal | Complements us: JAAGRUK becomes the assisted, multilingual front door (CSC console) and covers schemes + exams too |
 | Paid "claim agents" | Charge citizens and are a fraud risk; JAAGRUK is free to citizens and tells them never to pay an agent |
