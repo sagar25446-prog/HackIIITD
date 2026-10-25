@@ -1,17 +1,31 @@
 // Thin client for the JAAGRUK API.
 export type Profile = Record<string, any>;
 
-async function req<T>(method: string, path: string, body?: unknown): Promise<T> {
+async function req<T>(
+  method: string,
+  path: string,
+  body?: unknown,
+  extra?: Record<string, string>,
+): Promise<T> {
   const r = await fetch(path, {
     method,
-    headers: body !== undefined ? { "Content-Type": "application/json" } : undefined,
+    headers: {
+      ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
+      ...(extra || {}),
+    },
     body: body !== undefined ? JSON.stringify(body) : undefined,
   });
   if (!r.ok) {
     let msg = `${r.status}`;
     try {
       const j = await r.json();
-      msg = j.detail || j.error || msg;
+      const detail = j.detail || j.error;
+      msg =
+        typeof detail === "string"
+          ? detail
+          : Array.isArray(detail)
+            ? detail.map((e: any) => `${(e.loc || []).slice(1).join(".")}: ${e.msg}`).join("; ")
+            : msg;
     } catch {
       /* not JSON */
     }
@@ -21,13 +35,20 @@ async function req<T>(method: string, path: string, body?: unknown): Promise<T> 
 }
 
 export const api = {
-  get: <T,>(p: string) => req<T>("GET", p),
-  post: <T,>(p: string, b?: unknown) => req<T>("POST", p, b ?? {}),
-  del: <T,>(p: string) => req<T>("DELETE", p),
+  get: <T>(p: string) => req<T>("GET", p),
+  post: <T>(p: string, b?: unknown) => req<T>("POST", p, b ?? {}),
+  /** Starts paid work once: the same key returns the same job (duplicate clicks, retries). */
+  start: <T>(p: string, b: unknown, key: string) =>
+    req<T>("POST", p, b, { "Idempotency-Key": key }),
+  del: <T>(p: string) => req<T>("DELETE", p),
 };
 
 /** Subscribe to a server-sent event stream. Returns a close function. */
-export function stream(path: string, onEvent: (ev: any) => void, onEnd?: (result: any) => void): () => void {
+export function stream(
+  path: string,
+  onEvent: (ev: any) => void,
+  onEnd?: (result: any) => void,
+): () => void {
   const es = new EventSource(path);
   es.onmessage = (m) => {
     try {
